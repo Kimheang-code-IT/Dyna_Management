@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  font-family: "Roboto", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings: "wdth" 100;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Roboto font for English (default) */
+html[lang="en"],
+html.lang-en,
+body.lang-en,
+.lang-en {
+  font-family: "Roboto";
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings: "wdth" 100;
+}
+
+/* Noto Serif Khmer font for Khmer */
+html[lang="km"],
+html.lang-km,
+body.lang-km,
+.lang-km {
+  font-family: "Noto Serif Khmer","Roboto";
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings: "wdth" 100;
+}
+
+#app {
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Hide Scrollbar but Keep Scrolling Functionality */
+main {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+/* Webkit browsers (Chrome, Safari, Edge) */
+main::-webkit-scrollbar {
+  display: none; /* Hide scrollbar */
+}
+

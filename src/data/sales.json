@@ -1,0 +1,83 @@
+[
+  {
+    "id": "sale-001",
+    "date": "8/16/2024",
+    "time": "5:15:00 PM",
+    "products": 2,
+    "itemsSold": 3,
+    "topProducts": ["Lenovo ThinkPad E14", "Wireless Mouse"],
+    "avgPerItem": 252.00,
+    "total": 756.00
+  },
+  {
+    "id": "sale-002",
+    "date": "8/18/2024",
+    "time": "9:30:00 PM",
+    "products": 1,
+    "itemsSold": 3,
+    "topProducts": ["Frontend Bootcamp Materials"],
+    "avgPerItem": 129.00,
+    "total": 387.00
+  },
+  {
+    "id": "sale-003",
+    "date": "8/20/2024",
+    "time": "2:45:00 PM",
+    "products": 3,
+    "itemsSold": 5,
+    "topProducts": ["MacBook Air M2", "Mechanical Keyboard", "USB-C Hub"],
+    "avgPerItem": 275.80,
+    "total": 1379.00
+  },
+  {
+    "id": "sale-004",
+    "date": "8/22/2024",
+    "time": "11:20:00 AM",
+    "products": 2,
+    "itemsSold": 4,
+    "topProducts": ["Dell XPS 15", "Gaming Mouse"],
+    "avgPerItem": 486.00,
+    "total": 1944.00
+  },
+  {
+    "id": "sale-005",
+    "date": "8/24/2024",
+    "time": "4:10:00 PM",
+    "products": 1,
+    "itemsSold": 2,
+    "topProducts": ["Backend Development Course"],
+    "avgPerItem": 149.00,
+    "total": 298.00
+  },
+  {
+    "id": "sale-006",
+    "date": "8/25/2024",
+    "time": "1:30:00 PM",
+    "products": 4,
+    "itemsSold": 7,
+    "topProducts": ["HP Pavilion 15", "Wireless Headphones", "Laptop Stand", "External SSD 1TB"],
+    "avgPerItem": 183.14,
+    "total": 1282.00
+  },
+  {
+    "id": "sale-007",
+    "date": "8/27/2024",
+    "time": "3:55:00 PM",
+    "products": 2,
+    "itemsSold": 3,
+    "topProducts": ["ASUS VivoBook", "Laptop Bag"],
+    "avgPerItem": 229.33,
+    "total": 688.00
+  },
+  {
+    "id": "sale-008",
+    "date": "8/28/2024",
+    "time": "10:15:00 AM",
+    "products": 1,
+    "itemsSold": 1,
+    "topProducts": ["Full Stack Bootcamp"],
+    "avgPerItem": 299.00,
+    "total": 299.00
+  }
+]
+

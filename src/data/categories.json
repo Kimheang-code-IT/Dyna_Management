@@ -1,0 +1,153 @@
+[
+  {
+    "id": 1,
+    "name": "C Courses",
+    "description": "Digital course packages",
+    "totalProduct": 5
+  },
+  {
+    "id": 2,
+    "name": "B Books",
+    "description": "Books for students",
+    "totalProduct": 0
+  },
+  {
+    "id": 3,
+    "name": "E Electronics",
+    "description": "Electronics for students",
+    "totalProduct": 0
+  },
+  {
+    "id": 4,
+    "name": "O Office",
+    "description": "Office supplies",
+    "totalProduct": 0
+  },
+  {
+    "id": 5,
+    "name": "S Software",
+    "description": "Software for students",
+    "totalProduct": 0
+  },
+  {
+    "id": 6,
+    "name": "H Hardware",
+    "description": "Hardware for students",
+    "totalProduct": 0
+  },
+  {
+    "id": 7,
+    "name": "Laptops",
+    "description": "Laptop computers and accessories",
+    "totalProduct": 8
+  },
+  {
+    "id": 8,
+    "name": "Accessories",
+    "description": "Computer accessories and peripherals",
+    "totalProduct": 9
+  },
+  {
+    "id": 9,
+    "name": "Furniture",
+    "description": "Office and home furniture",
+    "totalProduct": 3
+  },
+  {
+    "id": 10,
+    "name": "Stationery",
+    "description": "Pens, papers, and office supplies",
+    "totalProduct": 2
+  },
+  {
+    "id": 11,
+    "name": "Gaming",
+    "description": "Gaming equipment and accessories",
+    "totalProduct": 4
+  },
+  {
+    "id": 12,
+    "name": "Audio",
+    "description": "Headphones, speakers, and audio equipment",
+    "totalProduct": 6
+  },
+  {
+    "id": 13,
+    "name": "Mobile",
+    "description": "Mobile phones and accessories",
+    "totalProduct": 7
+  },
+  {
+    "id": 14,
+    "name": "Tablets",
+    "description": "Tablet computers",
+    "totalProduct": 3
+  },
+  {
+    "id": 15,
+    "name": "Monitors",
+    "description": "Computer monitors and displays",
+    "totalProduct": 5
+  },
+  {
+    "id": 16,
+    "name": "Keyboards",
+    "description": "Computer keyboards",
+    "totalProduct": 12
+  },
+  {
+    "id": 17,
+    "name": "Mice",
+    "description": "Computer mice and pointing devices",
+    "totalProduct": 15
+  },
+  {
+    "id": 18,
+    "name": "Webcams",
+    "description": "Web cameras and video equipment",
+    "totalProduct": 4
+  },
+  {
+    "id": 19,
+    "name": "Printers",
+    "description": "Printers and printing supplies",
+    "totalProduct": 6
+  },
+  {
+    "id": 20,
+    "name": "Storage",
+    "description": "Storage devices and drives",
+    "totalProduct": 8
+  },
+  {
+    "id": 21,
+    "name": "Networking",
+    "description": "Network equipment and cables",
+    "totalProduct": 5
+  },
+  {
+    "id": 22,
+    "name": "Security",
+    "description": "Security software and hardware",
+    "totalProduct": 3
+  },
+  {
+    "id": 23,
+    "name": "Backpacks",
+    "description": "Bags and backpacks",
+    "totalProduct": 9
+  },
+  {
+    "id": 24,
+    "name": "Cables",
+    "description": "Cables and connectors",
+    "totalProduct": 11
+  },
+  {
+    "id": 25,
+    "name": "Tools",
+    "description": "Tools and equipment",
+    "totalProduct": 2
+  }
+]
+
