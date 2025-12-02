@@ -56,3 +56,90 @@ main::-webkit-scrollbar {
   display: none; /* Hide scrollbar */
 }
 
+/* Smaller font size for all placeholders */
+input::placeholder,
+textarea::placeholder {
+  font-size: 0.75rem; /* 12px - smaller than default */
+}
+
+/* Consistent dark mode transition duration for all elements */
+* {
+  transition-property: background-color, border-color, color, fill, stroke, opacity;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+/* Ensure smooth dark mode transitions for html and body */
+html,
+body {
+  transition: background-color 300ms cubic-bezier(0.4, 0, 0.2, 1), 
+              color 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Global Scrollbar Styling for Dark Mode */
+/* Webkit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f3f4f6; /* gray-100 */
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(156, 163, 175, 0.5); /* gray-400 with opacity */
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(156, 163, 175, 0.7); /* gray-400 with more opacity */
+}
+
+/* Dark mode scrollbar styling */
+html.dark ::-webkit-scrollbar-track,
+.dark ::-webkit-scrollbar-track {
+  background: #374151; /* gray-700 */
+}
+
+html.dark ::-webkit-scrollbar-thumb,
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(107, 114, 128, 0.5); /* gray-500 with opacity */
+}
+
+html.dark ::-webkit-scrollbar-thumb:hover,
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: rgba(107, 114, 128, 0.7); /* gray-500 with more opacity */
+}
+
+/* Firefox scrollbar styling - exclude main element which has scrollbar hidden */
+*:not(main) {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(156, 163, 175, 0.5) #f3f4f6;
+}
+
+html.dark *:not(main),
+.dark *:not(main) {
+  scrollbar-color: rgba(107, 114, 128, 0.5) #374151;
+}
+
+/* Date Picker Dark Mode Styling */
+input[type="date"] {
+  color-scheme: light dark;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0);
+  cursor: pointer;
+}
+
+.dark input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  opacity: 0.8;
+}
+
+.dark input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+

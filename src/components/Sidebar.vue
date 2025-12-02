@@ -2,23 +2,113 @@
   <aside 
     :class="[
       'fixed left-0 top-0 h-screen bg-white dark:bg-gray-800 flex flex-col z-50 transition-all duration-300 shadow-xl border-r border-gray-200 dark:border-gray-700',
-      isCollapsed ? 'w-20' : 'w-[280px]'
+      isCollapsed ? 'w-20' : 'w-[255px]'
     ]"
   >
     <!-- Logo -->
-    <div class="border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 flex items-center justify-center" :class="isCollapsed ? 'py-3 px-2' : 'py-1'">
-      <img 
-        :src="logoImage" 
-        alt="Logo" 
+    <div class="border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 flex items-center justify-center" :class="isCollapsed ? 'py-1 px-2' : 'py-1 px-3'">
+      <div 
         :class="[
-          'object-contain transition-all duration-300',
-          isCollapsed ? 'h-10 w-10' : 'h-14 w-auto max-w-full'
+          'flex items-center transition-all duration-300',
+          isCollapsed ? 'w-14 h-14 justify-center' : 'w-full h-full'
         ]"
-      />
+      >
+        <!-- Logo Graphic -->
+        <div 
+          :class="[
+            'flex-shrink-0 transition-all duration-300',
+            isCollapsed ? 'w-16 h-16 mt-4' : 'w-14 h-14'
+          ]"
+        >
+          <svg 
+            viewBox="0 0 120 120" 
+            class="w-full h-full"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <!-- Lightbulb with Brain -->
+            <g transform="translate(62, 16)">
+              <!-- White background circle -->
+              <circle cx="0" cy="0" r="16" fill="white" class="dark:fill-gray-800 bg-white"/>
+              <!-- Lightbulb outer shape (light blue) -->
+              <path d="M0,-11 Q-6.5,-11 -8.5,-4.5 Q-8.5,2 -6.5,6.5 Q-4.5,10.5 0,12.5 Q4.5,10.5 6.5,6.5 Q8.5,2 8.5,-4.5 Q6.5,-11 0,-11" 
+                    fill="#87CEEB" stroke="#1e40af" stroke-width="2.2" class="dark:stroke-blue-50"/>
+              <!-- Brain inside (yellow with detailed convolutions) -->
+              <g transform="translate(0, 0)">
+                <!-- Brain main shape -->
+                <path d="M-5.5,-2.5 Q-5.5,-5.5 -2.8,-5.5 Q0,-5.5 0,-2.8 Q0,-5.5 2.8,-5.5 Q5.5,-5.5 5.5,-2.8 Q5.5,0 2.8,2.8 Q0,5.5 -2.8,2.8 Q-5.5,0 -5.5,-2.8" 
+                      fill="#FFD700" stroke="#1e40af" stroke-width="1.8" class="dark:stroke-blue-50"/>
+                <!-- Brain convolutions/ridges -->
+                <path d="M-3.5,-4 Q-1.5,-4 0,-3 Q1.5,-4 3.5,-4" stroke="#1e40af" stroke-width="1.2" fill="none" class="dark:stroke-blue-50"/>
+                <path d="M-4,-1.5 Q-2,-1.5 0,-0.5 Q2,-1.5 4,-1.5" stroke="#1e40af" stroke-width="1.2" fill="none" class="dark:stroke-blue-50"/>
+                <path d="M-3.5,1 Q-1.5,1 0,2 Q1.5,1 3.5,1" stroke="#1e40af" stroke-width="1.2" fill="none" class="dark:stroke-blue-50"/>
+                <!-- Brain hemispheres division -->
+                <line x1="0" y1="-5.5" x2="0" y2="2.8" stroke="#1e40af" stroke-width="1" class="dark:stroke-blue-50"/>
+              </g>
+              <!-- Lightbulb base -->
+              <rect x="-3.5" y="12.5" width="7" height="2.5" rx="1.2" fill="#1e40af" class="dark:fill-blue-50"/>
+              <rect x="-2.5" y="15" width="5" height="1.2" rx="0.6" fill="#1e40af" class="dark:fill-blue-50"/>
+              <!-- Light rays from top and sides (centered) -->
+              <line x1="1" y1="-11" x2="0" y2="-18" stroke="#1e40af" stroke-width="2.5" stroke-linecap="round" class="dark:stroke-blue-50"/>
+              <line x1="-6.5" y1="-7" x2="-11" y2="-12" stroke="#1e40af" stroke-width="2.5" stroke-linecap="round" class="dark:stroke-blue-50"/>
+              <line x1="6.5" y1="-7" x2="11" y2="-12" stroke="#1e40af" stroke-width="2.5" stroke-linecap="round" class="dark:stroke-blue-50"/>
+              <line x1="-8.5" y1="0" x2="-13" y2="0" stroke="#1e40af" stroke-width="2.5" stroke-linecap="round" class="dark:stroke-blue-50"/>
+              <line x1="8.5" y1="0" x2="13" y2="0" stroke="#1e40af" stroke-width="2.5" stroke-linecap="round" class="dark:stroke-blue-50"/>
+              <line x1="-7" y1="5" x2="-11" y2="9" stroke="#1e40af" stroke-width="2.5" stroke-linecap="round" class="dark:stroke-blue-50"/>
+              <line x1="7" y1="5" x2="11" y2="9" stroke="#1e40af" stroke-width="2.5" stroke-linecap="round" class="dark:stroke-blue-50"/>
+            </g>
+            
+            
+            <!-- Top-left circle - Yellow with Laptop -->
+            <g transform="translate(30, 50)">
+              <circle cx="13" cy="-7.5" r="13" fill="#FFD700" stroke="#1e293b" stroke-width="1.8" class="dark:stroke-gray-50"/>
+              <rect x="6.5  " y="-13.5" width="14" height="10" rx="0.6" fill="#1e293b" class="dark:fill-gray-600"/>
+              <rect x="7.5" y="-4" width="12" height="2.4" rx="0.4" fill="#1e293b" class="dark:fill-gray-600"/>
+            </g>
+            
+            <!-- Top-right circle - Blue with A -->
+            <g transform="translate(90, 50)">
+              <circle cx="-8" cy="-8" r="13" fill="#3b82f6" stroke="#1e293b" stroke-width="1.8" class="dark:stroke-gray-50"/>
+              <text x="-8" y="-3" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="white" text-anchor="middle">A</text>
+            </g>
+            
+            <!-- Bottom-left circle - Red with 文 -->
+            <g transform="translate(30, 80  )">
+              <circle cx="13" cy="-4" r="13" fill="#ef4444" stroke="#1e293b" stroke-width="1.8" class="dark:stroke-gray-50"/>
+              <text x="13" y="3" font-family="Arial, sans-serif" font-size="18px" font-weight="bold" fill="white" text-anchor="middle">文</text>
+            </g>
+            
+            <!-- Bottom-right circle - Green with Music Note -->
+            <g transform="translate(90, 80)">
+              <circle cx="-8" cy="-4" r="13" fill="#22c55e" stroke="#1e293b" stroke-width="1.8" class="dark:stroke-gray-50"/>
+              <!-- Music note centered in circle -->
+              <g transform="translate(-10, -4 )">
+                <path d="M-3,-4 L-3,4 M-3,-4 L3,-4 L3,4" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                <circle cx="4.5" cy="3" r="2" fill="white"/>
+              </g>
+            </g>
+            
+            <!-- Horizontal connections between circles -->
+            <line x1="55" y1="42" x2="70" y2="42" stroke="#1e293b" stroke-width="4" class="dark:stroke-gray-50"/>
+            <line x1="55" y1="76" x2="70" y2="76" stroke="#1e293b" stroke-width="4" class="dark:stroke-gray-50"/>
+            <line x1="43" y1="54" x2="43" y2="64" stroke="#1e293b" stroke-width="4" class="dark:stroke-gray-50"/>
+            <line x1="81" y1="54" x2="81" y2="64" stroke="#1e293b" stroke-width="4" class="dark:stroke-gray-50"/>
+          </svg>
+        </div>
+        
+        <!-- Logo Text (hidden when collapsed) -->
+        <div v-if="!isCollapsed" class="flex flex-col flex-1">
+          <span class="text-[17px] pt-2 font-bold text-blue-900 dark:text-white" style="font-family: 'Moul', sans-serif; line-height: 0.9">
+            ដំណាក់សិក្សា
+          </span>
+          <span class="text-[7px] font-normal text-blue-950 dark:text-blue-400 leading-tight pl-1 uppercase tracking-wider mt-0.5">
+            LEARNING FOR GROWING
+          </span>
+        </div>
+      </div>
     </div>
     
     <!-- Menu Items -->
-    <nav class="flex-1 p-3 overflow-y-auto custom-scrollbar">
+    <nav class="flex-1 p-2 overflow-y-auto custom-scrollbar">
       <ul class="space-y-1">
         <!-- All menu sections with unified structure -->
         <template v-for="section in allMenuSections" :key="section.title">
@@ -114,31 +204,6 @@ const allMenuSections = computed(() => [
         path: '/pos', 
         label: t('pos'), 
         icon: '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>'
-      }
-    ]
-  },
-  {
-    title: t('reports').toUpperCase(),
-    items: [
-      { 
-        path: '/report', 
-        label: t('report'), 
-        icon: '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>'
-      }
-    ]
-  },
-  {
-    title: t('management').toUpperCase(),
-    items: [
-      { 
-        path: '/user', 
-        label: t('user'), 
-        icon: '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>'
-      },
-      { 
-        path: '/history', 
-        label: t('history'), 
-        icon: '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>'
       }
     ]
   },

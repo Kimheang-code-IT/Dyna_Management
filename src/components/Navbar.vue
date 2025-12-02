@@ -29,7 +29,7 @@
         <div class="flex-1 relative" ref="searchContainer">
           <div class="relative">
             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="h-5 w-5 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </div>
@@ -39,8 +39,18 @@
               @focus="showSearchResults = true"
               type="text"
               :placeholder="t('search')"
-              class="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400"
+              class="w-full pl-10 pr-10 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400"
             />
+            <button
+              v-if="searchQuery"
+              @click="clearSearch"
+              class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+              type="button"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
           </div>
           
           <!-- Search Results Dropdown -->
@@ -80,7 +90,12 @@
             v-if="showSearchResults && searchQuery && searchResults.length === 0"
             class="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-gray-800 rounded-sm shadow-lg border border-gray-200 dark:border-gray-700 p-4 z-50"
           >
-            <p class="text-sm text-gray-500 dark:text-gray-400 text-center">{{ t('noResults') }}</p>
+            <div class="flex flex-col items-center justify-center gap-3">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <p class="text-sm font-medium text-gray-600 dark:text-gray-400">{{ t('noResults') }}</p>
+            </div>
           </div>
         </div>
       </div>
@@ -244,6 +259,45 @@
               <p class="text-sm font-semibold text-gray-900 dark:text-white">{{ t('admin') }}</p>
               <p class="text-xs text-gray-500 dark:text-gray-400">admin@example.com</p>
             </div>
+            
+            <!-- Report Menu Item -->
+            <router-link
+              :to="'/report'"
+              @click="showProfileDropdown = false"
+              class="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center gap-2"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+              {{ getTranslation('report') }}
+            </router-link>
+            
+            <!-- User Menu Item -->
+            <router-link
+              :to="'/user'"
+              @click="showProfileDropdown = false"
+              class="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center gap-2"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+              {{ getTranslation('user') }}
+            </router-link>
+            
+            <!-- History Menu Item -->
+            <router-link
+              :to="'/history'"
+              @click="showProfileDropdown = false"
+              class="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center gap-2"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              {{ getTranslation('history') }}
+            </router-link>
+            
+            <div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
+            
             <button
               @click="handleLogout"
               class="w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900 transition-colors flex items-center gap-2"
@@ -327,6 +381,24 @@ const t = (key) => {
     }
   }
   return value || key
+}
+
+// Get translation for menu items
+const getTranslation = (key) => {
+  const lang = currentLanguage.value || 'en'
+  const translations = {
+    en: {
+      report: 'Report',
+      user: 'User',
+      history: 'History'
+    },
+    km: {
+      report: 'របាយការណ៍',
+      user: 'អ្នកប្រើ',
+      history: 'ប្រវត្តិ'
+    }
+  }
+  return translations[lang]?.[key] || key
 }
 
 // Search state
@@ -502,6 +574,13 @@ const handleSearch = () => {
 
   // Limit results to 10
   searchResults.value = results.slice(0, 10)
+}
+
+// Clear search
+const clearSearch = () => {
+  searchQuery.value = ''
+  searchResults.value = []
+  showSearchResults.value = false
 }
 
 // Navigate to search result

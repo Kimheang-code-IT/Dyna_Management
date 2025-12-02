@@ -70,10 +70,10 @@
     
     
     <!-- Product Table -->
-    <div class="bg-white dark:bg-gray-700 dark:bg-gray-800 rounded-sm shadow p-3">
+    <div class="bg-white dark:bg-gray-800 rounded-sm shadow p-3">
       <div class="p-0 mb-3">
         <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
-        <div class="relative w-[400px]">
+        <div class="relative w-[230px]">
           <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <svg class="h-5 w-5 text-gray-400 dark:text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -83,14 +83,24 @@
             v-model="searchQuery"
             type="text"
             :placeholder="t('search')"
-            class="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            class="w-full pl-10 pr-10 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400"
           />
+          <button
+            v-if="searchQuery"
+            @click="searchQuery = ''"
+            class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+            type="button"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
         </div>
-        <div class="flex items-center gap-4">
+        <div class="flex items-center gap-4 flex-wrap">
           <div class="relative">
             <select
               v-model="selectedCategory"
-              class="appearance-none bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-sm px-4 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              class="appearance-none bg-white dark:bg-gray-800/100 text-xs border border-gray-300 dark:border-gray-600 rounded-sm px-4 py-3 pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white"
             >
               <option value="">{{ t('categories') }}</option>
               <option v-for="cat in categories" :key="cat" :value="cat">{{ cat }}</option>
@@ -101,9 +111,36 @@
               </svg>
             </div>
           </div>
+          
+          <!-- Date Range Picker -->
+          <div class="flex items-center gap-2">
+            <label class="text-xs font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap">{{ t('dateBetween') }}:</label>
+            <input
+              v-model="filterDateFrom"
+              type="date"
+              class="px-3 py-3 text-xs border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white"
+            />
+            <span class="text-xs text-gray-500 dark:text-gray-400">{{ t('to') }}</span>
+            <input
+              v-model="filterDateTo"
+              type="date"
+              class="px-3 py-3 text-xs border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white"
+            />
+            <button
+              v-if="filterDateFrom || filterDateTo"
+              @click="clearDateFilter"
+              class="px-3 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors"
+              :title="t('clear')"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+          
           <button
             @click="openAddDrawer"
-            class="px-6 py-2 bg-blue-600 text-white rounded-sm hover:bg-blue-700 transition-colors font-medium flex items-center gap-2"
+            class="px-2 py-2 bg-blue-600 text-white rounded-sm hover:bg-blue-700 transition-colors font-medium flex items-center gap-2"
           >
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -119,27 +156,40 @@
           <!-- Sticky Header -->
           <thead class="bg-gray-50 dark:bg-gray-700 sticky top-0 z-10">
             <tr>
-              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b">{{ t('no') }}</th>
-              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b">{{ t('products') }}</th>
-              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b">{{ t('category') }}</th>
-              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b">{{ t('price') }}</th>
-              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b">{{ t('totalStock') }}</th>
-              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b">{{ t('inStock') }}</th>
-              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b">{{ t('added') }}</th>
-              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b">{{ t('sold') }}</th>
-              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b">{{ t('damaged') }}</th>
-              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b">{{ t('status') }}</th>
-              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b"></th>
+              <th class="py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('no') }}</th>
+              <th class="px-2 py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('products') }}</th>
+              <th class="py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('category') }}</th>
+              <th class="py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('price') }}</th>
+              <th class="py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('totalStock') }}</th>
+              <th class="py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('inStock') }}</th>
+              <th class="py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('added') }}</th>
+              <th class="py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('sold') }}</th>
+              <th class="py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('damaged') }}</th>
+              <th class="py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('status') }}</th>
+              <th class="py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('created') }}</th>
+              <th class="py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600"></th>
             </tr>
           </thead>
-          <tbody class="bg-white dark:bg-gray-700 divide-y divide-gray-200 dark:divide-gray-700">
+          <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+            <!-- No Results Found -->
+            <tr v-if="filteredProducts.length === 0 && (searchQuery || filterDateFrom || filterDateTo)">
+              <td colspan="12" class="px-4 py-12 text-center">
+                <div class="flex flex-col items-center justify-center gap-3">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <p class="text-sm font-medium text-gray-600 dark:text-gray-400">{{ t('noResults') }}</p>
+                </div>
+              </td>
+            </tr>
+            <!-- Product Rows -->
             <tr
               v-for="(product, index) in filteredProducts"
               :key="product.id"
-              class="hover:bg-gray-50 dark:hover:bg-gray-700 dark:bg-gray-700 transition-colors"
+              class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
             >
-              <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">{{ index + 1 }}</td>
-              <td class="px-4 py-3 text-sm">
+              <td class="px-3 py-3 whitespace-nowrap text-xs text-gray-700 dark:text-gray-300">{{ index + 1 }}</td>
+              <td class="px-3 py-3 text-xs">
                 <div class="flex items-center gap-2">
                   <div :class="['w-10 h-10 rounded flex items-center justify-center overflow-hidden flex-shrink-0 relative', (!product.image || hasImageFailed(product.id)) ? 'border border-gray-300 dark:border-gray-600 bg-blue-100' : '']">
                     <img 
@@ -161,35 +211,25 @@
                     </svg>
                   </div>
                   <div>
-                    <div class="font-medium text-gray-900 dark:text-white">{{ product.name }}</div>
-                    <div class="text-xs text-gray-500 dark:text-gray-400">{{ t('sku') }}: {{ product.sku }}</div>
+                    <div class="font-medium text-gray-900 dark:text-white text-xs">{{ product.name }}</div>
+                    <div class="text-[10px] text-gray-500 dark:text-gray-400">{{ t('sku') }}: {{ product.sku }}</div>
                   </div>
                 </div>
               </td>
-              <td class="px-4 py-3 whitespace-nowrap">
-                <span class="px-2 py-1 text-xs font-medium rounded-full"
+              <td class="px-2 py-3 whitespace-nowrap">
+                <span class="px-2 py-1 text-[10px] font-medium rounded-full"
                       :class="getCategoryColorClass(product.category)">
                   {{ product.category }}
                 </span>
               </td>
-              <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">${{ product.price.toFixed(2) }}</td>
-              <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">{{ product.totalStock }} {{ t('items') }}</td>
-              <td class="px-4 py-3 whitespace-nowrap text-sm">
+              <td class="px-4 py-3 whitespace-nowrap text-xs font-medium text-gray-900 dark:text-white">${{ product.price.toFixed(2) }}</td>
+              <td class="px-4 py-3 whitespace-nowrap text-xs text-gray-700 dark:text-gray-300">{{ product.totalStock }} {{ t('items') }}</td>
+              <td class="px-4 py-3 whitespace-nowrap text-xs text-gray-700 dark:text-gray-300">
                 <div class="flex items-center gap-1">
                   <span>{{ product.inStock }} {{ t('items') }}</span>
-                  <span :class="product.stockStatus === 'Healthy' ? 'text-green-600' : 'text-red-600 dark:text-red-400'"
-                        class="text-xs font-medium">
-                    {{ product.stockStatus === 'Healthy' ? t('healthy') : t('low') }}
-                  </span>
-                  <svg v-if="product.stockStatus === 'Low'" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-red-600 dark:text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                  </svg>
-                  <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
                 </div>
               </td>
-              <td class="px-4 py-3 whitespace-nowrap text-sm text-green-600 font-medium">
+              <td class="px-3 py-3 whitespace-nowrap text-xs text-green-600 dark:text-green-400 font-medium">
                 <button
                   @click="openAddStockDrawer(product)"
                   class="hover:underline cursor-pointer"
@@ -198,8 +238,8 @@
                   +{{ product.added }}
                 </button>
               </td>
-              <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">{{ product.sold }}</td>
-              <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
+              <td class="px-3 py-3 whitespace-nowrap text-xs text-gray-700 dark:text-gray-300">{{ product.sold }}</td>
+              <td class="px-3 py-3 whitespace-nowrap text-xs text-gray-700 dark:text-gray-300">
                 <button
                   @click="openAddDamagedDrawer(product)"
                   class="hover:underline cursor-pointer text-red-600 dark:text-red-400"
@@ -208,17 +248,20 @@
                   {{ product.damaged }}
                 </button>
               </td>
-              <td class="px-4 py-3 whitespace-nowrap">
-                <span class="px-2 py-1 text-xs font-medium rounded-full"
-                      :class="product.status === 'Active' ? 'bg-green-100 dark:bg-green-900 text-green-800' : 'bg-yellow-100 text-yellow-800'">
+              <td class="px-3 py-3 whitespace-nowrap">
+                <span class="px-2 py-1 text-[10px] font-medium rounded-full"
+                      :class="product.status === 'Active' ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200' : 'bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200'">
                   {{ product.status === 'Active' ? t('active') : product.status }}
                 </span>
               </td>
-              <td class="px-4 py-3 whitespace-nowrap text-sm font-medium">
+              <td class="px-4 py-3 whitespace-nowrap text-xs text-gray-700 dark:text-gray-300">
+                {{ formatDate(product.created) }}
+              </td>
+              <td class="px-4 py-3 whitespace-nowrap text-xs font-medium">
                 <div class="relative">
                   <button
                     @click="toggleActionMenu(product.id)"
-                    class="text-gray-400 dark:text-gray-500 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 dark:text-gray-400 dark:text-gray-500 dark:text-gray-400 transition-colors"
+                    class="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
                     title="Actions"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
@@ -229,11 +272,11 @@
                   <!-- Dropdown Menu -->
                   <div
                     v-if="activeActionMenu === product.id"
-                    class="absolute right-0 mt-2 w-40 bg-white dark:bg-gray-700 dark:bg-gray-800 rounded-sm shadow-lg border border-gray-200 dark:border-gray-700 py-1 z-50"
+                    class="absolute right-0 mt-2 w-40 bg-white dark:bg-gray-800 rounded-sm shadow-lg border border-gray-200 dark:border-gray-700 py-1 z-50"
                   >
                     <button
                       @click="handleEdit(product)"
-                      class="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 dark:bg-gray-700 transition-colors flex items-center gap-2"
+                      class="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center gap-2"
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -265,8 +308,8 @@
         class="fixed inset-0 bg-black bg-opacity-50 z-50"
         @click.self="closeDrawer"
       >
-        <div class="absolute right-0 top-0 h-full w-full max-w-md bg-white dark:bg-gray-700 shadow-xl overflow-y-auto">
-          <div class="sticky top-0 bg-white dark:bg-gray-700 text-black dark:text-white px-6 py-5 flex items-center justify-between z-10  border-b border-gray-200 dark:border-gray-700">
+        <div class="absolute right-0 top-0 h-full w-full max-w-md bg-white dark:bg-gray-800 shadow-xl overflow-y-auto">
+          <div class="sticky top-0 bg-white dark:bg-gray-800 text-black dark:text-white px-6 py-5 flex items-center justify-between z-10  border-b border-gray-200 dark:border-gray-700">
             <div class="flex items-center gap-3">
               <div class="w-10 h-10 bg-gray-100 dark:bg-gray-700 rounded-sm flex items-center justify-center">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-black dark:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -279,7 +322,7 @@
             </div>
             <button
               @click="closeDrawer"
-              class="text-black dark:text-white hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-700 rounded-sm p-2 transition-colors"
+              class="text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-sm p-2 transition-colors"
             >
               <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-black dark:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -298,7 +341,7 @@
                 v-model="form.name"
                 type="text"
                 required
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400"
                 :placeholder="t('productName')"
               />
               <p v-if="errors.name" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.name }}</p>
@@ -368,7 +411,7 @@
                 id="category"
                 v-model="form.category"
                 required
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white"
               >
                 <option value="">{{ t('category') }}</option>
                 <option v-for="cat in categories" :key="cat" :value="cat">{{ cat }}</option>
@@ -388,7 +431,7 @@
                 step="0.01"
                 min="0"
                 required
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400"
                 placeholder="0.00"
               />
               <p v-if="errors.price" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.price }}</p>
@@ -405,7 +448,7 @@
                 type="number"
                 min="0"
                 required
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400"
                 placeholder="0"
               />
               <p v-if="errors.inStock" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.inStock }}</p>
@@ -490,7 +533,7 @@
       class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
       @click.self="showAddConfirmDialog = false"
     >
-      <div class="bg-white dark:bg-gray-700 dark:bg-gray-800 rounded-sm shadow-xl p-6 max-w-md w-full mx-4">
+      <div class="bg-white dark:bg-gray-800 rounded-sm shadow-xl p-6 max-w-md w-full mx-4">
         <div class="flex items-center gap-4 mb-4">
           <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -528,7 +571,7 @@
       class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
       @click.self="showEditConfirmDialog = false"
     >
-      <div class="bg-white dark:bg-gray-700 dark:bg-gray-800 rounded-sm shadow-xl p-6 max-w-md w-full mx-4">
+      <div class="bg-white dark:bg-gray-800 rounded-sm shadow-xl p-6 max-w-md w-full mx-4">
         <div class="flex items-center gap-4 mb-4">
           <div class="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -566,7 +609,7 @@
       class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
       @click.self="showDeleteDialog = false"
     >
-      <div class="bg-white dark:bg-gray-700 dark:bg-gray-800 rounded-sm shadow-xl p-6 max-w-md w-full mx-4">
+      <div class="bg-white dark:bg-gray-800 rounded-sm shadow-xl p-6 max-w-md w-full mx-4">
         <div class="flex items-center gap-4 mb-4">
           <div class="w-12 h-12 bg-red-100 dark:bg-red-900 rounded-full flex items-center justify-center">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-600 dark:text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -605,7 +648,7 @@
         class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-start justify-center "
         @click.self="closeStockDrawer"
       >
-        <div class="bg-white dark:bg-gray-700  shadow-xl w-[400px]">
+        <div class="bg-white dark:bg-gray-800 shadow-xl w-[400px]">
           <div class="px-6 py-3 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
             <h3 class="text-lg font-semibold text-gray-800 dark:text-white">
               {{ stockDrawerType === 'add' ? t('addStock') : t('addDamaged') }}
@@ -638,7 +681,7 @@
                 type="number"
                 min="1"
                 required
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400"
                 :placeholder="stockDrawerType === 'add' ? t('enterQuantityToAdd') : t('enterDamagedQuantity')"
               />
               <p v-if="stockForm.errors.quantity" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ stockForm.errors.quantity }}</p>
@@ -671,7 +714,7 @@
       class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
       @click.self="showStockConfirmDialog = false"
     >
-      <div class="bg-white dark:bg-gray-700 dark:bg-gray-800 rounded-sm shadow-xl p-6 max-w-md w-full mx-4">
+      <div class="bg-white dark:bg-gray-800 rounded-sm shadow-xl p-6 max-w-md w-full mx-4">
         <div class="flex items-center gap-4 mb-4">
           <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -724,6 +767,8 @@ const products = ref(productsData)
 
 const searchQuery = ref('')
 const selectedCategory = ref('')
+const filterDateFrom = ref('')
+const filterDateTo = ref('')
 
 // Action menu state
 const activeActionMenu = ref(null)
@@ -803,6 +848,33 @@ const filteredProducts = computed(() => {
     filtered = filtered.filter(p => p.category === selectedCategory.value)
   }
   
+  // Apply date range filter
+  if (filterDateFrom.value || filterDateTo.value) {
+    filtered = filtered.filter(product => {
+      if (!product.created) return false
+      
+      const productDate = new Date(product.created)
+      productDate.setHours(0, 0, 0, 0) // Reset time to start of day
+      
+      if (filterDateFrom.value && filterDateTo.value) {
+        const fromDate = new Date(filterDateFrom.value)
+        fromDate.setHours(0, 0, 0, 0)
+        const toDate = new Date(filterDateTo.value)
+        toDate.setHours(23, 59, 59, 999) // End of day
+        return productDate >= fromDate && productDate <= toDate
+      } else if (filterDateFrom.value) {
+        const fromDate = new Date(filterDateFrom.value)
+        fromDate.setHours(0, 0, 0, 0)
+        return productDate >= fromDate
+      } else if (filterDateTo.value) {
+        const toDate = new Date(filterDateTo.value)
+        toDate.setHours(23, 59, 59, 999)
+        return productDate <= toDate
+      }
+      return true
+    })
+  }
+  
   return filtered
 })
 
@@ -839,6 +911,27 @@ const getCategoryColorClass = (category) => {
     'Office': 'bg-pink-100 text-pink-800'
   }
   return colors[category] || 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white'
+}
+
+// Clear date filter
+const clearDateFilter = () => {
+  filterDateFrom.value = ''
+  filterDateTo.value = ''
+}
+
+// Format date function
+const formatDate = (dateString) => {
+  if (!dateString) return 'N/A'
+  try {
+    const date = new Date(dateString)
+    return date.toLocaleDateString('en-US', { 
+      year: 'numeric', 
+      month: 'short', 
+      day: 'numeric' 
+    })
+  } catch (error) {
+    return 'N/A'
+  }
 }
 
 // Helper function to check if image has failed
@@ -1036,7 +1129,8 @@ const confirmAdd = () => {
       added: 0,
       sold: sold,
       damaged: damaged,
-      status: 'Active'
+      status: 'Active',
+      created: new Date().toISOString()
     }
     
     products.value.push(newProduct)

@@ -9,7 +9,7 @@
       <div 
         :class="[
           'flex-1 flex flex-col overflow-hidden transition-all duration-300',
-          isSidebarCollapsed ? 'ml-20' : 'ml-[280px]'
+          isSidebarCollapsed ? 'ml-[75px] mr-[-2px]' : 'ml-[255px]'
         ]"
       >
         <!-- Top Navbar - Fixed -->
@@ -19,7 +19,7 @@
         <main 
           :class="[
             'flex-1 overflow-y-auto transition-all duration-300',
-            isSidebarCollapsed ? 'p-1' : 'p-2'
+            isSidebarCollapsed ? 'p-1' : 'p-1'
           ]"
         >
           <router-view />
@@ -49,8 +49,8 @@ const route = useRoute()
 // Dark mode - initialize early
 const { isDark, toggleDarkMode } = useDarkMode()
 
-// Check if current route is login page
-const isLoginPage = computed(() => route.path === '/login')
+// Check if current route is login or forgot password page
+const isLoginPage = computed(() => route.path === '/login' || route.path === '/forgot-password')
 
 // Sidebar collapse state
 const isSidebarCollapsed = ref(false)

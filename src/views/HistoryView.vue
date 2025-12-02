@@ -68,7 +68,7 @@
     </div>
     
     <!-- History Table -->
-    <div class="bg-white dark:bg-gray-700 dark:bg-gray-800 rounded-sm shadow p-3">
+    <div class="bg-white dark:bg-gray-800 rounded-sm shadow p-3">
       <!-- Header -->
       <div class="p-0 mb-3">
         <div class="flex items-center justify-between gap-3">
@@ -83,8 +83,18 @@
               v-model="searchQuery"
               type="text"
               :placeholder="t('searchHistory')"
-              class="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              class="w-full pl-10 pr-10 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400"
             />
+            <button
+              v-if="searchQuery"
+              @click="searchQuery = ''"
+              class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+              type="button"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
           </div>
           
           <!-- Filters - Right Side -->
@@ -95,13 +105,13 @@
               <input
                 v-model="filterDateFrom"
                 type="date"
-                class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white"
               />
               <span class="text-gray-500 dark:text-gray-400">{{ t('to') }}</span>
               <input
                 v-model="filterDateTo"
                 type="date"
-                class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white"
               />
               <button
                 v-if="filterDateFrom || filterDateTo"
@@ -175,40 +185,52 @@
         <table class="w-full">
           <thead class="bg-gray-50 dark:bg-gray-700 sticky top-0 z-10">
             <tr>
-              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b">{{ t('no') }}</th>
-              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b">{{ t('time') }}</th>
-              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b">{{ t('createdCol') }}</th>
-              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b">{{ t('action') }}</th>
-              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b">{{ t('type') }}</th>
-              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b">{{ t('item') }}</th>
-              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b">{{ t('descriptionCol') }}</th>
-              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b">{{ t('user') }}</th>
+              <th class="px-4 py-3 text-left text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('no') }}</th>
+              <th class="px-4 py-3 text-left text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('time') }}</th>
+              <th class="px-4 py-3 text-left text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('createdCol') }}</th>
+              <th class="px-4 py-3 text-left text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('action') }}</th>
+              <th class="px-4 py-3 text-left text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('type') }}</th>
+              <th class="px-4 py-3 text-left text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('item') }}</th>
+              <th class="px-4 py-3 text-left text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('descriptionCol') }}</th>
+              <th class="px-4 py-3 text-left text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('user') }}</th>
             </tr>
           </thead>
           <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
             <tr
               v-for="(entry, index) in filteredHistory"
               :key="entry.id"
-              class="hover:bg-gray-50 dark:hover:bg-gray-700 dark:bg-gray-700 transition-colors"
+              class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
             >
-              <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">{{ index + 1 }}</td>
-              <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">{{ formatTime(entry.timestamp) }}</td>
-              <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">{{ formatCreatedDate(entry.timestamp) }}</td>
+              <td class="px-4 py-3 whitespace-nowrap text-xs text-gray-700 dark:text-gray-300">{{ index + 1 }}</td>
+              <td class="px-4 py-3 whitespace-nowrap text-xs text-gray-700 dark:text-gray-300">{{ formatTime(entry.timestamp) }}</td>
+              <td class="px-4 py-3 whitespace-nowrap text-xs text-gray-700 dark:text-gray-300">{{ formatCreatedDate(entry.timestamp) }}</td>
               <td class="px-4 py-3 whitespace-nowrap">
-                <span class="px-2 py-1 text-xs font-medium rounded-full" :class="getActionClass(entry.action)">
+                <span class="px-2 py-1 text-[10px] font-medium rounded-full" :class="getActionClass(entry.action)">
                   {{ entry.action.toUpperCase() }}
                 </span>
               </td>
               <td class="px-4 py-3 whitespace-nowrap">
-                <span class="px-2 py-1 text-xs font-medium rounded-full" :class="getTypeClass(entry.type)">
+                <span class="px-2 py-1 text-[10px] font-medium rounded-full" :class="getTypeClass(entry.type)">
                   {{ entry.type }}
                 </span>
               </td>
-              <td class="px-4 py-3 text-sm text-gray-900 dark:text-white font-medium">{{ entry.itemName || '-' }}</td>
-              <td class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{{ entry.description || '-' }}</td>
-              <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">{{ entry.user }}</td>
+              <td class="px-4 py-3 text-xs text-gray-900 dark:text-white font-medium">{{ entry.itemName || '-' }}</td>
+              <td class="px-4 py-3 text-xs text-gray-700 dark:text-gray-300">{{ entry.description || '-' }}</td>
+              <td class="px-4 py-3 whitespace-nowrap text-xs text-gray-700 dark:text-gray-300">{{ entry.user }}</td>
             </tr>
-            <tr v-if="filteredHistory.length === 0">
+            <!-- No Results Found -->
+            <tr v-if="filteredHistory.length === 0 && (searchQuery || filterDateFrom || filterDateTo)">
+              <td colspan="8" class="px-4 py-12 text-center">
+                <div class="flex flex-col items-center justify-center gap-3">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <p class="text-sm font-medium text-gray-600 dark:text-gray-400">{{ t('noResults') }}</p>
+                </div>
+              </td>
+            </tr>
+            <!-- No History (when no search and no date filter) -->
+            <tr v-if="filteredHistory.length === 0 && !searchQuery && !filterDateFrom && !filterDateTo">
               <td colspan="8" class="px-4 py-8 text-center text-gray-500 dark:text-gray-400">
                 {{ t('noHistory') }}
               </td>

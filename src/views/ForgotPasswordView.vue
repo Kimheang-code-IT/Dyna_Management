@@ -88,106 +88,72 @@
             </span>
           </div>
         </div>
-        <p class="text-gray-600 text-[20px] dark:text-gray-400 mt-2">{{ t('signInToAccount') }}</p>
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white mt-4">{{ t('forgotPassword') }}</h1>
+        <p class="text-gray-600 dark:text-gray-400 mt-2">{{ t('forgotPasswordDescription') }}</p>
       </div>
       
-      <form @submit.prevent="handleLogin" class="space-y-6">
+      <!-- Success Message -->
+      <div v-if="emailSent" class="mb-6 p-4 bg-green-50 dark:bg-green-900 border border-green-200 dark:border-green-800 rounded-sm">
+        <div class="flex items-start gap-3">
+          <div class="flex-shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600 dark:text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <div class="flex-1">
+            <p class="text-sm font-medium text-green-800 dark:text-green-200">{{ t('resetEmailSent') }}</p>
+            <p class="text-sm text-green-700 dark:text-green-300 mt-1">{{ t('checkEmailInstructions') }}</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Form -->
+      <form v-if="!emailSent" @submit.prevent="handleSendResetEmail" class="space-y-6">
         <div>
-          <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          <label for="resetEmail" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             {{ t('emailAddress') }}
           </label>
           <input
-            id="email"
+            id="resetEmail"
             v-model="email"
             type="email"
             required
             class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400"
-            placeholder="admin@example.com"
+            :placeholder="t('enterEmailAddress')"
           />
-        </div>
-        
-        <div>
-          <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            {{ t('password') }}
-          </label>
-          <div class="relative">
-            <input
-              id="password"
-              v-model="password"
-              :type="showPassword ? 'text' : 'password'"
-              required
-              class="w-full px-4 py-2 pr-10 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400"
-              :placeholder="t('passwordPlaceholder')"
-            />
-            <button
-              type="button"
-              @click="showPassword = !showPassword"
-              class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
-            >
-              <svg
-                v-if="showPassword"
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.29 3.29m0 0A9.973 9.973 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"
-                />
-              </svg>
-              <svg
-                v-else
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                />
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                />
-              </svg>
-            </button>
-          </div>
-        </div>
-        
-        <div class="flex items-center justify-between">
-          <div class="flex items-center">
-            <input
-              id="remember"
-              v-model="rememberMe"
-              type="checkbox"
-              class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-            />
-            <label for="remember" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">
-              {{ t('rememberMe') }}
-            </label>
-          </div>
-          <router-link to="/forgot-password" class="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">
-            {{ t('forgotPassword') }}
-          </router-link>
         </div>
         
         <button
           type="submit"
-          class="w-full px-4 py-2 bg-blue-600 text-white rounded-sm hover:bg-blue-700 transition-colors font-medium"
+          :disabled="isLoading"
+          class="w-full px-4 py-2 bg-blue-600 text-white rounded-sm hover:bg-blue-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
         >
-          {{ t('signIn') }}
+          <svg
+            v-if="isLoading"
+            class="animate-spin h-5 w-5 text-white"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          <span>{{ isLoading ? t('sending') : t('sendResetLink') }}</span>
         </button>
       </form>
+      
+      <!-- Back to Login -->
+      <div class="mt-6 text-center">
+        <button
+          @click="goToLogin"
+          class="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors flex items-center justify-center gap-2 mx-auto"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          {{ t('backToLogin') }}
+        </button>
+      </div>
       
       <div v-if="error" class="mt-4 p-3 bg-red-50 dark:bg-red-900 border border-red-200 dark:border-red-800 rounded-sm">
         <p class="text-sm text-red-600 dark:text-red-400">{{ error }}</p>
@@ -199,42 +165,48 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { addHistory } from '../utils/history'
 import { useI18n } from '../composables/useI18n'
 
 const router = useRouter()
 const { t } = useI18n()
 
 const email = ref('')
-const password = ref('')
-const rememberMe = ref(false)
+const emailSent = ref(false)
 const error = ref('')
-const showPassword = ref(false)
+const isLoading = ref(false)
 
-const handleLogin = () => {
+const handleSendResetEmail = async () => {
   error.value = ''
+  isLoading.value = true
   
-  // Simple validation - in a real app, this would call an API
-  if (email.value && password.value) {
-    // Log login history
-    addHistory('login', {
-      type: 'system',
-      itemName: email.value,
-      description: `User logged in successfully`,
-      user: email.value
-    })
+  try {
+    // Simulate API call - In a real app, this would call your backend API
+    // Example: await api.post('/auth/forgot-password', { email: email.value })
     
-    // Simulate successful login
-    // In a real app, you would:
-    // - Call authentication API
-    // - Store authentication token
-    // - Set user state
+    // Simulate network delay
+    await new Promise(resolve => setTimeout(resolve, 1500))
     
-    // Navigate to dashboard
-    router.push('/')
-  } else {
-    error.value = t('pleaseEnterBoth')
+    // In a real application, you would:
+    // 1. Send the email to your backend
+    // 2. Backend would validate the email
+    // 3. Backend would send a password reset email to the user's Gmail
+    // 4. Backend would return success/error response
+    
+    // For demo purposes, we'll just show success
+    emailSent.value = true
+    
+    // Log this action (optional)
+    console.log(`Password reset email requested for: ${email.value}`)
+    
+  } catch (err) {
+    error.value = t('resetEmailError') || 'Failed to send reset email. Please try again.'
+  } finally {
+    isLoading.value = false
   }
+}
+
+const goToLogin = () => {
+  router.push('/login')
 }
 </script>
 

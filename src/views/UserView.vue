@@ -67,7 +67,7 @@
     </div>
     
     <!-- Users Table -->
-    <div class="bg-white dark:bg-gray-700 dark:bg-gray-800 rounded-sm shadow p-3">
+    <div class="bg-white dark:bg-gray-800 rounded-sm shadow p-3">
       <!-- Search Bar -->
       <div class="p-0 mb-3">
         <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
@@ -81,8 +81,18 @@
               v-model="searchQuery"
               type="text"
               :placeholder="t('searchByNameEmail')"
-              class="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              class="w-full pl-10 pr-10 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400"
             />
+            <button
+              v-if="searchQuery"
+              @click="searchQuery = ''"
+              class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+              type="button"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
           </div>
           <button
             @click="openAddDrawer"
@@ -101,32 +111,44 @@
           <!-- Sticky Header -->
           <thead class="bg-gray-50 dark:bg-gray-700 sticky top-0 z-10">
             <tr>
-              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b">{{ t('no') }}</th>
-              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b">{{ t('name') }}</th>
-              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b">{{ t('gender') }}</th>
-              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b">{{ t('created') }}</th>
-              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b">{{ t('loginTime') }}</th>
-              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b">{{ t('logoutTime') }}</th>
-              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b">{{ t('totalTime') }}</th>
-              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b"></th>
+              <th class="px-4 py-3 text-left text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('no') }}</th>
+              <th class="px-4 py-3 text-left text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('name') }}</th>
+              <th class="px-4 py-3 text-left text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('gender') }}</th>
+              <th class="px-4 py-3 text-left text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('created') }}</th>
+              <th class="px-4 py-3 text-left text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('loginTime') }}</th>
+              <th class="px-4 py-3 text-left text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('logoutTime') }}</th>
+              <th class="px-4 py-3 text-left text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('totalTime') }}</th>
+              <th class="px-4 py-3 text-left text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600"></th>
             </tr>
           </thead>
-          <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200">
+          <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+            <!-- No Results Found -->
+            <tr v-if="filteredUsers.length === 0 && searchQuery">
+              <td colspan="8" class="px-4 py-12 text-center">
+                <div class="flex flex-col items-center justify-center gap-3">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <p class="text-sm font-medium text-gray-600 dark:text-gray-400">{{ t('noResults') }}</p>
+                </div>
+              </td>
+            </tr>
+            <!-- User Rows -->
             <tr
               v-for="(user, index) in filteredUsers"
               :key="user.id"
               class="hover:bg-gray-50 dark:hover:bg-gray-700 dark:bg-gray-700 transition-colors"
             >
-              <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">{{ index + 1 }}</td>
-              <td class="px-4 py-3 text-sm">
+              <td class="px-4 py-3 whitespace-nowrap text-xs text-gray-700 dark:text-gray-300">{{ index + 1 }}</td>
+              <td class="px-4 py-3 text-xs">
                 <div class="flex items-center gap-2">
-                  <div class="w-8 h-8 rounded-full flex items-center justify-center text-white font-semibold text-xs flex-shrink-0"
+                  <div class="w-8 h-8 rounded-full flex items-center justify-center text-white font-semibold text-[10px] flex-shrink-0"
                        :class="user.gender === 'Male' || user.gender === t('male') ? 'bg-blue-500' : 'bg-pink-500'">
                     {{ user.name.charAt(0) }}
                   </div>
                   <div class="flex-1 min-w-0">
-                    <div class="font-medium text-gray-900 dark:text-white">{{ user.name }}</div>
-                    <div class="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    <div class="font-medium text-gray-900 dark:text-white text-xs">{{ user.name }}</div>
+                    <div class="flex items-center gap-1 text-[10px] text-gray-500 dark:text-gray-400 mt-1">
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                       </svg>
@@ -135,17 +157,17 @@
                   </div>
                 </div>
               </td>
-              <td class="px-4 py-3 whitespace-nowrap text-sm">
-                <span class="px-2 py-1 text-xs font-medium rounded-full"
+              <td class="px-4 py-3 whitespace-nowrap text-xs">
+                <span class="px-2 py-1 text-[10px] font-medium rounded-full"
                       :class="(user.gender === 'Male' || user.gender === t('male')) ? 'bg-blue-100 text-blue-800' : 'bg-pink-100 text-pink-800'">
                   {{ (user.gender === 'Male' || user.gender === t('male')) ? t('male') : t('female') }}
                 </span>
               </td>
-              <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">{{ formatDate(user.created) }}</td>
-              <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">{{ user.loginTime }}</td>
-              <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">{{ user.logoutTime || '-' }}</td>
-              <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300 font-medium">{{ calculateTotalTime(user.loginTime, user.logoutTime) }}</td>
-              <td class="px-4 py-3 whitespace-nowrap text-sm font-medium">
+              <td class="px-4 py-3 whitespace-nowrap text-xs text-gray-700 dark:text-gray-300">{{ formatDate(user.created) }}</td>
+              <td class="px-4 py-3 whitespace-nowrap text-xs text-gray-700 dark:text-gray-300">{{ user.loginTime }}</td>
+              <td class="px-4 py-3 whitespace-nowrap text-xs text-gray-700 dark:text-gray-300">{{ user.logoutTime || '-' }}</td>
+              <td class="px-4 py-3 whitespace-nowrap text-xs text-gray-700 dark:text-gray-300 font-medium">{{ calculateTotalTime(user.loginTime, user.logoutTime) }}</td>
+              <td class="px-4 py-3 whitespace-nowrap text-xs font-medium">
                 <div class="relative">
                   <button
                     @click="toggleActionMenu(user.id)"
@@ -229,7 +251,7 @@
                 type="text"
                 required
                 :placeholder="t('userForm.namePlaceholder')"
-                class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400"
               />
             </div>
             
@@ -243,7 +265,7 @@
                 type="email"
                 required
                 :placeholder="t('userForm.emailPlaceholder')"
-                class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400"
               />
             </div>
             
@@ -256,7 +278,7 @@
                 <select
                   v-model="form.gender"
                   required
-                  class="w-full px-4 py-2.5 pr-10 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white dark:bg-gray-800"
+                  class="w-full px-4 py-2.5 pr-10 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white"
                 >
                   <option value="">{{ t('userForm.selectGender') }}</option>
                   <option value="Male">{{ t('male') }}</option>

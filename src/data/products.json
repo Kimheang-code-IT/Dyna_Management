@@ -11,7 +11,8 @@
     "added": 20,
     "sold": 12,
     "damaged": 0,
-    "status": "Active"
+    "status": "Active",
+    "created": "2025-12-02"
   },
   {
     "id": 2,
@@ -25,7 +26,8 @@
     "added": 80,
     "sold": 56,
     "damaged": 2,
-    "status": "Active"
+    "status": "Active",
+    "created": "2025-12-02"
   },
   {
     "id": 3,
@@ -39,7 +41,8 @@
     "added": 15,
     "sold": 10,
     "damaged": 0,
-    "status": "Low Stock"
+    "status": "Low Stock",
+    "created": "2025-12-02"
   },
   {
     "id": 4,
@@ -53,7 +56,8 @@
     "added": 18,
     "sold": 6,
     "damaged": 0,
-    "status": "Active"
+    "status": "Active",
+    "created": "2025-12-02"
   },
   {
     "id": 5,
@@ -67,7 +71,8 @@
     "added": 10,
     "sold": 4,
     "damaged": 0,
-    "status": "Active"
+    "status": "Active",
+    "created": "2025-12-02"
   },
   {
     "id": 6,
@@ -81,7 +86,8 @@
     "added": 60,
     "sold": 20,
     "damaged": 1,
-    "status": "Active"
+    "status": "Active",
+    "created": "2025-12-02"
   },
   {
     "id": 7,
@@ -95,7 +101,8 @@
     "added": 50,
     "sold": 20,
     "damaged": 0,
-    "status": "Active"
+    "status": "Active",
+    "created": "2025-12-02"
   },
   {
     "id": 8,
@@ -109,7 +116,8 @@
     "added": 25,
     "sold": 10,
     "damaged": 0,
-    "status": "Active"
+    "status": "Active",
+    "created": "2025-12-02"
   },
   {
     "id": 9,
@@ -123,7 +131,8 @@
     "added": 20,
     "sold": 12,
     "damaged": 0,
-    "status": "Active"
+    "status": "Active",
+    "created": "2025-12-02"
   },
   {
     "id": 10,
@@ -137,7 +146,8 @@
     "added": 10,
     "sold": 7,
     "damaged": 0,
-    "status": "Low Stock"
+    "status": "Low Stock",
+    "created": "2025-12-02"
   },
   {
     "id": 11,
@@ -151,7 +161,8 @@
     "added": 15,
     "sold": 5,
     "damaged": 0,
-    "status": "Active"
+    "status": "Active",
+    "created": "2025-12-02"
   },
   {
     "id": 12,
@@ -165,7 +176,8 @@
     "added": 12,
     "sold": 5,
     "damaged": 0,
-    "status": "Active"
+    "status": "Active",
+    "created": "2025-12-02"
   },
   {
     "id": 13,
@@ -179,7 +191,8 @@
     "added": 40,
     "sold": 20,
     "damaged": 0,
-    "status": "Active"
+    "status": "Active",
+    "created": "2025-12-02"
   },
   {
     "id": 14,
@@ -193,7 +206,8 @@
     "added": 30,
     "sold": 12,
     "damaged": 0,
-    "status": "Active"
+    "status": "Active",
+    "created": "2025-12-02"
   },
   {
     "id": 15,
@@ -207,7 +221,8 @@
     "added": 15,
     "sold": 9,
     "damaged": 0,
-    "status": "Active"
+    "status": "Active",
+    "created": "2025-12-02"
   },
   {
     "id": 16,
@@ -221,7 +236,8 @@
     "added": 14,
     "sold": 5,
     "damaged": 0,
-    "status": "Active"
+    "status": "Active",
+    "created": "2025-12-02"
   },
   {
     "id": 17,
@@ -235,7 +251,8 @@
     "added": 45,
     "sold": 20,
     "damaged": 0,
-    "status": "Active"
+    "status": "Active",
+    "created": "2025-12-02"
   },
   {
     "id": 18,
@@ -249,7 +266,8 @@
     "added": 12,
     "sold": 8,
     "damaged": 0,
-    "status": "Low Stock"
+    "status": "Low Stock",
+    "created": "2025-12-02"
   },
   {
     "id": 19,
@@ -263,7 +281,8 @@
     "added": 20,
     "sold": 8,
     "damaged": 0,
-    "status": "Active"
+    "status": "Active",
+    "created": "2025-12-02"
   },
   {
     "id": 20,
@@ -277,6 +296,7 @@
     "added": 16,
     "sold": 5,
     "damaged": 0,
-    "status": "Active"
+    "status": "Active",
+    "created": "2025-12-02"
   }
 ]

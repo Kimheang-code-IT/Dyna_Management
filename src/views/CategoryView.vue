@@ -38,7 +38,6 @@
           <div class="flex-1">
             <h3 class="text-gray-600 dark:text-gray-400 text-sm font-medium mb-2">{{ t('topCategory') }}</h3>
             <p class="text-xl font-bold text-gray-800 dark:text-white">{{ topCategory.name }}</p>
-            <p class="text-sm text-gray-500 dark:text-gray-400 mt-2 text-right">{{ t('products') }} {{ topCategory.products }}</p>
           </div>
           <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center ml-4">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -68,7 +67,7 @@
               v-model="form.name"
               type="text"
               required
-              class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400"
+              class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400"
               :placeholder="t('categoryPlaceholder')"
             />
             <p v-if="errors.name" class="mt-1 text-sm text-red-600">{{ errors.name }}</p>
@@ -83,7 +82,7 @@
               id="description"
               v-model="form.description"
               rows="8"
-              class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400"
+              class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400"
               :placeholder="t('descriptionPlaceholder')"
             ></textarea>
             <p v-if="errors.description" class="mt-1 text-sm text-red-600">{{ errors.description }}</p>
@@ -110,7 +109,7 @@
       </div>
       
       <!-- Right Panel: Category List Table -->
-      <div class="lg:col-span-2 bg-white dark:bg-gray-700 dark:bg-gray-800 rounded-sm shadow p-3">
+      <div class="lg:col-span-2 bg-white dark:bg-gray-800  rounded-sm shadow p-3">
         <h2 class="text-xl font-semibold text-gray-800 dark:text-white mb-2">{{ t('categories') }}</h2>
         
         <!-- Search Bar and Date Picker -->
@@ -125,8 +124,18 @@
               v-model="searchQuery"
               type="text"
               :placeholder="t('search')"
-              class="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400"
+              class="w-full pl-10 pr-10 py-1 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400"
             />
+            <button
+              v-if="searchQuery"
+              @click="searchQuery = ''"
+              class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+              type="button"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
           </div>
           
           <!-- Date Picker -->
@@ -135,13 +144,13 @@
             <input
               v-model="filterDateFrom"
               type="date"
-              class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+              class="px-3 py-2 border text-xs border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white"
             />
             <span class="text-gray-500 dark:text-gray-400">{{ t('to') }}</span>
             <input
               v-model="filterDateTo"
               type="date"
-              class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+              class="px-3 py-2 border text-xs border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white"
             />
             <button
               v-if="filterDateFrom || filterDateTo"
@@ -162,61 +171,73 @@
             <!-- Sticky Header -->
             <thead class="bg-gray-50 dark:bg-gray-700 sticky top-0 z-10">
               <tr>
-                <th class="px-4 py-3 text-center text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">
+                <th class="px-4 py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">
                   {{ t('no') }}
                 </th>
-                <th class="px-4 py-3 text-center text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">
+                <th class="px-4 py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">
                   {{ t('name') }}
                 </th>
-                <th class="px-4 py-3 text-center text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">
+                <th class="px-4 py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">
                   {{ t('description') }}
                 </th>
-                <th class="px-4 py-3 text-center text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">
+                <th class="px-4 py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">
                   <div class="flex flex-col items-center">
                     <span>{{ t('total') }}</span>
                  
                   </div>
                 </th>
-                <th class="px-4 py-3 text-center text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">
+                <th class="px-4 py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">
                   <div class="flex flex-col items-center">
                     <span>{{ t('created') }}</span>
                  
                   </div>
                 </th>
-                <th class="px-4 py-3 text-center text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">
+                <th class="px-4 py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">
                 </th>
               </tr>
             </thead>
             
             <!-- Scrollable Body -->
             <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+              <!-- No Results Found -->
+              <tr v-if="filteredCategories.length === 0 && (searchQuery || filterDateFrom || filterDateTo)">
+                <td colspan="6" class="px-4 py-12 text-center">
+                  <div class="flex flex-col items-center justify-center gap-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400">{{ t('noResults') }}</p>
+                  </div>
+                </td>
+              </tr>
+              <!-- Category Rows -->
               <tr
                 v-for="(category, index) in filteredCategories"
                 :key="category.id"
                 class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
               >
-                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
+                <td class="px-4 py-3 whitespace-nowrap text-xs text-gray-700 dark:text-gray-300">
                   {{ index + 1 }}
                 </td>
-                <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+                <td class="px-4 py-3 whitespace-nowrap text-xs font-medium text-gray-900 dark:text-white">
                   <div class="flex items-center gap-2">
-                    <div class="w-8 h-8 rounded-full flex items-center justify-center text-white font-semibold text-xs"
+                    <div class="w-8 h-8 rounded-full flex items-center justify-center text-white font-semibold text-[10px]"
                          :style="{ backgroundColor: getCategoryColor(category.name) }">
                       {{ category.name.charAt(0).toUpperCase() }}
                     </div>
                     <span>{{ category.name }}</span>
                   </div>
                 </td>
-                <td class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
+                <td class="px-4 py-3 text-xs text-gray-700 dark:text-gray-300">
                   {{ category.description || '-' }}
                 </td>
-                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
+                <td class="px-4 py-3 whitespace-nowrap text-xs text-gray-700 dark:text-gray-300">
                   {{ getProductCount(category.name) }} {{ t('items') }}
                 </td>
-                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
+                <td class="px-4 py-3 whitespace-nowrap text-xs text-gray-700 dark:text-gray-300">
                   {{ formatDate(category.created) }}
                 </td>
-                <td class="px-4 py-3 whitespace-nowrap text-sm font-medium">
+                <td class="px-4 py-3 whitespace-nowrap text-xs font-medium">
                   <div class="relative">
                     <button
                       @click="toggleActionMenu(category.id)"
@@ -287,33 +308,36 @@
       </div>
     </Transition>
     
-    <!-- Update Success Dialog -->
+    <!-- Update Confirmation Dialog -->
     <div
-      v-if="showUpdateDialog"
+      v-if="showUpdateConfirmDialog"
       class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-      @click.self="showUpdateDialog = false"
+      @click.self="showUpdateConfirmDialog = false"
     >
       <div class="bg-white dark:bg-gray-800 rounded-sm shadow-xl p-6 max-w-md w-full mx-4">
         <div class="flex items-center gap-4 mb-4">
-          <div class="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600 dark:text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
           <div>
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ t('categoryUpdated') }}</h3>
-            <p class="text-sm text-gray-600 dark:text-gray-400">{{ t('categoryUpdatedSuccess') }}</p>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ t('updateCategory') }}</h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400">{{ t('areYouSure') }} {{ t('update') }} {{ t('category') }}?</p>
           </div>
-        </div>
-        <p class="text-sm text-gray-700 dark:text-gray-300 mb-6">
-          {{ t('category') }}: <span class="font-semibold">{{ updatedCategoryName }}</span>
-        </p>
+        </div>  
         <div class="flex gap-3 justify-end">
           <button
-            @click="closeUpdateDialog"
+            @click="showUpdateConfirmDialog = false"
+            class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-sm hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors font-medium"
+          >
+            {{ t('cancel') }}
+          </button>
+          <button
+            @click="confirmUpdate"
             class="px-4 py-2 bg-blue-600 text-white rounded-sm hover:bg-blue-700 transition-colors font-medium"
           >
-            OK
+            {{ t('yes') }}, {{ t('update') }}
           </button>
         </div>
       </div>
@@ -337,9 +361,6 @@
             <p class="text-sm text-gray-600 dark:text-gray-400">{{ t('areYouSureDelete') }}</p>
           </div>
         </div>
-        <p class="text-sm text-gray-700 dark:text-gray-300 mb-6">
-          {{ t('category') }}: <span class="font-semibold">{{ categoryToDelete?.name }}</span>
-        </p>
         <div class="flex gap-3 justify-end">
           <button
             @click="showDeleteDialog = false"
@@ -403,9 +424,8 @@ const showSuccessMessage = ref(false)
 const successMessageTitle = ref('')
 const successMessageText = ref('')
 
-// Update dialog state
-const showUpdateDialog = ref(false)
-const updatedCategoryName = ref('')
+// Update confirmation dialog state
+const showUpdateConfirmDialog = ref(false)
 
 // Delete dialog state
 const showDeleteDialog = ref(false)
@@ -515,28 +535,8 @@ const handleSubmit = () => {
   }
   
   if (editingCategory.value) {
-    // Update existing category
-    const index = categories.value.findIndex(cat => cat.id === editingCategory.value.id)
-    if (index !== -1) {
-      categories.value[index] = {
-        ...categories.value[index],
-        name: form.name,
-        description: form.description || ''
-      }
-      // Log update history
-      addHistory('update', {
-        type: 'category',
-        itemName: form.name,
-        itemId: editingCategory.value.id,
-        description: `Category "${form.name}" updated`,
-        user: 'Admin'
-      })
-      // Show update success dialog
-      updatedCategoryName.value = form.name
-      showUpdateDialog.value = true
-    }
-    // Reset edit state
-    editingCategory.value = null
+    // Show update confirmation dialog
+    showUpdateConfirmDialog.value = true
   } else {
     // Add new category
     const newCategory = {
@@ -600,13 +600,38 @@ const showSuccessToast = (title, text) => {
   }, 3000)
 }
 
-const closeUpdateDialog = () => {
-  // Show success message after closing the dialog
-  if (updatedCategoryName.value) {
-    showSuccessToast(t('categoryUpdated'), `"${updatedCategoryName.value}" ${t('categoryUpdatedSuccess')}`)
+const confirmUpdate = () => {
+  if (editingCategory.value) {
+    // Update existing category
+    const index = categories.value.findIndex(cat => cat.id === editingCategory.value.id)
+    if (index !== -1) {
+      const oldName = categories.value[index].name
+      categories.value[index] = {
+        ...categories.value[index],
+        name: form.name,
+        description: form.description || ''
+      }
+      // Log update history
+      addHistory('update', {
+        type: 'category',
+        itemName: form.name,
+        itemId: editingCategory.value.id,
+        description: `Category "${oldName}" updated to "${form.name}"`,
+        user: 'Admin'
+      })
+      // Show success toast message
+      showSuccessToast(t('categoryUpdated'), `"${form.name}" ${t('categoryUpdatedSuccess')}`)
+    }
+    // Reset edit state
+    editingCategory.value = null
+    // Clear form
+    form.name = ''
+    form.description = ''
+    Object.keys(errors).forEach(key => errors[key] = '')
+    activeActionMenu.value = null
   }
-  showUpdateDialog.value = false
-  updatedCategoryName.value = ''
+  // Close confirmation dialog
+  showUpdateConfirmDialog.value = false
 }
 
 const confirmDelete = () => {

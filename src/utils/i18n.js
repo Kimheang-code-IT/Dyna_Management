@@ -305,6 +305,14 @@ const translations = {
     forgotPassword: 'Forgot password?',
     signIn: 'Sign In',
     pleaseEnterBoth: 'Please enter both email and password',
+    forgotPasswordDescription: 'Enter your email address and we will send you a link to reset your password',
+    enterEmailAddress: 'Enter your email address',
+    sendResetLink: 'Send Reset Link',
+    sending: 'Sending...',
+    resetEmailSent: 'Reset email sent successfully!',
+    checkEmailInstructions: 'Please check your email inbox (including spam folder) for password reset instructions.',
+    backToLogin: 'Back to Login',
+    resetEmailError: 'Failed to send reset email. Please try again.',
     
     // Common actions
     save: 'Save',
@@ -636,6 +644,14 @@ const translations = {
     forgotPassword: 'ភ្លេចពាក្យសម្ងាត់?',
     signIn: 'ចូល',
     pleaseEnterBoth: 'សូមបញ្ចូលទាំងអ៊ីម៉ែលនិងពាក្យសម្ងាត់',
+    forgotPasswordDescription: 'បញ្ចូលអាសយដ្ឋានអ៊ីម៉ែលរបស់អ្នក ហើយយើងនឹងផ្ញើតំណភ្ជាប់ដើម្បីកំណត់ពាក្យសម្ងាត់ឡើងវិញ',
+    enterEmailAddress: 'បញ្ចូលអាសយដ្ឋានអ៊ីម៉ែលរបស់អ្នក',
+    sendResetLink: 'ផ្ញើតំណកំណត់ឡើងវិញ',
+    sending: 'កំពុងផ្ញើ...',
+    resetEmailSent: 'ផ្ញើអ៊ីម៉ែលកំណត់ឡើងវិញដោយជោគជ័យ!',
+    checkEmailInstructions: 'សូមពិនិត្យប្រអប់អ៊ីម៉ែលរបស់អ្នក (រួមទាំងថត spam) សម្រាប់ការណែនាំកំណត់ពាក្យសម្ងាត់ឡើងវិញ។',
+    backToLogin: 'ត្រលប់ទៅកាន់ការចូល',
+    resetEmailError: 'មិនអាចផ្ញើអ៊ីម៉ែលកំណត់ឡើងវិញបានទេ។ សូមព្យាយាមម្តងទៀត។',
     
     // Common actions
     save: 'រក្សាទុក',

@@ -12,7 +12,7 @@
           </div>
           <div>
             <h1 class="text-3xl font-bold text-gray-800 dark:text-white">{{ t('companyName') }}</h1>
-            <p class="text-sm text-gray-500 uppercase tracking-wide mt-1">{{ t('companyTagline') }}</p>
+            <p class="text-sm text-gray-500 dark:text-gray-400 uppercase tracking-wide mt-1">{{ t('companyTagline') }}</p>
           </div>
         </div>
       </div>
@@ -29,7 +29,7 @@
     <div class="grid grid-cols-2 gap-[150px] items-end mb-8">
       <!-- Invoice Info -->
       <div>
-        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">{{ t('invoiceInfo') }}</h3>
+        <h3 class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3">{{ t('invoiceInfo') }}</h3>
         <div class="space-y-2">
           <p class="text-sm text-gray-700 dark:text-gray-300"><span class="font-medium">{{ t('invoiceNo') }}</span> {{ invoiceNumber }}</p>
           <p class="text-sm text-gray-700 dark:text-gray-300"><span class="font-medium">{{ t('date') }}:</span> {{ invoiceDate }}</p>
@@ -78,7 +78,7 @@
     <div class="grid grid-cols-2 gap-8 mb-8">
       <!-- Terms & Conditions -->
       <div>
-        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">{{ t('termsAndConditions') }}</h3>
+        <h3 class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3">{{ t('termsAndConditions') }}</h3>
         <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
           {{ t('thankYouMessage') }}
         </p>

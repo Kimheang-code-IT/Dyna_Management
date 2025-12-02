@@ -67,10 +67,10 @@
     </div>
     
     <!-- Sales Table -->
-    <div class="bg-white dark:bg-gray-700 dark:bg-gray-800 rounded-sm shadow p-3">
+    <div class="bg-white dark:bg-gray-800 rounded-sm shadow p-3">
       <!-- Search and Filter Bar -->
       <div class="p-0 mb-3">
-        <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
+        <div class="flex flex-col md:flex-row gap-4 items-center justify-between flex-wrap">
           <div class="relative w-[400px]">
             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -81,26 +81,44 @@
               v-model="searchQuery"
               type="text"
               :placeholder="t('searchBySaleId')"
-              class="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              class="w-full pl-10 pr-10 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400"
             />
-          </div>
-          <div class="relative">
-            <select
-              v-model="selectedDateRange"
-              @change="updateReportingRange"
-              class="appearance-none bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-sm px-4 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent min-w-[180px]"
+            <button
+              v-if="searchQuery"
+              @click="searchQuery = ''"
+              class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+              type="button"
             >
-              <option value="all">{{ t('dateRange') }}</option>
-              <option value="allTime">{{ t('allTime') }}</option>
-              <option value="last7Days">{{ t('last7Days') }}</option>
-              <option value="last30Days">{{ t('last30Days') }}</option>
-              <option value="last90Days">{{ t('last90Days') }}</option>
-            </select>
-            <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-              <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
               </svg>
-            </div>
+            </button>
+          </div>
+          
+          <!-- Date Range Picker -->
+          <div class="flex items-center gap-2">
+            <label class="text-xs font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap">{{ t('dateBetween') }}:</label>
+            <input
+              v-model="filterDateFrom"
+              type="date"
+              class="px-3 py-2 text-xs border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white"
+            />
+            <span class="text-xs text-gray-500 dark:text-gray-400">{{ t('to') }}</span>
+            <input
+              v-model="filterDateTo"
+              type="date"
+              class="px-3 py-2 text-xs border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white"
+            />
+            <button
+              v-if="filterDateFrom || filterDateTo"
+              @click="clearDateFilter"
+              class="px-3 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors"
+              :title="t('clear')"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
           </div>
         </div>
       </div>
@@ -110,41 +128,51 @@
           <!-- Sticky Header -->
           <thead class="bg-gray-50 dark:bg-gray-700 sticky top-0 z-10">
             <tr>
-              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b">{{ t('no') }}</th>
-              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b">{{ t('sale') }}</th>
-              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b">{{ t('products') }}</th>
-              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b">{{ t('itemsSoldCol') }}</th>
-              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b">{{ t('topProducts') }}</th>
-              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b">{{ t('avgPerItem') }}</th>
-              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b">{{ t('total') }}</th>
-              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b"></th>
+              <th class="px-4 py-3 text-left text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('no') }}</th>
+              <th class="px-4 py-3 text-left text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('sale') }}</th>
+              <th class="px-4 py-3 text-left text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('products') }}</th>
+              <th class="px-4 py-3 text-left text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('itemsSoldCol') }}</th>
+              <th class="px-4 py-3 text-left text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('topProducts') }}</th>
+              <th class="px-4 py-3 text-left text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('total') }}</th>
+              <th class="px-4 py-3 text-left text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600"></th>
             </tr>
           </thead>
           <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+            <!-- No Results Found -->
+            <tr v-if="filteredSales.length === 0 && (searchQuery || filterDateFrom || filterDateTo)">
+              <td colspan="7" class="px-4 py-12 text-center">
+                <div class="flex flex-col items-center justify-center gap-3">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <p class="text-sm font-medium text-gray-600 dark:text-gray-400">{{ t('noResults') }}</p>
+                </div>
+              </td>
+            </tr>
+            <!-- Sale Rows -->
             <tr
               v-for="(sale, index) in filteredSales"
               :key="sale.id"
-              class="hover:bg-gray-50 dark:hover:bg-gray-700 dark:bg-gray-700 transition-colors"
+              class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
             >
-              <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">{{ index + 1 }}</td>
-              <td class="px-4 py-3 text-sm">
+              <td class="px-4 py-3 whitespace-nowrap text-xs text-gray-700 dark:text-gray-300">{{ index + 1 }}</td>
+              <td class="px-4 py-3 text-xs">
                 <div>
-                  <p class="font-bold text-gray-900 dark:text-white">{{ sale.id }}</p>
-                  <p class="text-xs text-gray-500">{{ sale.date }}, {{ sale.time }}</p>
+                  <p class="font-bold text-gray-900 dark:text-white text-xs">{{ sale.id }}</p>
+                  <p class="text-[10px] text-gray-500 dark:text-gray-400">{{ sale.date }}, {{ sale.time }}</p>
                 </div>
               </td>
-              <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">{{ sale.products }}</td>
-              <td class="px-4 py-3 whitespace-nowrap text-sm font-bold text-gray-900 dark:text-white">{{ sale.itemsSold }} {{ t('pcs') }}</td>
-              <td class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
+              <td class="px-4 py-3 whitespace-nowrap text-xs text-gray-700 dark:text-gray-300">{{ sale.products }}</td>
+              <td class="px-4 py-3 whitespace-nowrap text-xs font-bold text-gray-900 dark:text-white">{{ sale.itemsSold }} {{ t('pcs') }}</td>
+              <td class="px-4 py-3 text-xs text-gray-700 dark:text-gray-300">
                 <div class="flex flex-wrap gap-1">
-                  <span v-for="(product, idx) in sale.topProducts" :key="idx" class="text-xs">
+                  <span v-for="(product, idx) in sale.topProducts" :key="idx" class="text-[10px]">
                     {{ product }}<span v-if="idx < sale.topProducts.length - 1">,</span>
                   </span>
                 </div>
               </td>
-              <td class="px-4 py-3 whitespace-nowrap text-sm font-bold text-gray-900 dark:text-white">${{ sale.avgPerItem.toFixed(2) }}</td>
-              <td class="px-4 py-3 whitespace-nowrap text-sm font-bold text-gray-900 dark:text-white">${{ sale.total.toFixed(2) }}</td>
-              <td class="px-4 py-3 whitespace-nowrap text-sm font-medium">
+              <td class="px-4 py-3 whitespace-nowrap text-xs font-bold text-gray-900 dark:text-white">${{ sale.total.toFixed(2) }}</td>
+              <td class="px-4 py-3 whitespace-nowrap text-xs font-medium">
                 <button
                   @click="viewSale(sale)"
                   class="px-3 py-1 bg-blue-600 text-white rounded-sm hover:bg-blue-700 transition-colors flex items-center gap-1 text-xs"
@@ -304,33 +332,34 @@ import salesData from '../data/sales.json'
 const sales = ref(salesData)
 
 const searchQuery = ref('')
-const selectedDateRange = ref('allTime')
+const filterDateFrom = ref('')
+const filterDateTo = ref('')
 const showDrawer = ref(false)
 const selectedSale = ref(null)
 
-// Date range mapping - will be computed reactively
-const dateRangeMap = computed(() => ({
-  'all': t('dateRange'),
-  'allTime': t('allTime'),
-  'last7Days': t('last7Days'),
-  'last30Days': t('last30Days'),
-  'last90Days': t('last90Days')
-}))
-
+// Reporting range display
 const reportingRange = computed(() => {
-  return dateRangeMap.value[selectedDateRange.value] || t('allTime')
+  if (filterDateFrom.value && filterDateTo.value) {
+    return `${formatDateDisplay(filterDateFrom.value)} - ${formatDateDisplay(filterDateTo.value)}`
+  } else if (filterDateFrom.value) {
+    return `${formatDateDisplay(filterDateFrom.value)} ${t('to')} ...`
+  } else if (filterDateTo.value) {
+    return `... ${t('to')} ${formatDateDisplay(filterDateTo.value)}`
+  }
+  return t('allTime')
 })
 
-// Update reporting range when date range changes
-const updateReportingRange = () => {
-  // Filter sales based on date range
-  filterSalesByDateRange()
+// Format date for display
+const formatDateDisplay = (dateString) => {
+  if (!dateString) return ''
+  const date = new Date(dateString)
+  return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
 }
 
-// Filter sales by date range
-const filterSalesByDateRange = () => {
-  // This would filter based on actual dates in a real implementation
-  // For now, we'll use all sales
+// Clear date filter
+const clearDateFilter = () => {
+  filterDateFrom.value = ''
+  filterDateTo.value = ''
 }
 
 const filteredSales = computed(() => {
@@ -345,23 +374,30 @@ const filteredSales = computed(() => {
   }
   
   // Date range filtering
-  if (selectedDateRange.value !== 'all' && selectedDateRange.value !== 'allTime') {
-    const now = new Date()
-    const daysAgo = {
-      'last7Days': 7,
-      'last30Days': 30,
-      'last90Days': 90
-    }[selectedDateRange.value] || 0
-    
-    if (daysAgo > 0) {
-      const cutoffDate = new Date(now.getTime() - daysAgo * 24 * 60 * 60 * 1000)
-      filtered = filtered.filter(sale => {
-        // Parse sale date (format: "8/16/2024")
-        const [month, day, year] = sale.date.split('/')
-        const saleDate = new Date(parseInt(year), parseInt(month) - 1, parseInt(day))
-        return saleDate >= cutoffDate
-      })
-    }
+  if (filterDateFrom.value || filterDateTo.value) {
+    filtered = filtered.filter(sale => {
+      // Parse sale date (format: "8/16/2024")
+      const [month, day, year] = sale.date.split('/')
+      const saleDate = new Date(parseInt(year), parseInt(month) - 1, parseInt(day))
+      saleDate.setHours(0, 0, 0, 0) // Reset time to start of day
+      
+      if (filterDateFrom.value && filterDateTo.value) {
+        const fromDate = new Date(filterDateFrom.value)
+        fromDate.setHours(0, 0, 0, 0)
+        const toDate = new Date(filterDateTo.value)
+        toDate.setHours(23, 59, 59, 999) // End of day
+        return saleDate >= fromDate && saleDate <= toDate
+      } else if (filterDateFrom.value) {
+        const fromDate = new Date(filterDateFrom.value)
+        fromDate.setHours(0, 0, 0, 0)
+        return saleDate >= fromDate
+      } else if (filterDateTo.value) {
+        const toDate = new Date(filterDateTo.value)
+        toDate.setHours(23, 59, 59, 999)
+        return saleDate <= toDate
+      }
+      return true
+    })
   }
   
   return filtered
