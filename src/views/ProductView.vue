@@ -1,16 +1,16 @@
 <template>
-  <div :class="['mx-auto transition-all duration-300', isSidebarCollapsed ? 'max-w-full px-2' : 'max-w-7xl']">
+    <div :class="['mx-auto transition-all duration-300 w-full', isSidebarCollapsed ? 'max-w-full px-3' : 'max-w-7xl px-3 lg:px-0']">
     <!-- Summary Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-3 mb-3">
+    <div class="flex flex-nowrap sm:flex-wrap gap-1 sm:gap-1.5 md:gap-2 lg:gap-3 mb-2 sm:mb-3">
       <!-- Total Products Card -->
-      <div class="bg-white dark:bg-gray-800 rounded-sm shadow p-3">
-        <div class="flex items-center justify-between">
-          <div>
-            <h3 class="text-gray-600 dark:text-gray-400 text-sm font-medium mb-2">{{ t('totalProducts') }}</h3>
-            <p class="text-3xl font-bold text-gray-800 dark:text-white">{{ totalProducts }}</p>
+      <div class="bg-white dark:bg-gray-800 rounded-sm shadow p-0.5 sm:p-1.5 md:p-2 lg:p-3 flex-1 min-w-0 min-h-[60px] sm:min-h-[70px] md:min-h-[80px]">
+        <div class="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left justify-center sm:justify-between">
+          <div class="order-2 sm:order-1">
+            <h3 class="text-gray-600 dark:text-gray-400 text-[10px] sm:text-xs md:text-sm font-medium mb-0.5 sm:mb-1 md:mb-2">{{ t('totalProducts') }}</h3>
+            <p class="text-base sm:text-base md:text-xl lg:text-2xl xl:text-3xl font-bold leading-tight sm:leading-normal text-gray-800 dark:text-white">{{ totalProducts }}</p>
           </div>
-          <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div class="w-10 h-10 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-blue-100 dark:bg-blue-900/30 rounded-full flex-shrink-0 flex items-center justify-center order-1 sm:order-2 mb-2 sm:mb-0">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-4 sm:w-4 md:h-5 md:w-5 lg:h-6 lg:w-6 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
             </svg>
           </div>
@@ -18,15 +18,15 @@
       </div>
       
       <!-- Total Stock Units Card -->
-      <div class="bg-white dark:bg-gray-800 rounded-sm shadow p-3">
-        <div class="flex items-center justify-between">
-          <div>
-            <h3 class="text-gray-600 dark:text-gray-400 text-sm font-medium mb-2">{{ t('totalStockUnits') }}</h3>
-            <p class="text-3xl font-bold text-gray-800 dark:text-white">{{ totalStockUnits }}</p>
-            <p class="text-xs text-red-600 dark:text-red-400 mt-1">{{ t('lowStockItems') }} {{ lowStockCount }}</p>
+      <div class="bg-white dark:bg-gray-800 rounded-sm shadow p-0.5 sm:p-1.5 md:p-2 lg:p-3 flex-1 min-w-0 min-h-[60px] sm:min-h-[70px] md:min-h-[80px]">
+        <div class="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left justify-center sm:justify-between">
+          <div class="order-2 sm:order-1">
+            <h3 class="text-gray-600 dark:text-gray-400 text-[10px] sm:text-xs md:text-sm font-medium mb-0.5 sm:mb-1 md:mb-2 break-words line-clamp-2">{{ t('totalStockUnits') }}</h3>
+            <p class="text-base sm:text-base md:text-xl lg:text-2xl xl:text-3xl font-bold leading-tight sm:leading-normal text-gray-800 dark:text-white">{{ totalStockUnits }}</p>
+            <p class="text-[10px] sm:text-xs text-red-600 dark:text-red-400 mt-1">{{ t('lowStockItems') }} {{ lowStockCount }}</p>
           </div>
-          <div class="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div class="w-10 h-10 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-green-100 dark:bg-green-900/30 rounded-full flex-shrink-0 flex items-center justify-center order-1 sm:order-2 mb-2 sm:mb-0">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-4 sm:w-4 md:h-5 md:w-5 lg:h-6 lg:w-6 text-green-600 dark:text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
@@ -35,14 +35,14 @@
       </div>
       
       <!-- Categories Card -->
-      <div class="bg-white dark:bg-gray-800 rounded-sm shadow p-3">
-        <div class="flex items-center justify-between">
-          <div>
-            <h3 class="text-gray-600 dark:text-gray-400 text-sm font-medium mb-2">{{ t('categories') }}</h3>
-            <p class="text-3xl font-bold text-gray-800 dark:text-white">{{ totalCategories }}</p>
+      <div class="bg-white dark:bg-gray-800 rounded-sm shadow p-0.5 sm:p-1.5 md:p-2 lg:p-3 flex-1 min-w-0 min-h-[60px] sm:min-h-[70px] md:min-h-[80px]">
+        <div class="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left justify-center sm:justify-between">
+          <div class="order-2 sm:order-1">
+            <h3 class="text-gray-600 dark:text-gray-400 text-[10px] sm:text-xs md:text-sm font-medium mb-0.5 sm:mb-1 md:mb-2">{{ t('categories') }}</h3>
+            <p class="text-base sm:text-base md:text-xl lg:text-2xl xl:text-3xl font-bold leading-tight sm:leading-normal text-gray-800 dark:text-white">{{ totalCategories }}</p>
           </div>
-          <div class="w-12 h-12 bg-orange-100 dark:bg-orange-900 rounded-full flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-600 dark:text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div class="w-10 h-10 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-orange-100 dark:bg-orange-900/30 rounded-full flex-shrink-0 flex items-center justify-center order-1 sm:order-2 mb-2 sm:mb-0">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-4 sm:w-4 md:h-5 md:w-5 lg:h-6 lg:w-6 text-orange-600 dark:text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
           </div>
@@ -50,15 +50,15 @@
       </div>
       
       <!-- Top Category Card -->
-      <div class="bg-white dark:bg-gray-800 rounded-sm shadow p-3">
-        <div class="flex items-center justify-between">
-          <div>
-            <h3 class="text-gray-600 dark:text-gray-400 text-sm font-medium mb-2">{{ t('topCategory') }}</h3>
-            <p class="text-xl font-bold text-gray-800 dark:text-white">{{ topCategory.name }}</p>
-            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">{{ t('stockUnits') }} {{ topCategory.stock }}</p>
+      <div class="bg-white dark:bg-gray-800 rounded-sm shadow p-0.5 sm:p-1.5 md:p-2 lg:p-3 flex-1 min-w-0 min-h-[60px] sm:min-h-[70px] md:min-h-[80px]">
+        <div class="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left justify-center sm:justify-between">
+          <div class="order-2 sm:order-1">
+            <h3 class="text-gray-600 dark:text-gray-400 text-[10px] sm:text-xs md:text-sm font-medium mb-0.5 sm:mb-1 md:mb-2">{{ t('topCategory') }}</h3>
+            <p class="text-base sm:text-base md:text-xl lg:text-2xl xl:text-3xl font-bold leading-tight sm:leading-normal text-gray-800 dark:text-white">{{ topCategory.name }}</p>
+            <p class="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 mt-1">{{ t('stockUnits') }} {{ topCategory.stock }}</p>
           </div>
-          <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-600 dark:text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div class="w-10 h-10 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-purple-100 dark:bg-purple-900/30 rounded-full flex-shrink-0 flex items-center justify-center order-1 sm:order-2 mb-2 sm:mb-0">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-4 sm:w-4 md:h-5 md:w-5 lg:h-6 lg:w-6 text-purple-600 dark:text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
@@ -70,12 +70,12 @@
     
     
     <!-- Product Table -->
-    <div class="bg-white dark:bg-gray-800 rounded-sm shadow p-3">
-      <div class="p-0 mb-3">
-        <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
-        <div class="relative w-[230px]">
-          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <svg class="h-5 w-5 text-gray-400 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div class="bg-white dark:bg-gray-800 rounded-sm shadow p-2 sm:p-3">
+      <div class="p-0 mb-2 sm:mb-3">
+        <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 items-stretch sm:items-center justify-between">
+        <div class="relative flex-1 w-full sm:max-w-[400px]">
+          <div class="absolute inset-y-0 left-0 pl-2 sm:pl-3 flex items-center pointer-events-none">
+            <svg class="h-4 w-4 sm:h-5 sm:w-5 text-gray-400 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </div>
@@ -83,7 +83,7 @@
             v-model="searchQuery"
             type="text"
             :placeholder="t('search')"
-            class="w-full pl-10 pr-10 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400"
+            class="w-full pl-8 sm:pl-10 pr-8 sm:pr-10 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 h-[37px]"
           />
           <button
             v-if="searchQuery"
@@ -96,11 +96,11 @@
             </svg>
           </button>
         </div>
-        <div class="flex items-center gap-4 flex-wrap">
-          <div class="relative">
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-4 flex-wrap">
+          <div class="relative w-full sm:w-auto">
             <select
               v-model="selectedCategory"
-              class="appearance-none bg-white dark:bg-gray-800/100 text-xs border border-gray-300 dark:border-gray-600 rounded-sm px-4 py-3 pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white"
+              class="appearance-none bg-white dark:bg-gray-800/100 text-xs border border-gray-300 dark:border-gray-600 rounded-sm px-3 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white h-[37px] w-full sm:w-auto"
             >
               <option value="">{{ t('categories') }}</option>
               <option v-for="cat in categories" :key="cat" :value="cat">{{ cat }}</option>
@@ -113,23 +113,23 @@
           </div>
           
           <!-- Date Range Picker -->
-          <div class="flex items-center gap-2">
-            <label class="text-xs font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap">{{ t('dateBetween') }}:</label>
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+            <label class="text-xs font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap self-center sm:self-auto">{{ t('dateBetween') }}:</label>
             <input
               v-model="filterDateFrom"
               type="date"
-              class="px-3 py-3 text-xs border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white"
+              class="px-3 py-2 px-3 .5 py-2 text-xs border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white h-[37px] w-[115px] h-[37px]"
             />
-            <span class="text-xs text-gray-500 dark:text-gray-400">{{ t('to') }}</span>
+            <span class="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 self-center sm:self-auto">{{ t('to') }}</span>
             <input
               v-model="filterDateTo"
               type="date"
-              class="px-3 py-3 text-xs border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white"
+              class="px-3 py-2 px-3 .5 py-2 text-xs border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white h-[37px] w-[115px] h-[37px]"
             />
             <button
               v-if="filterDateFrom || filterDateTo"
               @click="clearDateFilter"
-              class="px-3 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors"
+              class="px-3 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors h-[37px]"
               :title="t('clear')"
             >
               <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -140,12 +140,12 @@
           
           <button
             @click="openAddDrawer"
-            class="px-2 py-2 bg-blue-600 text-white rounded-sm hover:bg-blue-700 transition-colors font-medium flex items-center gap-2"
+            class="px-3 py-2 bg-blue-600 text-white rounded-sm hover:bg-blue-700 transition-colors font-medium flex items-center gap-2 h-[37px] w-full sm:w-auto justify-center h-[37px]"
           >
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
             </svg>
-            {{ t('addProduct') }}
+            {{ t('add') }}
           </button>
         </div>
       </div>
@@ -309,7 +309,7 @@
         @click.self="closeDrawer"
       >
         <div class="absolute right-0 top-0 h-full w-full max-w-md bg-white dark:bg-gray-800 shadow-xl overflow-y-auto">
-          <div class="sticky top-0 bg-white dark:bg-gray-800 text-black dark:text-white px-6 py-5 flex items-center justify-between z-10  border-b border-gray-200 dark:border-gray-700">
+          <div class="sticky top-0 bg-white dark:bg-gray-800 text-black dark:text-white px-6 py-5 flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left justify-center sm:justify-between z-10  border-b border-gray-200 dark:border-gray-700">
             <div class="flex items-center gap-3">
               <div class="w-10 h-10 bg-gray-100 dark:bg-gray-700 rounded-sm flex items-center justify-center">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-black dark:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -317,7 +317,7 @@
                 </svg>
               </div>
               <h2 class="text-xl font-bold text-black dark:text-white">
-                {{ editingProduct ? t('editProduct') : t('addProduct') }}
+                {{ editingProduct ? t('editProduct') : t('add') }}
               </h2>
             </div>
             <button
@@ -341,7 +341,7 @@
                 v-model="form.name"
                 type="text"
                 required
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400"
+                class="w-full px-3 py-2  border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 h-[37px]"
                 :placeholder="t('productName')"
               />
               <p v-if="errors.name" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.name }}</p>
@@ -431,7 +431,7 @@
                 step="0.01"
                 min="0"
                 required
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400"
+                class="w-full px-3 py-2  border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 h-[37px]"
                 placeholder="0.00"
               />
               <p v-if="errors.price" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.price }}</p>
@@ -448,7 +448,7 @@
                 type="number"
                 min="0"
                 required
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400"
+                class="w-full px-3 py-2  border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 h-[37px]"
                 placeholder="0"
               />
               <p v-if="errors.inStock" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.inStock }}</p>
@@ -460,7 +460,7 @@
                 type="submit"
                 class="flex-1 px-4 py-2 bg-blue-600 text-white rounded-sm hover:bg-blue-700 transition-colors font-medium"
               >
-                {{ editingProduct ? t('update') + ' ' + t('products') : t('addProduct') }}
+                {{ editingProduct ? t('update') + ' ' + t('products') : t('add') }}
               </button>
               <button
                 type="button"
@@ -535,13 +535,13 @@
     >
       <div class="bg-white dark:bg-gray-800 rounded-sm shadow-xl p-6 max-w-md w-full mx-4">
         <div class="flex items-center gap-4 mb-4">
-          <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div class="w-10 h-10 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-blue-100 dark:bg-blue-900/30 rounded-full flex-shrink-0 flex items-center justify-center order-1 sm:order-2 mb-2 sm:mb-0">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-4 sm:w-4 md:h-5 md:w-5 lg:h-6 lg:w-6 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
           <div>
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ t('addProduct') }}</h3>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ t('add') }}</h3>
             <p class="text-sm text-gray-600 dark:text-gray-400">{{ t('areYouSure') }} {{ t('add') }} {{ t('products') }}?</p>
           </div>
         </div>
@@ -573,7 +573,7 @@
     >
       <div class="bg-white dark:bg-gray-800 rounded-sm shadow-xl p-6 max-w-md w-full mx-4">
         <div class="flex items-center gap-4 mb-4">
-          <div class="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
+          <div class="w-10 h-10 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-green-100 dark:bg-green-900/30 rounded-full flex-shrink-0 flex items-center justify-center order-1 sm:order-2 mb-2 sm:mb-0">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
@@ -611,8 +611,8 @@
     >
       <div class="bg-white dark:bg-gray-800 rounded-sm shadow-xl p-6 max-w-md w-full mx-4">
         <div class="flex items-center gap-4 mb-4">
-          <div class="w-12 h-12 bg-red-100 dark:bg-red-900 rounded-full flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-600 dark:text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div class="w-10 h-10 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-red-100 dark:bg-red-900/30 rounded-full flex-shrink-0 flex items-center justify-center order-1 sm:order-2 mb-2 sm:mb-0">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-4 sm:w-4 md:h-5 md:w-5 lg:h-6 lg:w-6 text-red-600 dark:text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
           </div>
@@ -649,7 +649,7 @@
         @click.self="closeStockDrawer"
       >
         <div class="bg-white dark:bg-gray-800 shadow-xl w-[400px]">
-          <div class="px-6 py-3 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
+          <div class="px-6 py-3 border-b border-gray-200 dark:border-gray-700 flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left justify-center sm:justify-between">
             <h3 class="text-lg font-semibold text-gray-800 dark:text-white">
               {{ stockDrawerType === 'add' ? t('addStock') : t('addDamaged') }}
             </h3>
@@ -681,7 +681,7 @@
                 type="number"
                 min="1"
                 required
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400"
+                class="w-full px-3 py-2  border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 h-[37px]"
                 :placeholder="stockDrawerType === 'add' ? t('enterQuantityToAdd') : t('enterDamagedQuantity')"
               />
               <p v-if="stockForm.errors.quantity" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ stockForm.errors.quantity }}</p>
@@ -716,8 +716,8 @@
     >
       <div class="bg-white dark:bg-gray-800 rounded-sm shadow-xl p-6 max-w-md w-full mx-4">
         <div class="flex items-center gap-4 mb-4">
-          <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div class="w-10 h-10 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-blue-100 dark:bg-blue-900/30 rounded-full flex-shrink-0 flex items-center justify-center order-1 sm:order-2 mb-2 sm:mb-0">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-4 sm:w-4 md:h-5 md:w-5 lg:h-6 lg:w-6 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
@@ -756,10 +756,16 @@
 import { ref, reactive, computed, inject, onMounted, onUnmounted } from 'vue'
 import { addHistory } from '../utils/history'
 import { useI18n } from '../composables/useI18n'
+import { useToast } from '../composables/useToast'
+import { useLoading } from '../composables/useLoading'
+import { useErrorHandler } from '../composables/useErrorHandler'
 
 // Inject sidebar collapse state
 const isSidebarCollapsed = inject('isSidebarCollapsed', ref(false))
 const { t } = useI18n()
+const { success, error } = useToast()
+const { withLoading } = useLoading()
+const { handleError } = useErrorHandler()
 import productsData from '../data/products.json'
 
 // Load products from JSON file
@@ -1054,14 +1060,14 @@ const handleImageFileSelect = (event) => {
   // Validate file type
   if (!file.type.startsWith('image/')) {
     errors.image = 'Please select a valid image file'
-    showErrorToast('Invalid File', 'Please select a valid image file')
+    error('Invalid File: Please select a valid image file')
     return
   }
   
   // Validate file size (max 5MB)
   if (file.size > 5 * 1024 * 1024) {
     errors.image = 'Image size must be less than 5MB'
-    showErrorToast('File Too Large', 'Image size must be less than 5MB')
+    error('File Too Large: Image size must be less than 5MB')
     return
   }
   
@@ -1073,7 +1079,7 @@ const handleImageFileSelect = (event) => {
   }
   reader.onerror = () => {
     errors.image = 'Failed to read image file'
-    showErrorToast('Error', 'Failed to read image file')
+    error('Error: Failed to read image file')
   }
   reader.readAsDataURL(file)
 }
@@ -1090,7 +1096,7 @@ const clearImage = () => {
 // Handle form submit
 const handleSubmit = () => {
   if (!validateForm()) {
-    showErrorToast('Validation Error', 'Please fix the errors in the form')
+    error('Validation Error: Please fix the errors in the form')
     return
   }
   
@@ -1144,10 +1150,10 @@ const confirmAdd = () => {
     })
     showAddConfirmDialog.value = false
     closeDrawer()
-    showSuccessToast(t('productAdded'), `"${form.name}" ${t('productAddedSuccess')}`)
-  } catch (error) {
+    success(`${t('productAdded')}: "${form.name}" ${t('productAddedSuccess')}`)
+  } catch (err) {
     showAddConfirmDialog.value = false
-    showErrorToast('Error', 'Failed to add product. Please try again.')
+    handleError(err, { userMessage: 'Failed to add product. Please try again.' })
   }
 }
 
@@ -1187,11 +1193,11 @@ const confirmEdit = () => {
       })
       showEditConfirmDialog.value = false
       closeDrawer()
-      showSuccessToast(t('productUpdated'), `"${form.name}" ${t('productUpdatedSuccess')}`)
+      success(`${t('productUpdated')}: "${form.name}" ${t('productUpdatedSuccess')}`)
     }
-  } catch (error) {
+  } catch (err) {
     showEditConfirmDialog.value = false
-    showErrorToast('Error', 'Failed to update product. Please try again.')
+    handleError(err, { userMessage: 'Failed to update product. Please try again.' })
   }
 }
 
@@ -1213,12 +1219,12 @@ const confirmDelete = () => {
         })
         showDeleteDialog.value = false
         productToDelete.value = null
-        showSuccessToast(t('productDeleted'), `"${productName}" ${t('productDeletedSuccess')}`)
+        success(`${t('productDeleted')}: "${productName}" ${t('productDeletedSuccess')}`)
       }
     }
-  } catch (error) {
+  } catch (err) {
     showDeleteDialog.value = false
-    showErrorToast('Error', 'Failed to delete product. Please try again.')
+    handleError(err, { userMessage: 'Failed to delete product. Please try again.' })
   }
 }
 
@@ -1292,11 +1298,11 @@ const confirmStockAction = () => {
           description: `${stockForm.quantity} ${stockForm.quantity === 1 ? 'item' : 'items'} added to stock`,
           user: 'Admin'
         })
-        showSuccessToast(t('stockAdded'), `${stockForm.quantity} ${stockForm.quantity === 1 ? t('item') : t('items')} ${t('stockAddedSuccess')} "${product.name}" ${t('successfully')}`)
+        success(`${t('stockAdded')}: ${stockForm.quantity} ${stockForm.quantity === 1 ? t('item') : t('items')} ${t('stockAddedSuccess')} "${product.name}" ${t('successfully')}`)
       } else {
         // Add damaged logic
         if (stockForm.quantity > product.inStock) {
-          showErrorToast('Error', 'Damaged quantity cannot exceed in stock quantity')
+          error('Error: Damaged quantity cannot exceed in stock quantity')
           showStockConfirmDialog.value = false
           return
         }
@@ -1321,15 +1327,15 @@ const confirmStockAction = () => {
           description: `${stockForm.quantity} ${stockForm.quantity === 1 ? 'item' : 'items'} marked as damaged`,
           user: 'Admin'
         })
-        showSuccessToast(t('damagedItemsAdded'), `${stockForm.quantity} ${stockForm.quantity === 1 ? t('item') : t('items')} ${t('damagedItemsSuccess')} "${product.name}"`)
+        success(`${t('damagedItemsAdded')}: ${stockForm.quantity} ${stockForm.quantity === 1 ? t('item') : t('items')} ${t('damagedItemsSuccess')} "${product.name}"`)
       }
       
       showStockConfirmDialog.value = false
       closeStockDrawer()
     }
-  } catch (error) {
+  } catch (err) {
     showStockConfirmDialog.value = false
-    showErrorToast('Error', `Failed to ${stockDrawerType.value === 'add' ? 'add stock' : 'add damaged items'}. Please try again.`)
+    handleError(err, { userMessage: `Failed to ${stockDrawerType.value === 'add' ? 'add stock' : 'add damaged items'}. Please try again.` })
   }
 }
 

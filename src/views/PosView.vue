@@ -1,6 +1,6 @@
 <template>
-  <div :class="['mx-auto transition-all duration-300', isSidebarCollapsed ? 'max-w-full px-2' : 'max-w-7xl']">
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-3">
+  <div :class="['mx-auto transition-all duration-300 w-full', isSidebarCollapsed ? 'max-w-full px-3' : 'max-w-7xl px-3 lg:px-0']">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-2 sm:gap-3">
       <!-- Left Panel: Product Listing -->
       <div class="lg:col-span-2 bg-white dark:bg-gray-800 rounded-sm shadow px-3">
         <!-- Category Filters and Search -->
@@ -24,9 +24,9 @@
             </div>
             
             <!-- Search Bar -->
-            <div class="relative w-[300px]">
-              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <svg class="h-5 w-5 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="relative w-full sm:w-[300px]">
+              <div class="absolute inset-y-0 left-0 pl-2 sm:pl-3 flex items-center pointer-events-none">
+                <svg class="h-4 w-4 sm:h-5 sm:w-5 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </div>
@@ -34,7 +34,7 @@
                 v-model="searchQuery"
                 type="text"
                 :placeholder="t('searchProducts')"
-                class="w-full pl-10 pr-10 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400"
+                class="w-full pl-10 pr-10 py-2 h-[37px] border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400"
               />
               <button
                 v-if="searchQuery"
@@ -87,19 +87,19 @@
             
             <!-- Product Info -->
             <div class="p-4">
-              <h3 class="font-bold text-gray-900 dark:text-white text-sm mb-1 truncate" :title="product.name">{{ product.name }}</h3>
-              <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">{{ t('sku') }}: {{ product.sku }}</p>
+              <h3 class="font-bold text-gray-900 dark:text-white text-sm md:text-xs mb-1 truncate" :title="product.name">{{ product.name }}</h3>
+              <p class="text-xs md:text-[10px] text-gray-500 dark:text-gray-400 mb-2">{{ t('sku') }}: {{ product.sku }}</p>
               <div class="flex items-center justify-between mb-4">
-                <p class="text-lg font-bold text-gray-900 dark:text-white">${{ product.price.toFixed(2) }}</p>
-                <p class="text-sm text-gray-600 dark:text-gray-400">{{ product.inStock }} {{ t('inStock') }}</p>
+                <p class="text-lg md:text-base font-bold text-gray-900 dark:text-white">${{ product.price.toFixed(2) }}</p>
+                <p class="text-sm md:text-[10px] text-gray-600 dark:text-gray-400">{{ product.inStock }} {{ t('inStock') }}</p>
               </div>
               
               <!-- Add to Cart Button -->
               <button
                 @click="addToCart(product)"
-                class="w-full px-4 py-2.5 bg-blue-600 text-white rounded-sm hover:bg-blue-700 transition-colors font-medium text-sm flex items-center justify-center gap-2"
+                class="w-full px-3 py-2.5 bg-blue-600 text-white rounded-sm hover:bg-blue-700 transition-colors font-medium text-sm md:text-xs flex items-center justify-center gap-2 h-[37px]"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 md:h-3 md:w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                 </svg>
                 {{ t('addToCart') }}
@@ -140,38 +140,38 @@
               class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-sm"
             >
               <div class="flex-1">
-                <p class="font-medium text-[13px] text-gray-900 dark:text-white text-sm">{{ item.name }}</p>
-                <p class="text-xs text-[13px] text-gray-500 dark:text-gray-400">${{ item.price.toFixed(2) }}</p>
+                <p class="font-medium text-sm md:text-xs text-gray-900 dark:text-white">{{ item.name }}</p>
+                <p class="text-xs md:text-[10px] text-gray-500 dark:text-gray-400">${{ item.price.toFixed(2) }}</p>
               </div>
               <div class="flex items-center gap-2">
                 <button
                   @click="decreaseQuantity(item.id)"
-                  class="w-7 h-7 flex items-center justify-center border border-gray-300 dark:border-gray-600 rounded hover:bg-gray-200 dark:hover:bg-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-white transition-colors"
+                  class="w-7 h-7 md:w-6 md:h-6 flex items-center justify-center border border-gray-300 dark:border-gray-600 rounded hover:bg-gray-200 dark:hover:bg-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-white transition-colors text-sm md:text-xs"
                 >
                   -
                 </button>
-                <span class="w-3 text-center text-[13px] text-sm font-medium text-gray-900 dark:text-white">{{ item.quantity }}</span>
+                <span class="w-3 text-center text-sm md:text-xs font-medium text-gray-900 dark:text-white">{{ item.quantity }}</span>
                 <button
                   @click="increaseQuantity(item.id)"
-                  class="w-7 h-7 flex items-center justify-center border border-gray-300 dark:border-gray-600 rounded hover:bg-gray-200 dark:hover:bg-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-white transition-colors"
+                  class="w-7 h-7 md:w-6 md:h-6 flex items-center justify-center border border-gray-300 dark:border-gray-600 rounded hover:bg-gray-200 dark:hover:bg-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-white transition-colors text-sm md:text-xs"
                 >
                   +
                 </button>
               </div>
               <div class="text-right min-w-[70px]">
-                <p class="font-medium text-[14px] text-gray-900 dark:text-white">${{ (item.price * item.quantity).toFixed(2) }}</p>
+                <p class="font-medium text-sm md:text-xs text-gray-900 dark:text-white">${{ (item.price * item.quantity).toFixed(2) }}</p>
               </div>
               <button
                 @click="removeFromCart(item.id)"
                 class="text-red-400 dark:text-red-500 hover:text-red-600 dark:hover:text-red-400"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-4 md:w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                 </svg>
               </button>
             </div>
-            <div v-if="cart.length === 0" class="text-center text-gray-500 dark:text-gray-400 text-sm py-8 flex flex-col items-center gap-2">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div v-if="cart.length === 0" class="text-center text-gray-500 dark:text-gray-400 text-sm md:text-xs py-8 flex flex-col items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 md:h-10 md:w-10 text-gray-400 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
               </svg>
               <p class="text-gray-500 dark:text-gray-400">{{ t('cartIsEmpty') }}</p>
@@ -195,7 +195,7 @@
                   v-model.number="discount"
                   type="number"
                   min="0"
-                  class="w-16 px-2 py-1 border border-gray-300 dark:border-gray-600 rounded text-sm bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white"
+                  class="w-16 px-3 py-2  h-[37px] border border-gray-300 dark:border-gray-600 rounded text-sm bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white"
                 />
                 <span class="text-gray-900 dark:text-white font-medium">${{ discountAmount.toFixed(2) }}</span>
               </div>
@@ -304,7 +304,7 @@
             </button>
             <button
               @click="addToCartFromDetails"
-              class="px-4 py-2 bg-blue-600 text-white rounded-sm hover:bg-blue-700 transition-colors font-medium"
+              class="px-3 py-2 bg-blue-600 text-white rounded-sm hover:bg-blue-700 transition-colors font-medium h-[37px]"
             >
               {{ t('addToCart') }}
             </button>
@@ -355,31 +355,6 @@
       </div>
     </Transition>
     
-    <!-- Success Message Toast -->
-    <Transition name="toast">
-      <div
-        v-if="showSuccessMessage"
-        class="fixed top-4 right-4 bg-green-500 text-white rounded-sm shadow-lg p-4 flex items-center gap-3 z-50 min-w-[300px]"
-      >
-        <div class="w-8 h-8 bg-white bg-opacity-20 rounded-full flex items-center justify-center flex-shrink-0">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-          </svg>
-        </div>
-        <div class="flex-1">
-          <p class="font-semibold">{{ successMessageTitle }}</p>
-          <p class="text-sm text-green-50">{{ successMessageText }}</p>
-        </div>
-        <button
-          @click="showSuccessMessage = false"
-          class="text-white hover:text-green-100 transition-colors"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-      </div>
-    </Transition>
   </div>
 </template>
 
@@ -387,10 +362,16 @@
 import { ref, computed, inject } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from '../composables/useI18n'
+import { useToast } from '../composables/useToast'
+import { useLoading } from '../composables/useLoading'
+import { useErrorHandler } from '../composables/useErrorHandler'
 
 // Inject sidebar collapse state
 const isSidebarCollapsed = inject('isSidebarCollapsed', ref(false))
 const { t } = useI18n()
+const { success, error } = useToast()
+const { withLoading } = useLoading()
+const { handleError } = useErrorHandler()
 
 const router = useRouter()
 import productsData from '../data/products.json'
@@ -419,9 +400,6 @@ const showDetailsModal = ref(false)
 const selectedProduct = ref(null)
 const fullProductData = ref(null)
 const showClearCartDialog = ref(false)
-const showSuccessMessage = ref(false)
-const successMessageTitle = ref('')
-const successMessageText = ref('')
 
 const filteredProducts = computed(() => {
   let filtered = products.value
@@ -493,17 +471,10 @@ const clearCart = () => {
 const confirmClearCart = () => {
   clearCart()
   showClearCartDialog.value = false
-  showSuccessToast(t('cartCleared') || 'Cart Cleared', t('cartClearedSuccess') || 'All items have been removed from the cart successfully')
+  success(`${t('cartCleared') || 'Cart Cleared'}: ${t('cartClearedSuccess') || 'All items have been removed from the cart successfully'}`)
 }
 
-const showSuccessToast = (title, text) => {
-  successMessageTitle.value = title
-  successMessageText.value = text
-  showSuccessMessage.value = true
-  setTimeout(() => {
-    showSuccessMessage.value = false
-  }, 3000)
-}
+// Toast functions - now using composable (already defined above)
 
 const totalItems = computed(() => {
   return cart.value.reduce((sum, item) => sum + item.quantity, 0)
@@ -523,7 +494,7 @@ const total = computed(() => {
 
 const handleCheckout = () => {
   if (cart.value.length === 0) {
-    alert(t('cartIsEmptyAlert'))
+    error(t('cartIsEmptyAlert') || 'Cart is empty')
     return
   }
 

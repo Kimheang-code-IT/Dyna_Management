@@ -1,0 +1,113 @@
+[
+  {
+    "id": "EXP001",
+    "expenseName": "Employee Salaries",
+    "description": "Monthly salary payments for all employees",
+    "amount": 800.00,
+    "saler": "HR Department",
+    "created": "2024-01-25",
+    "supplier": "Internal",
+    "contact": "N/A",
+    "status": "Active"
+  },
+  {
+    "id": "EXP002",
+    "expenseName": "Office Supplies and Equipment",
+    "description": "Purchase of office supplies and equipment",
+    "amount": 660.00,
+    "saler": "Office Depot",
+    "created": "2024-01-28",
+    "supplier": "Office Depot",
+    "contact": "+855 12 345 678",
+    "status": "Active"
+  },
+  {
+    "id": "EXP003",
+    "expenseName": "Office Rent",
+    "description": "Monthly office rent payment",
+    "amount": 750.00,
+    "saler": "Property Management",
+    "created": "2024-02-10",
+    "supplier": "Property Management Co.",
+    "contact": "+855 12 456 789",
+    "status": "Active"
+  },
+  {
+    "id": "EXP004",
+    "expenseName": "Software Licenses",
+    "description": "Annual software licenses for all departments",
+    "amount": 900.00,
+    "saler": "Software Solutions",
+    "created": "2024-02-25",
+    "supplier": "Software Solutions",
+    "contact": "+855 12 567 890",
+    "status": "Active"
+  },
+  {
+    "id": "EXP005",
+    "expenseName": "Utilities",
+    "description": "Electricity, water, and internet bills",
+    "amount": 450.00,
+    "saler": "Utility Companies",
+    "created": "2024-03-05",
+    "supplier": "Various",
+    "contact": "+855 12 678 901",
+    "status": "Active"
+  },
+  {
+    "id": "EXP006",
+    "expenseName": "Marketing Campaign",
+    "description": "Digital marketing campaign expenses",
+    "amount": 1200.00,
+    "saler": "Marketing Agency",
+    "created": "2024-03-15",
+    "supplier": "Marketing Agency",
+    "contact": "+855 12 789 012",
+    "status": "Active"
+  },
+  {
+    "id": "EXP007",
+    "expenseName": "Maintenance Services",
+    "description": "Building and equipment maintenance",
+    "amount": 550.00,
+    "saler": "Maintenance Co.",
+    "created": "2024-04-01",
+    "supplier": "Maintenance Co.",
+    "contact": "+855 12 890 123",
+    "status": "Active"
+  },
+  {
+    "id": "EXP008",
+    "expenseName": "Training Programs",
+    "description": "Employee training and development programs",
+    "amount": 1100.00,
+    "saler": "Training Institute",
+    "created": "2024-04-10",
+    "supplier": "Training Institute",
+    "contact": "+855 12 901 234",
+    "status": "Active"
+  },
+  {
+    "id": "EXP009",
+    "expenseName": "Insurance Premium",
+    "description": "Annual insurance premium payment",
+    "amount": 850.00,
+    "saler": "Insurance Company",
+    "created": "2024-04-20",
+    "supplier": "Insurance Company",
+    "contact": "+855 12 012 345",
+    "status": "Active"
+  },
+  {
+    "id": "EXP010",
+    "expenseName": "Transportation Costs",
+    "description": "Vehicle fuel and maintenance costs",
+    "amount": 400.00,
+    "saler": "Various",
+    "created": "2024-05-01",
+    "supplier": "Various",
+    "contact": "N/A",
+    "status": "Active"
+  }
+]
+

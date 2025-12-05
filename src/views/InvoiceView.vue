@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-[700px] mx-auto bg-white dark:bg-gray-800 p-8">
+  <div class="max-w-[700px] mx-auto bg-white dark:bg-gray-800 p-4 sm:p-6 lg:p-8 w-full">
     <!-- Header Section -->
     <div class="flex justify-between items-start mb-8">
       <!-- Left: Company Info -->
@@ -26,7 +26,7 @@
     <hr class="border-gray-200 dark:border-gray-700 my-4">
     
     <!-- Invoice Info and Customer Info -->
-    <div class="grid grid-cols-2 gap-[150px] items-end mb-8">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8 lg:gap-[150px] items-end mb-6 sm:mb-8">
       <!-- Invoice Info -->
       <div>
         <h3 class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3">{{ t('invoiceInfo') }}</h3>

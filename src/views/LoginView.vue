@@ -1,6 +1,6 @@
 <template>
   <div class="h-screen w-full flex items-center justify-center bg-gray-50 dark:bg-gray-900 px-4">
-    <div class="max-w-md w-full bg-white dark:bg-gray-800 rounded-sm shadow-lg p-8">
+    <div class="max-w-md w-full bg-white dark:bg-gray-800 rounded-sm shadow-lg p-4 sm:p-6 lg:p-8">
       <div class="text-center mb-8">
         <!-- Logo -->
         <div class="flex flex-col items-center">
@@ -101,7 +101,7 @@
             v-model="email"
             type="email"
             required
-            class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400"
+            class="w-full px-3 py-2  border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 h-[37px]"
             placeholder="admin@example.com"
           />
         </div>

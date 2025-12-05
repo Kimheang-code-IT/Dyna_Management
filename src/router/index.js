@@ -155,6 +155,23 @@ const routes = [
     path: '/income',
     name: 'Income',
     component: IncomeView
+  },
+  // System Maintenance and Error pages
+  {
+    path: '/system-maintenance',
+    name: 'SystemMaintenance',
+    component: () => import('../views/SystemMaintenanceView.vue')
+  },
+  {
+    path: '/system-error/:type?/:code?',
+    name: 'SystemError',
+    component: () => import('../views/SystemErrorView.vue')
+  },
+  // Catch all 404 route - must be last
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: () => import('../views/NotFoundView.vue')
   }
 ]
 

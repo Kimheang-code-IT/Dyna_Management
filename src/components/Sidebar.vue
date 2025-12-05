@@ -1,8 +1,14 @@
 <template>
   <aside 
     :class="[
-      'fixed left-0 top-0 h-screen bg-white dark:bg-gray-800 flex flex-col z-50 transition-all duration-300 shadow-xl border-r border-gray-200 dark:border-gray-700',
-      isCollapsed ? 'w-20' : 'w-[255px]'
+      'fixed left-0 top-0 h-screen bg-white dark:bg-gray-800 flex flex-col transition-all duration-300 shadow-xl border-r border-gray-200 dark:border-gray-700',
+      // Desktop: always visible, z-30
+      'lg:z-30',
+      // Mobile: overlay, z-50, hidden by default
+      'z-50 lg:translate-x-0',
+      isMobile ? (isMobileOpen ? 'translate-x-0' : '-translate-x-full') : '',
+      // Width
+      isCollapsed && !isMobile ? 'w-20 lg:w-20' : 'w-[255px]'
     ]"
   >
     <!-- Logo -->
@@ -126,14 +132,15 @@
           <li v-for="item in section.items" :key="item.path">
             <router-link
               :to="item.path"
+              @click="handleNavigation"
               :class="[
                 'group flex items-center transition-all duration-200 relative overflow-hidden',
-                isCollapsed ? 'justify-center px-3 py-3 w-full' : 'px-3 py-2.5',
+                isCollapsed && !isMobile ? 'justify-center px-3 py-3 w-full' : 'px-3 py-2.5',
                 $route.path === item.path 
                   ? 'bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-md shadow-blue-500/20 font-medium rounded-sm' 
                   : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-700/50 rounded-md'
               ]"
-              :title="isCollapsed ? item.label : ''"
+              :title="isCollapsed && !isMobile ? item.label : ''"
             >
               <!-- Active indicator bar -->
               <span 
@@ -173,7 +180,20 @@ import logoImage from '../assets/logo.png'
 
 // Inject sidebar collapse state from App.vue
 const isCollapsed = inject('isSidebarCollapsed', ref(false))
+const isMobileSidebarOpen = inject('isMobileSidebarOpen', ref(false))
+const isMobile = inject('isMobile', ref(false))
+const closeMobileSidebar = inject('closeMobileSidebar', () => {})
 const { t } = useI18n()
+
+// Computed for mobile open state
+const isMobileOpen = computed(() => isMobileSidebarOpen.value)
+
+// Close sidebar on mobile when navigating
+const handleNavigation = () => {
+  if (isMobile.value) {
+    closeMobileSidebar()
+  }
+}
 
 // All menu items organized in sections with unified structure
 const allMenuSections = computed(() => [

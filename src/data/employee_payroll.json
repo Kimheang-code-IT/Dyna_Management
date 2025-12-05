@@ -1,0 +1,124 @@
+[
+  {
+    "id": "PAY001",
+    "employeeId": "EMP001",
+    "month": "2026-01",
+    "hoursWorked": 163,
+    "rate": 4.00,
+    "totalPayout": 652.00,
+    "status": "Pending",
+    "paymentMethod": "",
+    "notes": "",
+    "created": "2026-01-31"
+  },
+  {
+    "id": "PAY002",
+    "employeeId": "EMP002",
+    "month": "2026-01",
+    "hoursWorked": 170,
+    "rate": 4.00,
+    "totalPayout": 680.00,
+    "status": "Pending",
+    "paymentMethod": "",
+    "notes": "",
+    "created": "2026-01-31"
+  },
+  {
+    "id": "PAY003",
+    "employeeId": "EMP003",
+    "month": "2026-01",
+    "hoursWorked": 112,
+    "rate": 4.00,
+    "totalPayout": 448.00,
+    "status": "Pending",
+    "paymentMethod": "",
+    "notes": "",
+    "created": "2026-01-31"
+  },
+  {
+    "id": "PAY004",
+    "employeeId": "EMP004",
+    "month": "2026-01",
+    "hoursWorked": 170,
+    "rate": 4.00,
+    "totalPayout": 680.00,
+    "status": "Pending",
+    "paymentMethod": "",
+    "notes": "",
+    "created": "2026-01-31"
+  },
+  {
+    "id": "PAY005",
+    "employeeId": "EMP005",
+    "month": "2026-01",
+    "hoursWorked": 163,
+    "rate": 4.00,
+    "totalPayout": 652.00,
+    "status": "Pending",
+    "paymentMethod": "",
+    "notes": "",
+    "created": "2026-01-31"
+  },
+  {
+    "id": "PAY006",
+    "employeeId": "EMP006",
+    "month": "2026-01",
+    "hoursWorked": 150,
+    "rate": 4.00,
+    "totalPayout": 600.00,
+    "status": "Pending",
+    "paymentMethod": "",
+    "notes": "",
+    "created": "2026-01-31"
+  },
+  {
+    "id": "PAY007",
+    "employeeId": "EMP007",
+    "month": "2026-01",
+    "hoursWorked": 160,
+    "rate": 5.00,
+    "totalPayout": 800.00,
+    "status": "Paid",
+    "paymentMethod": "Bank transfer",
+    "notes": "Payment processed successfully",
+    "created": "2026-01-31",
+    "paidDate": "2026-02-01"
+  },
+  {
+    "id": "PAY008",
+    "employeeId": "EMP008",
+    "month": "2026-01",
+    "hoursWorked": 165,
+    "rate": 4.00,
+    "totalPayout": 660.00,
+    "status": "Pending",
+    "paymentMethod": "",
+    "notes": "",
+    "created": "2026-01-31"
+  },
+  {
+    "id": "PAY009",
+    "employeeId": "EMP009",
+    "month": "2026-01",
+    "hoursWorked": 140,
+    "rate": 4.00,
+    "totalPayout": 560.00,
+    "status": "Pending",
+    "paymentMethod": "",
+    "notes": "",
+    "created": "2026-01-31"
+  },
+  {
+    "id": "PAY010",
+    "employeeId": "EMP010",
+    "month": "2026-01",
+    "hoursWorked": 155,
+    "rate": 4.00,
+    "totalPayout": 620.00,
+    "status": "Pending",
+    "paymentMethod": "",
+    "notes": "",
+    "created": "2026-01-31"
+  }
+]
+

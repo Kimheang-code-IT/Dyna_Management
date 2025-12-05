@@ -1,8 +1,8 @@
 <template>
-  <nav class="sticky top-0 bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 px-4 py-2 z-40">
-    <div class="flex items-center justify-between">
+  <nav class="sticky top-0 bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 px-2 sm:px-4 py-2 z-40">
+    <div class="flex items-center justify-between gap-2">
       <!-- Left: Sidebar Toggle + Search Bar -->
-      <div class="flex items-center gap-2 flex-1 max-w-md">
+      <div class="flex items-center gap-2 flex-1 min-w-0">
         <!-- Sidebar Toggle Icon Button -->
         <button
           @click="toggleSidebar"
@@ -26,10 +26,10 @@
         </button>
         
         <!-- Search Bar -->
-        <div class="flex-1 relative" ref="searchContainer">
+        <div class="flex-1 relative min-w-0" ref="searchContainer">
           <div class="relative">
-            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <svg class="h-5 w-5 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="absolute inset-y-0 left-0 pl-2 sm:pl-3 flex items-center pointer-events-none">
+              <svg class="h-4 w-4 sm:h-5 sm:w-5 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </div>
@@ -39,7 +39,7 @@
               @focus="showSearchResults = true"
               type="text"
               :placeholder="t('search')"
-              class="w-full pl-10 pr-10 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400"
+              class="w-full pl-8 sm:pl-10 pr-8 sm:pr-10 py-1.5 sm:py-2 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400"
             />
             <button
               v-if="searchQuery"
@@ -101,17 +101,17 @@
       </div>
       
       <!-- Right: Language, Fullscreen, Profile, Logout -->
-      <div class="flex items-center gap-4 ml-6">
+      <div class="flex items-center gap-1 sm:gap-2 lg:gap-4 flex-shrink-0">
         <!-- Language Dropdown -->
         <div class="relative">
           <button
             @click="toggleLanguageDropdown"
-            class="flex items-center gap-2 px-3 py-2 rounded-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+            class="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-2 rounded-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
             title="Change Language"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="h-5 w-5 text-gray-600 dark:text-gray-300"
+              class="h-4 w-4 sm:h-5 sm:w-5 text-gray-600 dark:text-gray-300"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -123,7 +123,7 @@
                 d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"
               />
             </svg>
-            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ currentLanguage === 'en' ? 'English' : 'ខ្មែរ' }}</span>
+            <span class="hidden sm:inline text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">{{ currentLanguage === 'en' ? 'English' : 'ខ្មែរ' }}</span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               class="h-4 w-4 text-gray-600 dark:text-gray-300 transition-transform"
@@ -169,14 +169,14 @@
         <!-- Dark Mode Toggle Button -->
         <button
           @click="handleToggleDarkMode"
-          class="p-2 rounded-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+          class="p-1.5 sm:p-2 rounded-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
           :title="isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'"
         >
           <!-- Moon Icon - Show when in DARK mode (dark mode is active) -->
           <svg
             v-if="isDarkMode"
             xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5 text-gray-600 dark:text-gray-300"
+            class="h-4 w-4 sm:h-5 sm:w-5 text-gray-600 dark:text-gray-300"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -192,7 +192,7 @@
           <svg
             v-else
             xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5 text-gray-600 dark:text-gray-300"
+            class="h-4 w-4 sm:h-5 sm:w-5 text-gray-600 dark:text-gray-300"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -206,15 +206,15 @@
           </svg>
         </button>
         
-        <!-- Fullscreen Icon Button -->
+        <!-- Fullscreen Icon Button (hidden on mobile) -->
         <button
           @click="toggleFullScreen"
-          class="p-2 rounded-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+          class="hidden sm:flex p-1.5 sm:p-2 rounded-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors min-w-[44px] min-h-[44px] items-center justify-center"
           title="Toggle Fullscreen"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5 text-gray-600 dark:text-gray-300"
+            class="h-4 w-4 sm:h-5 sm:w-5 text-gray-600 dark:text-gray-300"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -232,12 +232,12 @@
         <div class="relative">
           <button
             @click="toggleProfileDropdown"
-            class="flex items-center gap-3 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-sm px-2 py-1 transition-colors"
+            class="flex items-center gap-1 sm:gap-2 lg:gap-3 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-sm px-1 sm:px-2 py-1 transition-colors min-h-[44px]"
           >
-            <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-semibold">
+            <div class="w-8 h-8 sm:w-10 sm:h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-semibold text-xs sm:text-sm flex-shrink-0">
               AD
             </div>
-            <span class="text-gray-700 dark:text-gray-300 font-medium">{{ t('admin') }}</span>
+            <span class="hidden sm:inline text-sm sm:text-base text-gray-700 dark:text-gray-300 font-medium">{{ t('admin') }}</span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               class="h-4 w-4 text-gray-600 dark:text-gray-300 transition-transform"
@@ -329,6 +329,8 @@ import categoriesData from '../data/categories.json'
 import productsData from '../data/products.json'
 import usersData from '../data/users.json'
 import salesData from '../data/sales.json'
+
+// Additional data will be loaded dynamically in the search function
 
 const router = useRouter()
 
@@ -497,6 +499,33 @@ const handleLogout = () => {
   router.push('/login')
 }
 
+// Define all available pages/routes for search
+const pageRoutes = [
+  { name: 'Dashboard', route: '/', keywords: ['dashboard', 'home', 'overview', 'main'] },
+  { name: 'Category', route: '/category', keywords: ['category', 'categories', 'product type'] },
+  { name: 'Product', route: '/product', keywords: ['product', 'products', 'items', 'inventory'] },
+  { name: 'POS', route: '/pos', keywords: ['pos', 'point of sale', 'checkout', 'register'] },
+  { name: 'Report', route: '/report', keywords: ['report', 'reports', 'analytics', 'statistics'] },
+  { name: 'User', route: '/user', keywords: ['user', 'users', 'account', 'accounts'] },
+  { name: 'History', route: '/history', keywords: ['history', 'log', 'activity', 'audit'] },
+  { name: 'Students', route: '/students', keywords: ['student', 'students', 'learner', 'learners'] },
+  { name: 'Student Register', route: '/student-register', keywords: ['student register', 'register student', 'enroll'] },
+  { name: 'Class Management', route: '/class-management', keywords: ['class', 'classes', 'course', 'courses', 'management'] },
+  { name: 'Student Deadline', route: '/student-deadline', keywords: ['deadline', 'deadlines', 'due date'] },
+  { name: 'Student Payment', route: '/student-payment', keywords: ['payment', 'payments', 'tuition', 'fee'] },
+  { name: 'Student Book', route: '/student-book', keywords: ['book', 'books', 'textbook', 'material'] },
+  { name: 'Student Graduated', route: '/student-graduated', keywords: ['graduated', 'graduate', 'alumni', 'completed'] },
+  { name: 'Employee', route: '/employee', keywords: ['employee', 'employees', 'staff', 'worker'] },
+  { name: 'Employee Register', route: '/employee-register', keywords: ['employee register', 'register employee', 'hire'] },
+  { name: 'Employee Attendance', route: '/employee-attendance', keywords: ['attendance', 'time', 'clock', 'check in'] },
+  { name: 'Employee Salary', route: '/employee-salary', keywords: ['salary', 'salaries', 'payroll', 'wage'] },
+  { name: 'Employee Schedule', route: '/employee-schedule', keywords: ['schedule', 'schedules', 'shift', 'roster'] },
+  { name: 'Financial', route: '/financial', keywords: ['financial', 'finance', 'money', 'budget'] },
+  { name: 'Investment', route: '/investment', keywords: ['investment', 'investments', 'invest'] },
+  { name: 'Expense', route: '/expense', keywords: ['expense', 'expenses', 'cost', 'spending'] },
+  { name: 'Income', route: '/income', keywords: ['income', 'revenue', 'earning', 'profit'] }
+]
+
 // Global search functionality
 const handleSearch = () => {
   if (!searchQuery.value.trim()) {
@@ -506,6 +535,22 @@ const handleSearch = () => {
 
   const query = searchQuery.value.toLowerCase().trim()
   const results = []
+
+  // Search Pages/Routes
+  pageRoutes.forEach(page => {
+    if (
+      page.name.toLowerCase().includes(query) ||
+      page.keywords.some(keyword => keyword.toLowerCase().includes(query))
+    ) {
+      results.push({
+        type: 'Page',
+        id: page.route,
+        title: page.name,
+        subtitle: `Navigate to ${page.name} page`,
+        route: page.route
+      })
+    }
+  })
 
   // Search Categories
   categoriesData.forEach(category => {
@@ -572,8 +617,146 @@ const handleSearch = () => {
     }
   })
 
-  // Limit results to 10
-  searchResults.value = results.slice(0, 10)
+  // Search Students (load from localStorage if available)
+  let studentsData = []
+  try {
+    const saved = localStorage.getItem('students_data')
+    if (saved) studentsData = JSON.parse(saved)
+  } catch (e) {
+    // Ignore errors
+  }
+  
+  if (studentsData && Array.isArray(studentsData)) {
+    studentsData.forEach(student => {
+      if (
+        (student.name && student.name.toLowerCase().includes(query)) ||
+        (student.contact && student.contact.toLowerCase().includes(query)) ||
+        (student.province && student.province.toLowerCase().includes(query)) ||
+        (student.course && student.course.toLowerCase().includes(query))
+      ) {
+        results.push({
+          type: 'Student',
+          id: student.id || student.name,
+          title: student.name || 'Unknown Student',
+          subtitle: `${student.course || 'N/A'} - ${student.province || 'N/A'} - ${student.contact || 'No contact'}`,
+          route: '/students'
+        })
+      }
+    })
+  }
+
+  // Search Employees (load from localStorage if available)
+  let employeesData = []
+  try {
+    const saved = localStorage.getItem('employees_data')
+    if (saved) employeesData = JSON.parse(saved)
+  } catch (e) {
+    // Ignore errors
+  }
+  
+  if (employeesData && Array.isArray(employeesData)) {
+    employeesData.forEach(employee => {
+      if (
+        (employee.name && employee.name.toLowerCase().includes(query)) ||
+        (employee.email && employee.email.toLowerCase().includes(query)) ||
+        (employee.role && employee.role.toLowerCase().includes(query)) ||
+        (employee.department && employee.department.toLowerCase().includes(query)) ||
+        (employee.phone && employee.phone.toLowerCase().includes(query))
+      ) {
+        results.push({
+          type: 'Employee',
+          id: employee.id || employee.name,
+          title: employee.name || 'Unknown Employee',
+          subtitle: `${employee.role || 'N/A'} - ${employee.department || 'N/A'} - ${employee.phone || employee.email || 'No contact'}`,
+          route: '/employee'
+        })
+      }
+    })
+  }
+
+  // Search Incomes (load from localStorage if available)
+  let incomesData = []
+  try {
+    const saved = localStorage.getItem('incomes_data')
+    if (saved) incomesData = JSON.parse(saved)
+  } catch (e) {
+    // Ignore errors
+  }
+  
+  if (incomesData && Array.isArray(incomesData)) {
+    incomesData.forEach(income => {
+      if (
+        (income.name && income.name.toLowerCase().includes(query)) ||
+        (income.description && income.description.toLowerCase().includes(query)) ||
+        (income.category && income.category.toLowerCase().includes(query))
+      ) {
+        results.push({
+          type: 'Income',
+          id: income.id || income.name,
+          title: income.name || 'Income',
+          subtitle: `${income.category || 'N/A'} - $${(income.price || income.amount || 0).toFixed(2)} - ${income.paymentDate || income.created || 'N/A'}`,
+          route: '/income'
+        })
+      }
+    })
+  }
+
+  // Search Expenses (load from localStorage if available)
+  let expensesData = []
+  try {
+    const saved = localStorage.getItem('expenses_data')
+    if (saved) expensesData = JSON.parse(saved)
+  } catch (e) {
+    // Ignore errors
+  }
+  
+  if (expensesData && Array.isArray(expensesData)) {
+    expensesData.forEach(expense => {
+      if (
+        (expense.expenseName && expense.expenseName.toLowerCase().includes(query)) ||
+        (expense.description && expense.description.toLowerCase().includes(query)) ||
+        (expense.supplier && expense.supplier.toLowerCase().includes(query))
+      ) {
+        results.push({
+          type: 'Expense',
+          id: expense.id || expense.expenseName,
+          title: expense.expenseName || 'Expense',
+          subtitle: `$${(expense.amount || 0).toFixed(2)} - ${expense.supplier || 'N/A'} - ${expense.created || 'N/A'}`,
+          route: '/expense'
+        })
+      }
+    })
+  }
+
+  // Search Investments (load from localStorage if available)
+  let investmentsData = []
+  try {
+    const saved = localStorage.getItem('investments_data')
+    if (saved) investmentsData = JSON.parse(saved)
+  } catch (e) {
+    // Ignore errors
+  }
+  
+  if (investmentsData && Array.isArray(investmentsData)) {
+    investmentsData.forEach(investment => {
+      if (
+        (investment.expenseName && investment.expenseName.toLowerCase().includes(query)) ||
+        (investment.description && investment.description.toLowerCase().includes(query)) ||
+        (investment.supplier && investment.supplier.toLowerCase().includes(query))
+      ) {
+        results.push({
+          type: 'Investment',
+          id: investment.id || investment.expenseName,
+          title: investment.expenseName || 'Investment',
+          subtitle: `$${(investment.amount || 0).toFixed(2)} - ${investment.supplier || 'N/A'} - ${investment.created || 'N/A'}`,
+          route: '/investment'
+        })
+      }
+    })
+  }
+
+  // Limit results to 15 (increased from 10 to show more results)
+  searchResults.value = results.slice(0, 15)
 }
 
 // Clear search
@@ -593,34 +776,52 @@ const navigateToResult = (result) => {
 // Get result icon
 const getResultIcon = (type) => {
   const icons = {
+    'Page': '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-4 w-4"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>',
     'Category': '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-4 w-4"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" /></svg>',
     'Product': '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-4 w-4"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>',
     'User': '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-4 w-4"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>',
-    'Sale': '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-4 w-4"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>'
+    'Sale': '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-4 w-4"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>',
+    'Student': '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-4 w-4"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>',
+    'Employee': '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-4 w-4"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>',
+    'Income': '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-4 w-4"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>',
+    'Expense': '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-4 w-4"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" /></svg>',
+    'Investment': '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-4 w-4"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>'
   }
-  return icons[type] || ''
+  return icons[type] || '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-4 w-4"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>'
 }
 
 // Get result icon background class
 const getResultIconClass = (type) => {
   const classes = {
-    'Category': 'bg-blue-100 text-blue-600',
-    'Product': 'bg-green-100 text-green-600',
-    'User': 'bg-purple-100 text-purple-600',
-    'Sale': 'bg-orange-100 text-orange-600'
+    'Page': 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400',
+    'Category': 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400',
+    'Product': 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400',
+    'User': 'bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400',
+    'Sale': 'bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400',
+    'Student': 'bg-cyan-100 dark:bg-cyan-900/30 text-cyan-600 dark:text-cyan-400',
+    'Employee': 'bg-pink-100 dark:bg-pink-900/30 text-pink-600 dark:text-pink-400',
+    'Income': 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400',
+    'Expense': 'bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400',
+    'Investment': 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400'
   }
-  return classes[type] || 'bg-gray-100 text-gray-600'
+  return classes[type] || 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
 }
 
 // Get result type badge class
 const getResultTypeClass = (type) => {
   const classes = {
-    'Category': 'bg-blue-100 text-blue-800',
-    'Product': 'bg-green-100 text-green-800',
-    'User': 'bg-purple-100 text-purple-800',
-    'Sale': 'bg-orange-100 text-orange-800'
+    'Page': 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-800 dark:text-indigo-300',
+    'Category': 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300',
+    'Product': 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300',
+    'User': 'bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300',
+    'Sale': 'bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300',
+    'Student': 'bg-cyan-100 dark:bg-cyan-900/30 text-cyan-800 dark:text-cyan-300',
+    'Employee': 'bg-pink-100 dark:bg-pink-900/30 text-pink-800 dark:text-pink-300',
+    'Income': 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-300',
+    'Expense': 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300',
+    'Investment': 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300'
   }
-  return classes[type] || 'bg-gray-100 text-gray-800'
+  return classes[type] || 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300'
 }
 
 // Close search results when clicking outside

@@ -1,0 +1,113 @@
+[
+  {
+    "id": "INV001",
+    "expenseName": "New Computer Equipment",
+    "description": "Purchase of 10 desktop computers for IT department",
+    "amount": 1500.00,
+    "saler": "Tech Solutions Co.",
+    "created": "2024-02-01",
+    "supplier": "Tech Solutions Co.",
+    "contact": "+855 12 345 678",
+    "status": "Active"
+  },
+  {
+    "id": "INV002",
+    "expenseName": "Building Renovation",
+    "description": "Renovation of main office building",
+    "amount": 2000.00,
+    "saler": "Construction Plus",
+    "created": "2024-02-15",
+    "supplier": "Construction Plus",
+    "contact": "+855 12 456 789",
+    "status": "Active"
+  },
+  {
+    "id": "INV003",
+    "expenseName": "Furniture Purchase",
+    "description": "Office furniture for new branch",
+    "amount": 1200.00,
+    "saler": "Furniture World",
+    "created": "2024-03-01",
+    "supplier": "Furniture World",
+    "contact": "+855 12 567 890",
+    "status": "Active"
+  },
+  {
+    "id": "INV004",
+    "expenseName": "Software Licenses",
+    "description": "Annual software licenses for all departments",
+    "amount": 900.00,
+    "saler": "Software Solutions",
+    "created": "2024-03-10",
+    "supplier": "Software Solutions",
+    "contact": "+855 12 678 901",
+    "status": "Active"
+  },
+  {
+    "id": "INV005",
+    "expenseName": "Vehicle Purchase",
+    "description": "Company vehicle for transportation",
+    "amount": 2500.00,
+    "saler": "Auto Dealer",
+    "created": "2024-03-20",
+    "supplier": "Auto Dealer",
+    "contact": "+855 12 789 012",
+    "status": "Active"
+  },
+  {
+    "id": "INV006",
+    "expenseName": "Security System",
+    "description": "Installation of security cameras and system",
+    "amount": 1800.00,
+    "saler": "Security Pro",
+    "created": "2024-04-01",
+    "supplier": "Security Pro",
+    "contact": "+855 12 890 123",
+    "status": "Active"
+  },
+  {
+    "id": "INV007",
+    "expenseName": "Network Infrastructure",
+    "description": "Upgrade network infrastructure and equipment",
+    "amount": 2200.00,
+    "saler": "Network Solutions",
+    "created": "2024-04-15",
+    "supplier": "Network Solutions",
+    "contact": "+855 12 901 234",
+    "status": "Active"
+  },
+  {
+    "id": "INV008",
+    "expenseName": "Training Equipment",
+    "description": "Equipment for training rooms",
+    "amount": 1100.00,
+    "saler": "Education Supplies",
+    "created": "2024-05-01",
+    "supplier": "Education Supplies",
+    "contact": "+855 12 012 345",
+    "status": "Active"
+  },
+  {
+    "id": "INV009",
+    "expenseName": "Air Conditioning Units",
+    "description": "Installation of AC units in all classrooms",
+    "amount": 3000.00,
+    "saler": "Cool Air Systems",
+    "created": "2024-05-10",
+    "supplier": "Cool Air Systems",
+    "contact": "+855 12 123 456",
+    "status": "Active"
+  },
+  {
+    "id": "INV010",
+    "expenseName": "Library Books",
+    "description": "Purchase of books for library",
+    "amount": 800.00,
+    "saler": "Book Store",
+    "created": "2024-05-20",
+    "supplier": "Book Store",
+    "contact": "+855 12 234 567",
+    "status": "Active"
+  }
+]
+

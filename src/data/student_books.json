@@ -1,0 +1,153 @@
+[
+  {
+    "id": "SB001",
+    "studentId": "STU001",
+    "books": [
+      {
+        "bookNo": "BK001",
+        "bookName": "Web Development Fundamentals",
+        "qty": 1
+      },
+      {
+        "bookNo": "BK002",
+        "bookName": "JavaScript Guide",
+        "qty": 1
+      }
+    ],
+    "created": "2024-01-15"
+  },
+  {
+    "id": "SB002",
+    "studentId": "STU002",
+    "books": [
+      {
+        "bookNo": "BK003",
+        "bookName": "Graphic Design Principles",
+        "qty": 1
+      }
+    ],
+    "created": "2024-02-20"
+  },
+  {
+    "id": "SB003",
+    "studentId": "STU003",
+    "books": [
+      {
+        "bookNo": "BK004",
+        "bookName": "Mobile App Development",
+        "qty": 2
+      },
+      {
+        "bookNo": "BK005",
+        "bookName": "React Native Basics",
+        "qty": 1
+      }
+    ],
+    "created": "2024-03-25"
+  },
+  {
+    "id": "SB004",
+    "studentId": "STU004",
+    "books": [
+      {
+        "bookNo": "BK001",
+        "bookName": "Web Development Fundamentals",
+        "qty": 1
+      }
+    ],
+    "created": "2024-04-10"
+  },
+  {
+    "id": "SB005",
+    "studentId": "STU005",
+    "books": [
+      {
+        "bookNo": "BK003",
+        "bookName": "Graphic Design Principles",
+        "qty": 1
+      },
+      {
+        "bookNo": "BK006",
+        "bookName": "UI/UX Design Handbook",
+        "qty": 1
+      }
+    ],
+    "created": "2024-05-15"
+  },
+  {
+    "id": "SB006",
+    "studentId": "STU006",
+    "books": [
+      {
+        "bookNo": "BK004",
+        "bookName": "Mobile App Development",
+        "qty": 1
+      }
+    ],
+    "created": "2024-06-20"
+  },
+  {
+    "id": "SB007",
+    "studentId": "STU007",
+    "books": [
+      {
+        "bookNo": "BK001",
+        "bookName": "Web Development Fundamentals",
+        "qty": 1
+      },
+      {
+        "bookNo": "BK007",
+        "bookName": "Full Stack Development",
+        "qty": 1
+      }
+    ],
+    "created": "2024-07-25"
+  },
+  {
+    "id": "SB008",
+    "studentId": "STU008",
+    "books": [
+      {
+        "bookNo": "BK003",
+        "bookName": "Graphic Design Principles",
+        "qty": 1
+      }
+    ],
+    "created": "2024-08-30"
+  },
+  {
+    "id": "SB009",
+    "studentId": "STU009",
+    "books": [
+      {
+        "bookNo": "BK004",
+        "bookName": "Mobile App Development",
+        "qty": 1
+      },
+      {
+        "bookNo": "BK008",
+        "bookName": "Python Programming",
+        "qty": 1
+      }
+    ],
+    "created": "2024-09-05"
+  },
+  {
+    "id": "SB010",
+    "studentId": "STU010",
+    "books": [
+      {
+        "bookNo": "BK001",
+        "bookName": "Web Development Fundamentals",
+        "qty": 1
+      },
+      {
+        "bookNo": "BK009",
+        "bookName": "Data Science Basics",
+        "qty": 1
+      }
+    ],
+    "created": "2024-10-10"
+  }
+]
+

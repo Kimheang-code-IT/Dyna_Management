@@ -1,0 +1,101 @@
+[
+  {
+    "employeeId": "EMP001",
+    "shifts": [
+      {
+        "id": "SHIFT001",
+        "day": "Wed",
+        "startTime": "09:00",
+        "endTime": "17:00",
+        "note": ""
+      },
+      {
+        "id": "SHIFT002",
+        "day": "Thu",
+        "startTime": "09:00",
+        "endTime": "17:00",
+        "note": ""
+      },
+      {
+        "id": "SHIFT003",
+        "day": "Fri",
+        "startTime": "09:00",
+        "endTime": "17:00",
+        "note": ""
+      }
+    ]
+  },
+  {
+    "employeeId": "EMP002",
+    "shifts": [
+      {
+        "id": "SHIFT004",
+        "day": "Mon",
+        "startTime": "08:00",
+        "endTime": "16:00",
+        "note": ""
+      },
+      {
+        "id": "SHIFT005",
+        "day": "Tue",
+        "startTime": "08:00",
+        "endTime": "16:00",
+        "note": ""
+      },
+      {
+        "id": "SHIFT006",
+        "day": "Wed",
+        "startTime": "08:00",
+        "endTime": "16:00",
+        "note": ""
+      },
+      {
+        "id": "SHIFT007",
+        "day": "Thu",
+        "startTime": "08:00",
+        "endTime": "16:00",
+        "note": ""
+      },
+      {
+        "id": "SHIFT008",
+        "day": "Fri",
+        "startTime": "08:00",
+        "endTime": "16:00",
+        "note": ""
+      }
+    ]
+  },
+  {
+    "employeeId": "EMP003",
+    "shifts": []
+  },
+  {
+    "employeeId": "EMP004",
+    "shifts": []
+  },
+  {
+    "employeeId": "EMP005",
+    "shifts": []
+  },
+  {
+    "employeeId": "EMP006",
+    "shifts": []
+  },
+  {
+    "employeeId": "EMP007",
+    "shifts": []
+  },
+  {
+    "employeeId": "EMP008",
+    "shifts": []
+  },
+  {
+    "employeeId": "EMP009",
+    "shifts": []
+  },
+  {
+    "employeeId": "EMP010",
+    "shifts": []
+  }
+]
+

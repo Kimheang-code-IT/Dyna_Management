@@ -46,6 +46,32 @@ export const addHistory = (action, details = {}) => {
   }
 }
 
+// Delete a specific history entry by ID
+export const deleteHistoryEntry = (id) => {
+  try {
+    const history = getHistory()
+    const filtered = history.filter(entry => entry.id !== id)
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(filtered))
+    return true
+  } catch (error) {
+    console.error('Error deleting history entry:', error)
+    return false
+  }
+}
+
+// Delete multiple history entries by IDs
+export const deleteHistoryEntries = (ids) => {
+  try {
+    const history = getHistory()
+    const filtered = history.filter(entry => !ids.includes(entry.id))
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(filtered))
+    return true
+  } catch (error) {
+    console.error('Error deleting history entries:', error)
+    return false
+  }
+}
+
 // Clear all history
 export const clearHistory = () => {
   try {

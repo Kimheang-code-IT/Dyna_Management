@@ -1,0 +1,101 @@
+[
+  {
+    "id": "GS001",
+    "studentId": "STU001",
+    "courses": [
+      "Web Development 101",
+      "Advanced Web Development",
+      "Full Stack Development"
+    ],
+    "status": "active",
+    "graduatedDate": "2024-07-15"
+  },
+  {
+    "id": "GS002",
+    "studentId": "STU002",
+    "courses": [
+      "Graphic Design Basics",
+      "UI/UX Design"
+    ],
+    "status": "active",
+    "graduatedDate": "2024-08-20"
+  },
+  {
+    "id": "GS003",
+    "studentId": "STU003",
+    "courses": [
+      "Mobile App Development",
+      "React Native Basics"
+    ],
+    "status": "inactive",
+    "graduatedDate": "2024-09-25"
+  },
+  {
+    "id": "GS004",
+    "studentId": "STU004",
+    "courses": [
+      "Web Development 101"
+    ],
+    "status": "active",
+    "graduatedDate": "2024-10-10"
+  },
+  {
+    "id": "GS005",
+    "studentId": "STU005",
+    "courses": [
+      "Graphic Design Basics"
+    ],
+    "status": "active",
+    "graduatedDate": "2024-11-15"
+  },
+  {
+    "id": "GS006",
+    "studentId": "STU006",
+    "courses": [
+      "Mobile App Development"
+    ],
+    "status": "inactive",
+    "graduatedDate": "2024-12-20"
+  },
+  {
+    "id": "GS007",
+    "studentId": "STU007",
+    "courses": [
+      "Web Development 101",
+      "Full Stack Development"
+    ],
+    "status": "active",
+    "graduatedDate": "2025-01-25"
+  },
+  {
+    "id": "GS008",
+    "studentId": "STU008",
+    "courses": [
+      "Graphic Design Basics",
+      "Digital Marketing"
+    ],
+    "status": "inactive",
+    "graduatedDate": "2025-02-28"
+  },
+  {
+    "id": "GS009",
+    "studentId": "STU009",
+    "courses": [
+      "Mobile App Development",
+      "Python Programming"
+    ],
+    "status": "active",
+    "graduatedDate": "2025-03-05"
+  },
+  {
+    "id": "GS010",
+    "studentId": "STU010",
+    "courses": [
+      "Web Development 101",
+      "Data Science Fundamentals"
+    ],
+    "status": "active",
+    "graduatedDate": "2025-04-10"
+  }
+]
+

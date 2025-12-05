@@ -1,0 +1,103 @@
+[
+  {
+    "id": "CLS001",
+    "className": "Web Development 101",
+    "teacher": "John Smith",
+    "schedule": "Mon, Wed, Fri 09:00-11:00",
+    "students": ["STU001", "STU004", "STU007", "STU010"],
+    "duration": "3 months",
+    "status": "Active",
+    "created": "2024-01-15"
+  },
+  {
+    "id": "CLS002",
+    "className": "Graphic Design Basics",
+    "teacher": "Jane Doe",
+    "schedule": "Tue, Thu 14:00-16:00",
+    "students": ["STU002", "STU005", "STU008"],
+    "duration": "2 months",
+    "status": "Active",
+    "created": "2024-02-01"
+  },
+  {
+    "id": "CLS003",
+    "className": "Mobile App Development",
+    "teacher": "Robert Johnson",
+    "schedule": "Mon, Wed 18:00-20:00",
+    "students": ["STU003", "STU006", "STU009"],
+    "duration": "4 months",
+    "status": "Active",
+    "created": "2024-03-10"
+  },
+  {
+    "id": "CLS004",
+    "className": "Advanced Web Development",
+    "teacher": "Emily Chen",
+    "schedule": "Tue, Thu 09:00-12:00",
+    "students": ["STU001", "STU007"],
+    "duration": "3 months",
+    "status": "Active",
+    "created": "2024-04-05"
+  },
+  {
+    "id": "CLS005",
+    "className": "UI/UX Design",
+    "teacher": "Michael Brown",
+    "schedule": "Mon, Wed, Fri 14:00-16:00",
+    "students": ["STU002", "STU005"],
+    "duration": "2 months",
+    "status": "Active",
+    "created": "2024-05-12"
+  },
+  {
+    "id": "CLS006",
+    "className": "React Native Basics",
+    "teacher": "Sarah Williams",
+    "schedule": "Sat, Sun 10:00-13:00",
+    "students": ["STU003", "STU006", "STU009"],
+    "duration": "2 months",
+    "status": "Active",
+    "created": "2024-06-20"
+  },
+  {
+    "id": "CLS007",
+    "className": "Full Stack Development",
+    "teacher": "David Lee",
+    "schedule": "Mon, Wed, Fri 18:00-21:00",
+    "students": ["STU001", "STU004", "STU010"],
+    "duration": "6 months",
+    "status": "Active",
+    "created": "2024-07-01"
+  },
+  {
+    "id": "CLS008",
+    "className": "Digital Marketing",
+    "teacher": "Olivia Martinez",
+    "schedule": "Tue, Thu 10:00-12:00",
+    "students": ["STU002", "STU008"],
+    "duration": "2 months",
+    "status": "Inactive",
+    "created": "2024-08-15"
+  },
+  {
+    "id": "CLS009",
+    "className": "Python Programming",
+    "teacher": "James Wilson",
+    "schedule": "Mon, Wed 14:00-16:00",
+    "students": ["STU003", "STU007"],
+    "duration": "3 months",
+    "status": "Active",
+    "created": "2024-09-10"
+  },
+  {
+    "id": "CLS010",
+    "className": "Data Science Fundamentals",
+    "teacher": "Sophia Anderson",
+    "schedule": "Sat 09:00-13:00",
+    "students": ["STU005", "STU010"],
+    "duration": "4 months",
+    "status": "Active",
+    "created": "2024-10-01"
+  }
+]
+

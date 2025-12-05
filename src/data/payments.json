@@ -1,0 +1,103 @@
+[
+  {
+    "id": "PAY001",
+    "studentId": "STU001",
+    "classId": "CLS001",
+    "invoiceNo": "INV-0001",
+    "amountDue": 150.00,
+    "dueDate": "2024-01-17T00:00:00.000Z",
+    "status": "Paid",
+    "created": "2024-01-10"
+  },
+  {
+    "id": "PAY002",
+    "studentId": "STU002",
+    "classId": "CLS002",
+    "invoiceNo": "INV-0002",
+    "amountDue": 150.00,
+    "dueDate": "2024-02-22T00:00:00.000Z",
+    "status": "Pending",
+    "created": "2024-02-15"
+  },
+  {
+    "id": "PAY003",
+    "studentId": "STU003",
+    "classId": "CLS003",
+    "invoiceNo": "INV-0003",
+    "amountDue": 200.00,
+    "dueDate": "2024-03-27T00:00:00.000Z",
+    "status": "Paid",
+    "created": "2024-03-20"
+  },
+  {
+    "id": "PAY004",
+    "studentId": "STU004",
+    "classId": "CLS001",
+    "invoiceNo": "INV-0004",
+    "amountDue": 150.00,
+    "dueDate": "2024-04-12T00:00:00.000Z",
+    "status": "Pending",
+    "created": "2024-04-05"
+  },
+  {
+    "id": "PAY005",
+    "studentId": "STU005",
+    "classId": "CLS002",
+    "invoiceNo": "INV-0005",
+    "amountDue": 150.00,
+    "dueDate": "2024-05-17T00:00:00.000Z",
+    "status": "Overdue",
+    "created": "2024-05-10"
+  },
+  {
+    "id": "PAY006",
+    "studentId": "STU006",
+    "classId": "CLS003",
+    "invoiceNo": "INV-0006",
+    "amountDue": 200.00,
+    "dueDate": "2024-06-22T00:00:00.000Z",
+    "status": "Pending",
+    "created": "2024-06-15"
+  },
+  {
+    "id": "PAY007",
+    "studentId": "STU007",
+    "classId": "CLS001",
+    "invoiceNo": "INV-0007",
+    "amountDue": 150.00,
+    "dueDate": "2024-07-27T00:00:00.000Z",
+    "status": "Paid",
+    "created": "2024-07-20"
+  },
+  {
+    "id": "PAY008",
+    "studentId": "STU008",
+    "classId": "CLS002",
+    "invoiceNo": "INV-0008",
+    "amountDue": 150.00,
+    "dueDate": "2024-08-01T00:00:00.000Z",
+    "status": "Pending",
+    "created": "2024-08-25"
+  },
+  {
+    "id": "PAY009",
+    "studentId": "STU009",
+    "classId": "CLS003",
+    "invoiceNo": "INV-0009",
+    "amountDue": 200.00,
+    "dueDate": "2024-10-07T00:00:00.000Z",
+    "status": "Paid",
+    "created": "2024-09-30"
+  },
+  {
+    "id": "PAY010",
+    "studentId": "STU010",
+    "classId": "CLS001",
+    "invoiceNo": "INV-0010",
+    "amountDue": 150.00,
+    "dueDate": "2024-11-12T00:00:00.000Z",
+    "status": "Pending",
+    "created": "2024-10-05"
+  }
+]
+

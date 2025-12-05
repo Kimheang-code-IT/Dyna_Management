@@ -1,0 +1,43 @@
+[
+  {
+    "id": "FIN001",
+    "type": "income",
+    "amount": 1500.00,
+    "description": "Student Tuition Fees",
+    "date": "2024-01-15",
+    "category": "Tuition"
+  },
+  {
+    "id": "FIN002",
+    "type": "income",
+    "amount": 1380.00,
+    "description": "Course Registration Fees",
+    "date": "2024-01-20",
+    "category": "Registration"
+  },
+  {
+    "id": "FIN003",
+    "type": "expense",
+    "amount": 800.00,
+    "description": "Employee Salaries",
+    "date": "2024-01-25",
+    "category": "Salaries"
+  },
+  {
+    "id": "FIN004",
+    "type": "expense",
+    "amount": 660.00,
+    "description": "Office Supplies and Equipment",
+    "date": "2024-01-28",
+    "category": "Supplies"
+  },
+  {
+    "id": "FIN005",
+    "type": "investment",
+    "amount": 1500.00,
+    "description": "New Computer Equipment",
+    "date": "2024-02-01",
+    "category": "Equipment"
+  }
+]
+

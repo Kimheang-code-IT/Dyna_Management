@@ -1,0 +1,123 @@
+[
+  {
+    "id": "EMP001",
+    "name": "John Smith",
+    "gender": "Male",
+    "role": "Manager",
+    "contract": "Full-time",
+    "contact": "012345678",
+    "schedule": "Mon-Fri 09:00-17:00",
+    "salary": 1200.00,
+    "status": "Active",
+    "hired": "2023-01-15"
+  },
+  {
+    "id": "EMP002",
+    "name": "Jane Doe",
+    "gender": "Female",
+    "role": "Teacher",
+    "contract": "Full-time",
+    "contact": "098765432",
+    "schedule": "Mon-Fri 08:00-16:00",
+    "salary": 800.00,
+    "status": "Active",
+    "hired": "2023-02-20"
+  },
+  {
+    "id": "EMP003",
+    "name": "David Johnson",
+    "gender": "Male",
+    "role": "Administrator",
+    "contract": "Part-time",
+    "contact": "011223344",
+    "schedule": "Mon-Wed-Fri 10:00-14:00",
+    "salary": 500.00,
+    "status": "Active",
+    "hired": "2023-03-10"
+  },
+  {
+    "id": "EMP004",
+    "name": "Sarah Williams",
+    "gender": "Female",
+    "role": "Teacher",
+    "contract": "Full-time",
+    "contact": "022334455",
+    "schedule": "Mon-Fri 09:00-17:00",
+    "salary": 850.00,
+    "status": "Active",
+    "hired": "2023-04-05"
+  },
+  {
+    "id": "EMP005",
+    "name": "Michael Brown",
+    "gender": "Male",
+    "role": "Coordinator",
+    "contract": "Full-time",
+    "contact": "033445566",
+    "schedule": "Mon-Fri 08:00-16:00",
+    "salary": 700.00,
+    "status": "Inactive",
+    "hired": "2023-05-15"
+  },
+  {
+    "id": "EMP006",
+    "name": "Emily Davis",
+    "gender": "Female",
+    "role": "Teacher",
+    "contract": "Part-time",
+    "contact": "044556677",
+    "schedule": "Tue-Thu 13:00-17:00",
+    "salary": 600.00,
+    "status": "Active",
+    "hired": "2023-06-20"
+  },
+  {
+    "id": "EMP007",
+    "name": "James Wilson",
+    "gender": "Male",
+    "role": "Manager",
+    "contract": "Full-time",
+    "contact": "055667788",
+    "schedule": "Mon-Fri 09:00-17:00",
+    "salary": 1300.00,
+    "status": "Active",
+    "hired": "2023-07-10"
+  },
+  {
+    "id": "EMP008",
+    "name": "Olivia Martinez",
+    "gender": "Female",
+    "role": "Administrator",
+    "contract": "Full-time",
+    "contact": "066778899",
+    "schedule": "Mon-Fri 08:00-16:00",
+    "salary": 750.00,
+    "status": "Active",
+    "hired": "2023-08-25"
+  },
+  {
+    "id": "EMP009",
+    "name": "Robert Taylor",
+    "gender": "Male",
+    "role": "Teacher",
+    "contract": "Part-time",
+    "contact": "077889900",
+    "schedule": "Mon-Wed-Fri 14:00-18:00",
+    "salary": 550.00,
+    "status": "Inactive",
+    "hired": "2023-09-30"
+  },
+  {
+    "id": "EMP010",
+    "name": "Sophia Anderson",
+    "gender": "Female",
+    "role": "Coordinator",
+    "contract": "Full-time",
+    "contact": "088990011",
+    "schedule": "Mon-Fri 09:00-17:00",
+    "salary": 720.00,
+    "status": "Active",
+    "hired": "2023-10-15"
+  }
+]
+

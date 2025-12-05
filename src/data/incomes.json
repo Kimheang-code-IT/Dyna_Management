@@ -1,0 +1,103 @@
+[
+  {
+    "id": "INC001",
+    "nameIncome": "Student Tuition Fees",
+    "description": "Monthly tuition fees from students",
+    "created": "2024-01-15",
+    "category": "Tuition",
+    "paymentDate": "2024-01-15",
+    "paymentPrice": 1500.00,
+    "method": "Bank Transfer"
+  },
+  {
+    "id": "INC002",
+    "nameIncome": "Course Registration Fees",
+    "description": "Registration fees for new courses",
+    "created": "2024-01-20",
+    "category": "Registration",
+    "paymentDate": "2024-01-20",
+    "paymentPrice": 1380.00,
+    "method": "Cash"
+  },
+  {
+    "id": "INC003",
+    "nameIncome": "Marketing Revenue",
+    "description": "Revenue from marketing campaigns",
+    "created": "2024-02-05",
+    "category": "Revenue",
+    "paymentDate": "2024-02-05",
+    "paymentPrice": 1200.00,
+    "method": "Bank Transfer"
+  },
+  {
+    "id": "INC004",
+    "nameIncome": "Course Fees",
+    "description": "Fees from specialized courses",
+    "created": "2024-02-20",
+    "category": "Tuition",
+    "paymentDate": "2024-02-20",
+    "paymentPrice": 1100.00,
+    "method": "Credit Card"
+  },
+  {
+    "id": "INC005",
+    "nameIncome": "Consulting Services",
+    "description": "Revenue from consulting services",
+    "created": "2024-03-01",
+    "category": "Services",
+    "paymentDate": "2024-03-01",
+    "paymentPrice": 950.00,
+    "method": "Bank Transfer"
+  },
+  {
+    "id": "INC006",
+    "nameIncome": "Workshop Fees",
+    "description": "Fees from workshops and seminars",
+    "created": "2024-03-15",
+    "category": "Workshop",
+    "paymentDate": "2024-03-15",
+    "paymentPrice": 850.00,
+    "method": "Cash"
+  },
+  {
+    "id": "INC007",
+    "nameIncome": "Certificate Fees",
+    "description": "Fees for certificate issuance",
+    "created": "2024-04-01",
+    "category": "Certification",
+    "paymentDate": "2024-04-01",
+    "paymentPrice": 700.00,
+    "method": "Bank Transfer"
+  },
+  {
+    "id": "INC008",
+    "nameIncome": "Material Sales",
+    "description": "Sales of educational materials",
+    "created": "2024-04-10",
+    "category": "Sales",
+    "paymentDate": "2024-04-10",
+    "paymentPrice": 600.00,
+    "method": "Cash"
+  },
+  {
+    "id": "INC009",
+    "nameIncome": "Partnership Revenue",
+    "description": "Revenue from partnerships",
+    "created": "2024-04-20",
+    "category": "Partnership",
+    "paymentDate": "2024-04-20",
+    "paymentPrice": 1300.00,
+    "method": "Bank Transfer"
+  },
+  {
+    "id": "INC010",
+    "nameIncome": "Online Course Fees",
+    "description": "Fees from online courses",
+    "created": "2024-05-01",
+    "category": "Online",
+    "paymentDate": "2024-05-01",
+    "paymentPrice": 1050.00,
+    "method": "Credit Card"
+  }
+]
+
