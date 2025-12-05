@@ -1,0 +1,32 @@
+# Root rules for this big project (Cursor)
+
+You are my AI coding assistant inside Cursor for a LARGE project.
+
+General rules:
+- Focus only on the files and folders I open or mention.
+- Do NOT scan the whole repo by default.
+- If you need more context, ASK me which file or folder to look at.
+- Keep edits as small and local as possible.
+- Show the final full code first, then a short explanation (3–5 sentences) in simple English.
+
+Performance rules:
+- Completely ignore these folders and files:
+  - node_modules/**
+  - dist/**
+  - build/**
+  - .git/**
+  - .turbo/**
+  - .next/**
+  - .output/**
+  - coverage/**
+  - **/*.log
+  - **/*.zip
+  - **/*.mp4
+
+Tech stack:
+- Frontend: Vue 3  with javascript + Tailwind CSS.
+- Do not change tooling config (tsconfig, webpack, vite, eslint, etc.) unless I ask.
+
+When something is unclear:
+- Make a reasonable assumption.
+- Tell me the assumption in 1 sentence, then continue with the solution.
