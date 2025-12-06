@@ -98,7 +98,7 @@
             </h3>
             <p
               class="text-base sm:text-base md:text-xl lg:text-2xl xl:text-3xl font-bold leading-tight sm:leading-normal text-gray-800 dark:text-white">
-              {{ totalStudentsInClasses }}
+              {{ totalStudentsInAllClasses }}
             </p>
           </div>
           <div
@@ -285,8 +285,8 @@
             <!-- Status -->
             <td class="px-3 py-3 whitespace-nowrap">
               <span class="px-2 py-1 text-[10px] font-medium rounded-full" :class="classItem.status === 'Active'
-                  ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200'
-                  : 'bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200'
+                ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200'
+                : 'bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200'
                 ">
                 {{ classItem.status === 'Active' ? t('active') : classItem.status }}
               </span>
@@ -358,7 +358,10 @@
     <!-- Right Side Drawer for View/Add/Edit Class -->
     <Transition name="drawer">
       <div v-if="showDrawer" class="fixed inset-0 bg-black bg-opacity-50 z-50" @click.self="closeDrawer">
-        <div class="absolute right-0 top-0 h-full w-full max-w-md bg-white dark:bg-gray-800 shadow-xl overflow-y-auto">
+        <div :class="[
+          'absolute right-0 top-0 h-full w-full bg-white dark:bg-gray-800 shadow-xl overflow-y-auto',
+          isViewMode ? 'max-w-4xl' : 'max-w-md'
+        ]">
           <div
             class="sticky top-0 bg-white dark:bg-gray-800 text-black dark:text-white px-6 py-5 flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left justify-center sm:justify-between z-10 border-b border-gray-200 dark:border-gray-700">
             <div class="flex items-center gap-3">
@@ -382,7 +385,158 @@
             </button>
           </div>
 
-          <form @submit.prevent="handleSubmit" class="p-6 space-y-4">
+          <!-- View Mode: Students List -->
+          <div v-if="isViewMode" class="p-6 space-y-4">
+            <!-- Summary Cards -->
+            <div class="grid grid-cols-3 gap-3 mb-4">
+              <!-- Total Students -->
+              <div class="bg-blue-50 dark:bg-blue-900/20 rounded-sm p-3 border border-blue-200 dark:border-blue-800">
+                <div class="flex items-center gap-2 mb-2">
+                  <div class="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600 dark:text-blue-400" fill="none"
+                      viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                  </div>
+                  <div class="text-xs text-blue-600 dark:text-blue-400 font-medium">{{ t('totalStudents') }}</div>
+                </div>
+                <div class="text-2xl font-bold text-blue-900 dark:text-blue-100">{{ totalStudentsInClass }}</div>
+              </div>
+              <!-- Male Students -->
+              <div class="bg-blue-50 dark:bg-blue-900/20 rounded-sm p-3 border border-blue-200 dark:border-blue-800">
+                <div class="flex items-center gap-2 mb-2">
+                  <div class="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600 dark:text-blue-400" fill="none"
+                      viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                  </div>
+                  <div class="text-xs text-blue-600 dark:text-blue-400 font-medium">{{ t('male') }}</div>
+                </div>
+                <div class="text-2xl font-bold text-blue-900 dark:text-blue-100">{{ maleStudentsInClass }}</div>
+              </div>
+              <!-- Female Students -->
+              <div class="bg-pink-50 dark:bg-pink-900/20 rounded-sm p-3 border border-pink-200 dark:border-pink-800">
+                <div class="flex items-center gap-2 mb-2">
+                  <div class="w-8 h-8 bg-pink-100 dark:bg-pink-900/30 rounded-full flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-pink-600 dark:text-pink-400" fill="none"
+                      viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                  </div>
+                  <div class="text-xs text-pink-600 dark:text-pink-400 font-medium">{{ t('female') }}</div>
+                </div>
+                <div class="text-2xl font-bold text-pink-900 dark:text-pink-100">{{ femaleStudentsInClass }}</div>
+              </div>
+            </div>
+
+            <!-- Search and Add Button -->
+            <div class="flex gap-2 mb-4">
+              <div class="relative flex-1">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                </div>
+                <input v-model="viewStudentSearchQuery" type="text" :placeholder="t('searchStudents')"
+                  class="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 h-[37px]" />
+              </div>
+              <button @click="handleAddStudent(editingClass)"
+                class="px-4 py-2 bg-blue-600 text-white rounded-sm hover:bg-blue-700 transition-colors font-medium flex items-center gap-2 h-[37px]">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+                {{ t('addStudentToClass') }}
+              </button>
+            </div>
+
+            <!-- Students Table -->
+            <div class="border border-gray-200 dark:border-gray-700 rounded-sm overflow-hidden">
+              <div class="max-h-[400px] overflow-y-auto">
+                <table class="w-full">
+                  <thead class="bg-gray-50 dark:bg-gray-700 sticky top-0 z-10">
+                    <tr>
+                      <th
+                        class="px-3 py-2 text-left text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase">
+                        {{ t('no') }}
+                      </th>
+                      <th
+                        class="px-3 py-2 text-left text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase">
+                        {{ t('student') }}
+                      </th>
+                      <th
+                        class="px-3 py-2 text-left text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase">
+                        {{ t('registered') }}
+                      </th>
+                      <th
+                        class="px-3 py-2 text-left text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase">
+                        {{ t('deadline') }}
+                      </th>
+                      <th
+                        class="px-3 py-2 text-left text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase">
+                        {{ t('status') }}
+                      </th>
+                      <th
+                        class="px-2 py-2 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase">
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                    <tr v-if="filteredStudentsInClass.length === 0">
+                      <td colspan="6" class="px-4 py-8 text-center text-sm text-gray-500 dark:text-gray-400">
+                        {{ viewStudentSearchQuery ? t('noResults') : t('noStudentsAvailable') }}
+                      </td>
+                    </tr>
+                    <tr v-for="(student, index) in filteredStudentsInClass" :key="student.id"
+                      class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                      <td class="px-3 py-2 text-xs text-gray-700 dark:text-gray-300">
+                        {{ index + 1 }}
+                      </td>
+                      <td class="px-2 py-2 text-[14px]">
+                        <div class="font-medium text-gray-900 dark:text-white">{{ student.name }}</div>
+                        <div class="text-[10px] text-gray-500 dark:text-gray-400">{{ student.id }}</div>
+                      </td>
+                      <td class="px-2 py-2 text-[14px] text-gray-700 dark:text-gray-300">
+                        {{ getStudentJoinedDate(student.id) }}
+                      </td>
+                      <td class="px-2 py-2 text-[14px] text-gray-700 dark:text-gray-300">
+                        {{ getStudentDeadline(student.id) }}
+                      </td>
+                      <td class="px-2 py-2">
+                        <span class="px-2 py-1 text-[10px] font-medium rounded-full" :class="{
+                          'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200': getStudentStatus(student.id) === 'Active',
+                          'bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200': getStudentStatus(student.id) === 'Warning',
+                          'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200': getStudentStatus(student.id) === 'Overdue'
+                        }">
+                          {{ getStudentStatus(student.id) === 'Active' ? t('active') : getStudentStatus(student.id) ===
+                            'Warning' ? t('pending') : t('overdue') }}
+                        </span>
+                      </td>
+                      <td class="px-2 py-2 text-center">
+                        <button @click="handleDeleteStudentFromClass(student)"
+                          class="text-red-400 hover:text-red-600 dark:hover:text-red-300 transition-colors"
+                          :title="t('delete')">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                          </svg>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Add/Edit Mode: Form -->
+          <form v-else @submit.prevent="handleSubmit" class="p-6 space-y-4">
             <!-- Class Name -->
             <div>
               <label for="className" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -393,6 +547,32 @@
                 :placeholder="t('className')" />
               <p v-if="errors.className" class="mt-1 text-sm text-red-600 dark:text-red-400">
                 {{ errors.className }}
+              </p>
+            </div>
+
+            <!-- Room Name -->
+            <div>
+              <label for="roomName" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                {{ t('room') }}
+              </label>
+              <input id="roomName" v-model="form.roomName" type="text" :disabled="isViewMode"
+                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed h-[37px]"
+                :placeholder="t('room')" />
+              <p v-if="errors.roomName" class="mt-1 text-sm text-red-600 dark:text-red-400">
+                {{ errors.roomName }}
+              </p>
+            </div>
+
+            <!-- Description -->
+            <div>
+              <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                {{ t('description') }}
+              </label>
+              <textarea id="description" v-model="form.description" rows="3" :disabled="isViewMode"
+                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed resize-none"
+                :placeholder="t('description')"></textarea>
+              <p v-if="errors.description" class="mt-1 text-sm text-red-600 dark:text-red-400">
+                {{ errors.description }}
               </p>
             </div>
 
@@ -625,6 +805,107 @@
         </div>
       </div>
     </div>
+
+    <!-- Delete Student from Class Dialog -->
+    <div v-if="showDeleteStudentDialog"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      @click.self="showDeleteStudentDialog = false">
+      <div class="bg-white dark:bg-gray-800 rounded-sm shadow-xl p-6 max-w-md w-full mx-4">
+        <div class="flex items-center gap-4 mb-4">
+          <div
+            class="w-10 h-10 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-red-100 dark:bg-red-900/30 rounded-full flex-shrink-0 flex items-center justify-center order-1 sm:order-2 mb-2 sm:mb-0">
+            <svg xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5 sm:h-4 sm:w-4 md:h-5 md:w-5 lg:h-6 lg:w-6 text-red-600 dark:text-red-400" fill="none"
+              viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+              {{ t('deleteStudent') }} from {{ t('class') }}
+            </h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400">
+              {{ t('areYouSure') }} {{ t('delete') }} {{ t('student') }}?
+            </p>
+          </div>
+        </div>
+        <p class="text-sm text-gray-700 dark:text-gray-300 mb-6">
+          {{ t('student') }}:
+          <span class="font-semibold">{{ studentToDeleteFromClass?.name }}</span>
+        </p>
+        <div class="flex gap-3 justify-end">
+          <button @click="showDeleteStudentDialog = false"
+            class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-sm hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors font-medium">
+            {{ t('cancel') }}
+          </button>
+          <button @click="confirmDeleteStudentFromClass"
+            class="px-4 py-2 bg-red-600 text-white rounded-sm hover:bg-red-700 transition-colors font-medium">
+            {{ t('yes') }}, {{ t('delete') }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Students Confirmation Dialog -->
+    <div v-if="showAddStudentConfirmDialog"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      @click.self="showAddStudentConfirmDialog = false">
+      <div class="bg-white dark:bg-gray-800 rounded-sm shadow-xl p-6 max-w-md w-full mx-4">
+        <div class="flex items-center gap-4 mb-4">
+          <div
+            class="w-10 h-10 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-blue-100 dark:bg-blue-900/30 rounded-full flex-shrink-0 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5 sm:h-4 sm:w-4 md:h-5 md:w-5 lg:h-6 lg:w-6 text-blue-600 dark:text-blue-400" fill="none"
+              viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+              {{ t('addStudentToClass') }}
+            </h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400">
+              {{ t('areYouSure') }} {{ t('add') }} {{ selectedStudentIds.length }} {{ selectedStudentIds.length === 1 ?
+                t('student') : t('students') }} {{ t('to') }} {{ t('class') }}?
+            </p>
+          </div>
+        </div>
+        <p class="text-sm text-gray-700 dark:text-gray-300 mb-3">
+          {{ t('class') }}:
+          <span class="font-semibold">{{ selectedClassForStudent?.className }}</span>
+        </p>
+        <!-- Students List -->
+        <div
+          class="mb-6 max-h-[200px] overflow-y-auto border border-gray-200 dark:border-gray-700 rounded-sm p-3 bg-gray-50 dark:bg-gray-700/50">
+          <div class="text-xs font-medium text-gray-600 dark:text-gray-400 mb-2">
+            {{ t('students') }} {{ t('to') }} {{ t('add') }}:
+          </div>
+          <div class="space-y-1">
+            <div v-for="studentId in selectedStudentIds" :key="studentId"
+              class="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-500 flex-shrink-0" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span class="font-medium">{{allStudents.find(s => s.id === studentId)?.name || studentId}}</span>
+              <span class="text-xs text-gray-500 dark:text-gray-400">({{ studentId }})</span>
+            </div>
+          </div>
+        </div>
+        <div class="flex gap-3 justify-end">
+          <button @click="showAddStudentConfirmDialog = false"
+            class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-sm hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors font-medium">
+            {{ t('cancel') }}
+          </button>
+          <button @click="actuallyAddStudents"
+            class="px-4 py-2 bg-blue-600 text-white rounded-sm hover:bg-blue-700 transition-colors font-medium">
+            {{ t('yes') }}, {{ t('add') }}
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -663,6 +944,13 @@ const selectedClassForStudent = ref(null)
 const studentSearchQuery = ref('')
 const selectedStudentIds = ref([])
 
+// View mode student search
+const viewStudentSearchQuery = ref('')
+
+// Delete student from class
+const showDeleteStudentDialog = ref(false)
+const studentToDeleteFromClass = ref(null)
+
 // Form state
 const form = reactive({
   className: '',
@@ -688,6 +976,7 @@ const errors = reactive({
 // Confirmation dialogs state
 const showEditConfirmDialog = ref(false)
 const showDeleteDialog = ref(false)
+const showAddStudentConfirmDialog = ref(false)
 const classToDelete = ref(null)
 
 // Load classes from JSON file or localStorage
@@ -783,6 +1072,67 @@ const filteredAvailableStudents = computed(() => {
   })
 })
 
+// Get students in the current class being viewed
+const studentsInClass = computed(() => {
+  if (!editingClass.value || !editingClass.value.students) return []
+  const studentIds = editingClass.value.students
+  return allStudents.value.filter((student) => studentIds.includes(student.id))
+})
+
+// Filter students in class by search
+const filteredStudentsInClass = computed(() => {
+  if (!viewStudentSearchQuery.value) return studentsInClass.value
+  const query = viewStudentSearchQuery.value.toLowerCase()
+  return studentsInClass.value.filter((student) => {
+    const name = (student.name || '').toLowerCase()
+    const id = (student.id || '').toLowerCase()
+    const course = (student.course || '').toLowerCase()
+    return (
+      name.includes(query) ||
+      id.includes(query) ||
+      course.includes(query)
+    )
+  })
+})
+
+// Student statistics in class
+const totalStudentsInClass = computed(() => studentsInClass.value.length)
+const maleStudentsInClass = computed(() =>
+  studentsInClass.value.filter((s) => s.gender === 'Male').length
+)
+const femaleStudentsInClass = computed(() =>
+  studentsInClass.value.filter((s) => s.gender === 'Female').length
+)
+
+// Get student joined date (when added to class) or use registered date
+const getStudentJoinedDate = (studentId) => {
+  if (!editingClass.value || !editingClass.value.studentJoinDates) {
+    const student = allStudents.value.find((s) => s.id === studentId)
+    return student?.registered || new Date().toISOString().split('T')[0]
+  }
+  return editingClass.value.studentJoinDates[studentId] ||
+    allStudents.value.find((s) => s.id === studentId)?.registered ||
+    new Date().toISOString().split('T')[0]
+}
+
+// Get student deadline (30 days from joined date)
+const getStudentDeadline = (studentId) => {
+  const joinedDate = getStudentJoinedDate(studentId)
+  const deadline = new Date(joinedDate)
+  deadline.setDate(deadline.getDate() + 30)
+  return deadline.toISOString().split('T')[0]
+}
+
+// Get student status (based on deadline)
+const getStudentStatus = (studentId) => {
+  const deadline = getStudentDeadline(studentId)
+  const today = new Date().toISOString().split('T')[0]
+  if (deadline < today) return 'Overdue'
+  const daysLeft = Math.ceil((new Date(deadline) - new Date(today)) / (1000 * 60 * 60 * 24))
+  if (daysLeft <= 7) return 'Warning'
+  return 'Active'
+}
+
 const totalClasses = computed(() => classes.value.length)
 
 const activeClasses = computed(() =>
@@ -798,7 +1148,7 @@ const totalTeachers = computed(() => {
   return unique.size
 })
 
-const totalStudentsInClasses = computed(() => {
+const totalStudentsInAllClasses = computed(() => {
   const allClassStudentIds = new Set()
   classes.value.forEach((c) => {
     if (c.students && Array.isArray(c.students)) {
@@ -822,11 +1172,15 @@ const toggleActionMenu = (classId) => {
 const handleView = (classItem) => {
   editingClass.value = classItem
   isViewMode.value = true
-  form.className = classItem.className
-  form.teacher = classItem.teacher
-  form.schedule = classItem.schedule
-  form.duration = classItem.duration
-  form.status = classItem.status
+  form.className = classItem.className || ''
+  form.roomName = classItem.roomName || ''
+  form.description = classItem.description || ''
+  form.teacher = classItem.teacher || ''
+  form.schedule = classItem.schedule || ''
+  form.duration = classItem.duration || ''
+  form.status = classItem.status || 'Active'
+  viewStudentSearchQuery.value = ''
+  loadStudents()
   activeActionMenu.value = null
   showDrawer.value = true
 }
@@ -834,11 +1188,13 @@ const handleView = (classItem) => {
 const handleEdit = (classItem) => {
   editingClass.value = classItem
   isViewMode.value = false
-  form.className = classItem.className
-  form.teacher = classItem.teacher
-  form.schedule = classItem.schedule
-  form.duration = classItem.duration
-  form.status = classItem.status
+  form.className = classItem.className || ''
+  form.roomName = classItem.roomName || ''
+  form.description = classItem.description || ''
+  form.teacher = classItem.teacher || ''
+  form.schedule = classItem.schedule || ''
+  form.duration = classItem.duration || ''
+  form.status = classItem.status || 'Active'
   activeActionMenu.value = null
   showDrawer.value = true
 }
@@ -879,6 +1235,8 @@ const closeDrawer = () => {
 
 const resetForm = () => {
   form.className = ''
+  form.roomName = ''
+  form.description = ''
   form.teacher = ''
   form.schedule = ''
   form.duration = ''
@@ -947,6 +1305,8 @@ const confirmAdd = async () => {
       const newClass = {
         id: newId,
         className: form.className,
+        roomName: form.roomName || '',
+        description: form.description || '',
         teacher: form.teacher,
         schedule: form.schedule,
         students: [],
@@ -974,6 +1334,8 @@ const confirmEdit = async () => {
         classes.value[index] = {
           ...classes.value[index],
           className: form.className,
+          roomName: form.roomName || '',
+          description: form.description || '',
           teacher: form.teacher,
           schedule: form.schedule,
           duration: form.duration,
@@ -1013,8 +1375,14 @@ const confirmDelete = async () => {
   }
 }
 
-// Confirm Add Students
-const confirmAddStudents = async () => {
+// Confirm Add Students (shows confirmation dialog)
+const confirmAddStudents = () => {
+  if (selectedStudentIds.value.length === 0) return
+  showAddStudentConfirmDialog.value = true
+}
+
+// Actually Add Students (after confirmation)
+const actuallyAddStudents = async () => {
   try {
     await withLoading(async () => {
       if (selectedClassForStudent.value && selectedStudentIds.value.length > 0) {
@@ -1027,11 +1395,31 @@ const confirmAddStudents = async () => {
             (id) => !existingStudents.includes(id)
           )
           classes.value[index].students = [...existingStudents, ...newStudents]
+
+          // Store join dates for new students
+          if (!classes.value[index].studentJoinDates) {
+            classes.value[index].studentJoinDates = {}
+          }
+          const today = new Date().toISOString().split('T')[0]
+          newStudents.forEach((studentId) => {
+            classes.value[index].studentJoinDates[studentId] = today
+          })
+
           saveClasses()
+          showAddStudentConfirmDialog.value = false
           showAddStudentDialog.value = false
           selectedClassForStudent.value = null
           selectedStudentIds.value = []
           studentSearchQuery.value = ''
+
+          // Reload class data if in view mode
+          if (isViewMode.value && editingClass.value) {
+            const updatedClass = classes.value.find((c) => c.id === editingClass.value.id)
+            if (updatedClass) {
+              editingClass.value = updatedClass
+            }
+          }
+
           success(
             `${t('studentsAdded')}: ${newStudents.length} ${newStudents.length === 1 ? t('student') : t('students')
             } ${t('studentsAddedSuccess')}`
@@ -1040,7 +1428,53 @@ const confirmAddStudents = async () => {
       }
     }, 'Adding students...')
   } catch (err) {
+    showAddStudentConfirmDialog.value = false
     handleError(err, { userMessage: 'Failed to add students. Please try again.' })
+  }
+}
+
+// Handle delete student from class
+const handleDeleteStudentFromClass = (student) => {
+  studentToDeleteFromClass.value = student
+  showDeleteStudentDialog.value = true
+}
+
+// Confirm delete student from class
+const confirmDeleteStudentFromClass = async () => {
+  try {
+    await withLoading(async () => {
+      if (studentToDeleteFromClass.value && editingClass.value) {
+        const index = classes.value.findIndex((c) => c.id === editingClass.value.id)
+        if (index !== -1) {
+          const studentId = studentToDeleteFromClass.value.id
+          classes.value[index].students = classes.value[index].students.filter(
+            (id) => id !== studentId
+          )
+
+          // Remove join date
+          if (classes.value[index].studentJoinDates) {
+            delete classes.value[index].studentJoinDates[studentId]
+          }
+
+          saveClasses()
+          showDeleteStudentDialog.value = false
+          studentToDeleteFromClass.value = null
+
+          // Update editing class
+          const updatedClass = classes.value.find((c) => c.id === editingClass.value.id)
+          if (updatedClass) {
+            editingClass.value = updatedClass
+          }
+
+          success(
+            `${t('studentDeleted')}: "${studentToDeleteFromClass.value?.name || studentId}" ${t('studentDeletedSuccess')}`
+          )
+        }
+      }
+    }, 'Removing student...')
+  } catch (err) {
+    showDeleteStudentDialog.value = false
+    handleError(err, { userMessage: 'Failed to remove student. Please try again.' })
   }
 }
 

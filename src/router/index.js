@@ -109,6 +109,11 @@ const routes = [
     name: 'StudentGraduated',
     component: StudentGraduatedView
   },
+  {
+    path: '/certificate/:id',
+    name: 'Certificate',
+    component: () => import('../views/CertificateView.vue')
+  },
   // EMPLOYEE section routes
   {
     path: '/employee',
@@ -163,8 +168,18 @@ const routes = [
     component: () => import('../views/SystemMaintenanceView.vue')
   },
   {
-    path: '/system-error/:type?/:code?',
+    path: '/system-error',
     name: 'SystemError',
+    component: () => import('../views/SystemErrorView.vue')
+  },
+  {
+    path: '/system-error/:type',
+    name: 'SystemErrorWithType',
+    component: () => import('../views/SystemErrorView.vue')
+  },
+  {
+    path: '/system-error/:type/:code',
+    name: 'SystemErrorWithTypeAndCode',
     component: () => import('../views/SystemErrorView.vue')
   },
   // Catch all 404 route - must be last

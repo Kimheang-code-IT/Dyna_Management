@@ -5,6 +5,7 @@
     "classId": "CLS001",
     "invoiceNo": "INV-0001",
     "amountDue": 150.00,
+    "method": "Bank",
     "dueDate": "2024-01-17T00:00:00.000Z",
     "status": "Paid",
     "created": "2024-01-10"
@@ -15,6 +16,7 @@
     "classId": "CLS002",
     "invoiceNo": "INV-0002",
     "amountDue": 150.00,
+    "method": "Physical",
     "dueDate": "2024-02-22T00:00:00.000Z",
     "status": "Pending",
     "created": "2024-02-15"
@@ -25,6 +27,7 @@
     "classId": "CLS003",
     "invoiceNo": "INV-0003",
     "amountDue": 200.00,
+    "method": "Bank",
     "dueDate": "2024-03-27T00:00:00.000Z",
     "status": "Paid",
     "created": "2024-03-20"
@@ -35,6 +38,7 @@
     "classId": "CLS001",
     "invoiceNo": "INV-0004",
     "amountDue": 150.00,
+    "method": "Physical",
     "dueDate": "2024-04-12T00:00:00.000Z",
     "status": "Pending",
     "created": "2024-04-05"
@@ -45,6 +49,7 @@
     "classId": "CLS002",
     "invoiceNo": "INV-0005",
     "amountDue": 150.00,
+    "method": "Bank",
     "dueDate": "2024-05-17T00:00:00.000Z",
     "status": "Overdue",
     "created": "2024-05-10"
@@ -55,6 +60,7 @@
     "classId": "CLS003",
     "invoiceNo": "INV-0006",
     "amountDue": 200.00,
+    "method": "Physical",
     "dueDate": "2024-06-22T00:00:00.000Z",
     "status": "Pending",
     "created": "2024-06-15"
@@ -65,6 +71,7 @@
     "classId": "CLS001",
     "invoiceNo": "INV-0007",
     "amountDue": 150.00,
+    "method": "Bank",
     "dueDate": "2024-07-27T00:00:00.000Z",
     "status": "Paid",
     "created": "2024-07-20"
@@ -75,6 +82,7 @@
     "classId": "CLS002",
     "invoiceNo": "INV-0008",
     "amountDue": 150.00,
+    "method": "Physical",
     "dueDate": "2024-08-01T00:00:00.000Z",
     "status": "Pending",
     "created": "2024-08-25"
@@ -85,6 +93,7 @@
     "classId": "CLS003",
     "invoiceNo": "INV-0009",
     "amountDue": 200.00,
+    "method": "Bank",
     "dueDate": "2024-10-07T00:00:00.000Z",
     "status": "Paid",
     "created": "2024-09-30"
@@ -95,6 +104,7 @@
     "classId": "CLS001",
     "invoiceNo": "INV-0010",
     "amountDue": 150.00,
+    "method": "Physical",
     "dueDate": "2024-11-12T00:00:00.000Z",
     "status": "Pending",
     "created": "2024-10-05"

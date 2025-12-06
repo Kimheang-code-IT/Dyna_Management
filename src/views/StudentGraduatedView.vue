@@ -128,20 +128,19 @@
         <!-- Sticky Header -->
         <thead class="bg-gray-50 dark:bg-gray-700 sticky top-0 z-10">
           <tr>
-            <th class="py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('no') }}</th>
-            <th class="px-2 py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('student') }}</th>
-            <th class="py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('contact') }}</th>
-            <th class="py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('course') }}</th>
-            <th class="py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('province') }}</th>
-            <th class="py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('totalCourse') }}</th>
-            <th class="py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('status') }}</th>
-            <th class="py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600"></th>
+            <th class="px-2 py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('no') }}</th>
+            <th class="px-3 py-3 text-left text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('student') }}</th>
+            <th class="px-3 py-3 text-left text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('contact') }}</th>
+            <th class="px-3 py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('province') }}</th>
+            <th class="px-3 py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('totalCourse') }}</th>
+            <th class="px-3 py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('status') }}</th>
+            <th class="px-2 py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('action') }}</th>
           </tr>
         </thead>
         <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
           <!-- No Results Found -->
           <tr v-if="filteredGraduatedStudents.length === 0 && (searchQuery || filterDateFrom || filterDateTo)">
-            <td colspan="8" class="px-4 py-12 text-center">
+            <td colspan="7" class="px-4 py-12 text-center">
               <div class="flex flex-col items-center justify-center gap-3">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -156,19 +155,60 @@
             :key="student.id"
             class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
           >
-            <td class="px-3 py-3 whitespace-nowrap text-xs text-gray-700 dark:text-gray-300 text-center">{{ index + 1 }}</td>
+            <td class="px-2 py-3 whitespace-nowrap text-xs text-gray-700 dark:text-gray-300 text-center">{{ index + 1 }}</td>
+            <!-- Student Column: Image, Khmer, English, ID -->
             <td class="px-3 py-3 text-xs">
-              <div class="font-medium text-gray-900 dark:text-white">{{ student.student.name }}</div>
+              <div class="flex items-center gap-2">
+                <!-- Student Image -->
+                <div class="w-10 h-10 rounded-md flex items-center justify-center overflow-hidden flex-shrink-0 bg-blue-100 dark:bg-blue-900">
+                  <img v-if="student.student.profileImage" 
+                    :src="student.student.profileImage" 
+                    :alt="student.student.nameEnglish || student.student.name"
+                    class="w-full h-full object-cover"
+                  />
+                  <span v-else class="text-blue-600 dark:text-blue-400 font-semibold text-xs">
+                    {{ getInitials(student.student.nameEnglish || student.student.nameKhmer || student.student.name) }}
+                  </span>
+                </div>
+                <!-- Student Info -->
+                <div class="flex-1 min-w-0">
+                  <div class="font-medium text-gray-900 dark:text-white">
+                    {{ student.student.nameKhmer || student.student.nameEnglish || student.student.name }}
+                  </div>
+                  <div class="text-[10px] text-gray-600 dark:text-gray-400 mt-0.5">
+                    {{ student.student.nameEnglish || student.student.name }}
+                  </div>
+                  <div class="text-[10px] text-gray-500 dark:text-gray-400 mt-0.5">
+                    {{ student.student.id }}
+                  </div>
+                </div>
+              </div>
             </td>
-            <td class="px-4 py-3 whitespace-nowrap text-xs text-gray-700 dark:text-gray-300 text-center">{{ student.student.contact || 'N/A' }}</td>
-            <td class="px-4 py-3 whitespace-nowrap text-xs text-gray-700 dark:text-gray-300 text-center">{{ student.student.course || 'N/A' }}</td>
-            <td class="px-4 py-3 whitespace-nowrap text-xs text-gray-700 dark:text-gray-300 text-center">{{ student.student.province || 'N/A' }}</td>
-            <td class="px-4 py-3 whitespace-nowrap text-xs text-gray-700 dark:text-gray-300 text-center">
+            <!-- Contact Column: Phone, Email -->
+            <td class="px-3 py-3 text-xs">
+              <div class="flex items-center gap-1 text-gray-700 dark:text-gray-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                </svg>
+                <span>{{ student.student.contact || student.student.phone || 'N/A' }}</span>
+              </div>
+              <div class="flex items-center gap-1 text-[10px] text-gray-500 dark:text-gray-400 mt-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+                <span class="truncate">{{ student.student.email || 'N/A' }}</span>
+              </div>
+            </td>
+            <!-- Province Column -->
+            <td class="px-3 py-3 whitespace-nowrap text-xs text-gray-700 dark:text-gray-300 text-center">{{ student.student.province || 'N/A' }}</td>
+            <!-- Total Course Column -->
+            <td class="px-3 py-3 whitespace-nowrap text-xs text-gray-700 dark:text-gray-300 text-center">
               <span class="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-[10px] font-medium">
                 {{ student.courses.length }} {{ t('courses') }}
               </span>
             </td>
-            <td class="px-4 py-3 whitespace-nowrap text-xs text-center">
+            <!-- Status Column -->
+            <td class="px-3 py-3 whitespace-nowrap text-xs text-center">
               <span
                 :class="[
                   'px-2 py-1 rounded-full text-[10px] font-medium',
@@ -180,17 +220,54 @@
                 {{ student.status === 'active' ? t('active') : t('inactive') }}
               </span>
             </td>
-            <td class="px-4 py-3 whitespace-nowrap text-xs font-medium">
-              <button
-                @click="handleView(student)"
-                class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors"
-                :title="t('view')"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                </svg>
-              </button>
+            <!-- Action Column -->
+            <td class="px-2 py-3 whitespace-nowrap text-xs font-medium">
+              <div class="relative" data-action-menu-root>
+                <button @click.stop="toggleActionMenu(student.id)"
+                  class="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+                  title="Actions">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path
+                      d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
+                  </svg>
+                </button>
+
+                <!-- Dropdown Menu -->
+                <div v-if="activeActionMenu === student.id"
+                  class="absolute right-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-sm shadow-lg border border-gray-200 dark:border-gray-700 py-1 z-50">
+                  <button @click="handleGenerateCertificate(student)"
+                    class="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                      stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    {{ t('generateCertificate') || 'Generate Certificate' }}
+                  </button>
+
+                  <button @click="handleView(student)"
+                    class="w-full text-left px-4 py-2 text-sm text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900 transition-colors flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                      stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                    {{ t('viewCourse') || 'View Course' }}
+                  </button>
+
+                  <button @click="handleDelete(student)"
+                    class="w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900 transition-colors flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                      stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                    {{ t('delete') }}
+                  </button>
+                </div>
+              </div>
             </td>
           </tr>
         </tbody>
@@ -336,6 +413,45 @@
       </div>
     </Transition>
     
+    <!-- Delete Confirmation Dialog -->
+    <div
+      v-if="showDeleteDialog"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      @click.self="showDeleteDialog = false"
+    >
+      <div class="bg-white dark:bg-gray-800 rounded-sm shadow-xl p-6 max-w-md w-full mx-4">
+        <div class="flex items-center gap-4 mb-4">
+          <div class="w-10 h-10 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-red-100 dark:bg-red-900/30 rounded-full flex-shrink-0 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-4 sm:w-4 md:h-5 md:w-5 lg:h-6 lg:w-6 text-red-600 dark:text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+            </svg>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ t('delete') }} {{ t('student') }}</h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400">{{ t('areYouSureDeleteGraduated') || 'Are you sure you want to delete this graduated student record?' }}</p>
+          </div>
+        </div>
+        <div v-if="studentToDelete" class="mb-6 space-y-2 text-sm text-gray-700 dark:text-gray-300">
+          <p><span class="font-medium">{{ t('student') }}:</span> {{ studentToDelete.student.name }}</p>
+          <p><span class="font-medium">{{ t('totalCourse') }}:</span> {{ studentToDelete.courses.length }} {{ t('courses') }}</p>
+        </div>
+        <div class="flex gap-3 justify-end">
+          <button
+            @click="showDeleteDialog = false"
+            class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-sm hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors font-medium"
+          >
+            {{ t('cancel') }}
+          </button>
+          <button
+            @click="confirmDelete"
+            class="px-4 py-2 bg-red-600 text-white rounded-sm hover:bg-red-700 transition-colors font-medium"
+          >
+            {{ t('yes') }}, {{ t('delete') }}
+          </button>
+        </div>
+      </div>
+    </div>
+    
     <!-- Add Course Dialog -->
     <div
       v-if="showAddCourseDialog"
@@ -392,6 +508,7 @@
 
 <script setup>
 import { ref, reactive, computed, inject, onMounted, onUnmounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { useI18n } from '../composables/useI18n'
 import { useToast } from '../composables/useToast'
 import { useLoading } from '../composables/useLoading'
@@ -399,6 +516,7 @@ import { useErrorHandler } from '../composables/useErrorHandler'
 
 // Inject sidebar collapse state
 const isSidebarCollapsed = inject('isSidebarCollapsed', ref(false))
+const router = useRouter()
 const { t } = useI18n()
 const { success, error } = useToast()
 const { withLoading } = useLoading()
@@ -468,6 +586,13 @@ const courseSearchQuery = ref('')
 // Add course dialog state
 const showAddCourseDialog = ref(false)
 const newCourseName = ref('')
+
+// Delete dialog state
+const showDeleteDialog = ref(false)
+const studentToDelete = ref(null)
+
+// Action menu state
+const activeActionMenu = ref(null)
 
 // Success/Error message state
 // Toast state removed - now using global ToastContainer
@@ -569,11 +694,59 @@ const getInitials = (name) => {
   return name.substring(0, 2).toUpperCase()
 }
 
+// Action menu functions
+const toggleActionMenu = (studentId) => {
+  activeActionMenu.value = activeActionMenu.value === studentId ? null : studentId
+}
+
 // View functions
 const handleView = (student) => {
   selectedStudent.value = { ...student }
   courseSearchQuery.value = ''
   showViewDrawer.value = true
+  activeActionMenu.value = null
+}
+
+// Generate certificate
+const handleGenerateCertificate = (student) => {
+  activeActionMenu.value = null
+  // Navigate to certificate page with student ID
+  router.push(`/certificate/${student.id}`)
+}
+
+// Handle delete
+const handleDelete = (student) => {
+  studentToDelete.value = student
+  showDeleteDialog.value = true
+  activeActionMenu.value = null
+}
+
+// Confirm delete
+const confirmDelete = async () => {
+  if (!studentToDelete.value) return
+  
+  try {
+    await withLoading(async () => {
+      const index = graduatedStudents.value.findIndex(gs => gs.id === studentToDelete.value.id)
+      if (index !== -1) {
+        const studentName = graduatedStudents.value[index].student.name
+        graduatedStudents.value.splice(index, 1)
+        saveGraduatedStudents()
+        showDeleteDialog.value = false
+        studentToDelete.value = null
+        success(`${t('graduatedStudentDeleted') || 'Graduated Student Deleted'}: "${studentName}" ${t('graduatedStudentDeletedSuccess') || 'has been successfully deleted!'}`)
+      }
+    }, 'Deleting graduated student...')
+  } catch (err) {
+    handleError(err, { userMessage: 'Failed to delete graduated student. Please try again.' })
+  }
+}
+
+// Close action menu when clicking outside
+const handleClickOutside = (event) => {
+  if (!event.target.closest('[data-action-menu-root]')) {
+    activeActionMenu.value = null
+  }
 }
 
 // Add course functions
@@ -635,6 +808,7 @@ const deleteCourse = async (student, courseIndex) => {
 // Toast functions - now using composable (already defined above)
 
 onMounted(() => {
+  document.addEventListener('click', handleClickOutside)
   loadStudents()
   loadGraduatedStudents()
   
@@ -650,6 +824,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
+  document.removeEventListener('click', handleClickOutside)
   window.removeEventListener('storage', loadGraduatedStudents)
   window.removeEventListener('storage', loadStudents)
 })

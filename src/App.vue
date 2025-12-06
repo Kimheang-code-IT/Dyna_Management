@@ -110,7 +110,11 @@ const isLoginPage = computed(() => {
          route.path === '/forgot-password' || 
          route.name === 'NotFound' ||
          route.name === 'SystemMaintenance' ||
-         route.name === 'SystemError'
+         route.name === 'SystemError' ||
+         route.name === 'SystemErrorWithType' ||
+         route.name === 'SystemErrorWithTypeAndCode' ||
+         route.path.startsWith('/system-error') ||
+         route.path === '/system-maintenance'
 })
 
 // Sidebar collapse state
