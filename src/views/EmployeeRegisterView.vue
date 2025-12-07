@@ -18,44 +18,58 @@
       <form @submit.prevent="handleSubmit" class="p-4 sm:px-12 space-y-4 sm:space-y-2">
         <!-- Full Name and Profile Image Row -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-4 sm:mb-6">
-          <!-- Left Column (Name, Role, Phone stacked) -->
+          <!-- Left Column (Name Khmer, Name English, Gender, Phone stacked) -->
           <div class="space-y-4">
-            <!-- Full Name -->
+            <!-- Full Name Khmer -->
             <div>
               <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                {{ t('fullName') }} <span class="text-red-500">*</span>
+                {{ t('fullNameKhmer') }} <span class="text-red-500">*</span>
               </label>
               <input
-                v-model="formData.name"
+                v-model="formData.nameKhmer"
                 type="text"
                 required
-                :placeholder="t('employeeFullNamePlaceholder')"
+                :placeholder="t('fullNameKhmerPlaceholder')"
+                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 transition-colors h-[37px] akbalthom-khmer"
+              />
+            </div>
+            
+            <!-- Full Name English -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                {{ t('fullNameEnglish') }} <span class="text-red-500">*</span>
+              </label>
+              <input
+                v-model="formData.nameEnglish"
+                type="text"
+                required
+                :placeholder="t('fullNameEnglishPlaceholder')"
                 class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 transition-colors h-[37px]"
               />
             </div>
             
-            <!-- Role / Position -->
+            <!-- Gender -->
             <div>
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              {{ t('gender') }}
-            </label>
-            <div class="relative">
-              <select
-                v-model="formData.gender"
-                class="w-full px-3 py-2 pr-10 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white appearance-none transition-colors h-[37px]"
-              >
-                <option value="">{{ t('selectGender') }}</option>
-                <option value="Male">{{ t('male') }}</option>
-                <option value="Female">{{ t('female') }}</option>
-              </select>
-              <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                <svg class="h-5 w-5 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                </svg>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                {{ t('gender') }} <span class="text-red-500">*</span>
+              </label>
+              <div class="relative">
+                <select
+                  v-model="formData.gender"
+                  required
+                  class="w-full px-3 py-2 pr-10 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white appearance-none transition-colors h-[37px]"
+                >
+                  <option value="">{{ t('selectGender') }}</option>
+                  <option value="Male">{{ t('male') }}</option>
+                  <option value="Female">{{ t('female') }}</option>
+                </select>
+                <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                  <svg class="h-5 w-5 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
               </div>
             </div>
-          </div>
-            
             
             <!-- Phone -->
             <div>
@@ -63,7 +77,7 @@
                 {{ t('phone') }} <span class="text-red-500">*</span>
               </label>
               <input
-                v-model="formData.contact"
+                v-model="formData.phone"
                 type="tel"
                 required
                 :placeholder="t('phonePlaceholder')"
@@ -91,7 +105,7 @@
                   <img
                     v-if="formData.profileImage"
                     :src="formData.profileImage"
-                    :alt="formData.name"
+                    :alt="formData.nameEnglish || formData.nameKhmer || 'Employee'"
                     class="w-full h-full object-cover"
                   />
                   <svg
@@ -128,36 +142,90 @@
         
         <!-- Rest of the Form Fields -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-2 sm:gap-4">
-          <!-- Gender -->
-          <div>
-              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                {{ t('role') }} / {{ t('position') }} <span class="text-red-500">*</span>
-              </label>
-              <input
-                v-model="formData.role"
-                type="text"
-                required
-                :placeholder="t('role')"
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 transition-colors h-[37px]"
-              />
-            </div>
-          
-          <!-- Department -->
+          <!-- Province -->
           <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              {{ t('department') }} <span class="text-red-500">*</span>
+              {{ t('province') }} <span class="text-red-500">*</span>
             </label>
             <div class="relative">
               <select
-                v-model="formData.department"
+                v-model="formData.province"
                 required
                 class="w-full px-3 py-2 pr-10 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white appearance-none transition-colors h-[37px]"
               >
-                <option value="">{{ t('selectDepartment') }}</option>
-                <option value="Management">{{ t('management') }}</option>
-                <option value="Teaching">{{ t('teaching') }}</option>
-                <option value="Administration">{{ t('administration') }}</option>
-                <option value="Coordination">{{ t('coordination') }}</option>
+                <option value="">{{ t('selectProvince') }}</option>
+                <option value="Phnom Penh">Phnom Penh</option>
+                <option value="Kandal">Kandal</option>
+                <option value="Kampong Cham">Kampong Cham</option>
+                <option value="Siem Reap">Siem Reap</option>
+                <option value="Battambang">Battambang</option>
+                <option value="Preah Sihanouk">Preah Sihanouk</option>
+                <option value="Kampot">Kampot</option>
+                <option value="Takeo">Takeo</option>
+                <option value="Kampong Thom">Kampong Thom</option>
+                <option value="Pursat">Pursat</option>
+                <option value="Other">Other</option>
+              </select>
+              <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                <svg class="h-5 w-5 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Date of Birth -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              {{ t('dob') }} <span class="text-red-500">*</span>
+            </label>
+            <input
+              v-model="formData.dob"
+              type="date"
+              required
+              class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white transition-colors h-[37px]"
+            />
+          </div>
+          
+          <!-- Role -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              {{ t('role') }} <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <select
+                v-model="formData.role"
+                required
+                class="w-full px-3 py-2 pr-10 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white appearance-none transition-colors h-[37px]"
+              >
+                <option value="">{{ t('selectRole') }}</option>
+                <option value="Manager">{{ t('manager') }}</option>
+                <option value="Teacher">{{ t('teacher') }}</option>
+                <option value="Administrator">{{ t('administrator') }}</option>
+                <option value="Coordinator">{{ t('coordinator') }}</option>
+              </select>
+              <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                <svg class="h-5 w-5 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Contract Type -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              {{ t('contract') }} <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <select
+                v-model="formData.contract"
+                required
+                class="w-full px-3 py-2 pr-10 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white appearance-none transition-colors h-[37px]"
+              >
+                <option value="">{{ t('selectContract') }}</option>
+                <option value="Full-time">{{ t('fullTime') }}</option>
+                <option value="Part-time">{{ t('partTime') }}</option>
               </select>
               <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                 <svg class="h-5 w-5 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -181,16 +249,43 @@
             />
           </div>
           
+          <!-- Telegram -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              Telegram
+            </label>
+            <input
+              v-model="formData.telegram"
+              type="text"
+              placeholder="@username"
+              class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 transition-colors h-[37px]"
+            />
+          </div>
+          
+          <!-- Registered Date -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              {{ t('registered') }}
+            </label>
+            <input
+              v-model="formData.registered"
+              type="date"
+              class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white transition-colors h-[37px]"
+            />
+          </div>
+          
           <!-- Status -->
           <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              {{ t('status') }}
+              {{ t('status') }} <span class="text-red-500">*</span>
             </label>
             <div class="relative">
               <select
                 v-model="formData.status"
+                required
                 class="w-full px-3 py-2 pr-10 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white appearance-none transition-colors h-[37px]"
               >
+                <option value="">{{ t('selectStatus') }}</option>
                 <option value="Active">{{ t('active') }}</option>
                 <option value="Inactive">{{ t('inactive') }}</option>
               </select>
@@ -201,86 +296,7 @@
               </div>
             </div>
           </div>
-          
-          <!-- Contract Type -->
-          <div>
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              {{ t('contractType') }}
-            </label>
-            <div class="relative">
-              <select
-                v-model="formData.contract"
-                class="w-full px-3 py-2 pr-10 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white appearance-none transition-colors h-[37px]"
-              >
-                <option value="">{{ t('selectContract') }}</option>
-                <option value="Full-time">{{ t('fullTime') }}</option>
-                <option value="Part-time">{{ t('partTime') }}</option>
-              </select>
-              <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                <svg class="h-5 w-5 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                </svg>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Start Date -->
-          <div>
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              {{ t('startDate') }} <span class="text-red-500">*</span>
-            </label>
-            <input
-              v-model="formData.hired"
-              type="date"
-              required
-              class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white transition-colors w-full h-[37px]"
-            />
-          </div>
-          
-          <!-- Salary (USD) -->
-          <div>
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              {{ t('salary') }} (USD) <span class="text-red-500">*</span>
-            </label>
-            <input
-              v-model.number="formData.salary"
-              type="number"
-              step="0.01"
-              min="0"
-              required
-              :placeholder="t('salary')"
-              class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 transition-colors h-[37px]"
-            />
-          </div>
-          
-
-          
-          <!-- Office / Address -->
-          <div >
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              {{ t('officeAddress') }}
-            </label>
-            <input
-              v-model="formData.address"
-              type="text"
-              :placeholder="t('officeAddressPlaceholder')"
-              class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 transition-colors h-[37px]"
-            />
-          </div>
         </div>
-          
-          <!-- Notes -->
-          <div>
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              {{ t('notes') }}
-            </label>
-            <textarea
-              v-model="formData.notes"
-              rows="4"
-              :placeholder="t('notesPlaceholder')"
-              class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 resize-y transition-colors"
-            ></textarea>
-          </div>
           
           <!-- Action Buttons -->
           <div class="flex gap-4 justify-end mt-8">
@@ -337,19 +353,18 @@ const fileInput = ref(null)
 
 // Form data
 const formData = ref({
-  name: '',
+  nameKhmer: '',
+  nameEnglish: '',
   gender: '',
+  province: '',
+  dob: '',
   role: '',
-  contact: '',
-  status: 'Active',
-  salary: 0,
-  schedule: '',
-  department: '',
-  email: '',
   contract: '',
-  hired: new Date().toISOString().split('T')[0],
-  address: '',
-  notes: '',
+  phone: '',
+  email: '',
+  telegram: '',
+  registered: new Date().toISOString().split('T')[0],
+  status: 'Active',
   profileImage: ''
 })
 
@@ -358,19 +373,18 @@ const formData = ref({
 // Reset form to initial state
 const resetForm = () => {
   formData.value = {
-    name: '',
+    nameKhmer: '',
+    nameEnglish: '',
     gender: '',
+    province: '',
+    dob: '',
     role: '',
-    contact: '',
-    status: 'Active',
-    salary: 0,
-    schedule: '',
-    department: '',
-    email: '',
     contract: '',
-    hired: new Date().toISOString().split('T')[0],
-    address: '',
-    notes: '',
+    phone: '',
+    email: '',
+    telegram: '',
+    registered: new Date().toISOString().split('T')[0],
+    status: 'Active',
     profileImage: ''
   }
   if (fileInput.value) {
@@ -426,7 +440,10 @@ const clearForm = () => {
 // Handle form submit
 const handleSubmit = async () => {
   // Validate required fields
-  if (!formData.value.name || !formData.value.role || !formData.value.contact || !formData.value.department || !formData.value.email) {
+  if (!formData.value.nameKhmer || !formData.value.nameEnglish || !formData.value.gender || 
+      !formData.value.province || !formData.value.dob || !formData.value.role || 
+      !formData.value.contract || !formData.value.phone || !formData.value.email || 
+      !formData.value.status) {
     error(`${t('error')}: ${t('pleaseFillRequiredFields')}`)
     return
   }
@@ -440,7 +457,7 @@ const handleSubmit = async () => {
   
   // Validate phone format (basic validation)
   const phoneRegex = /^[+]?[(]?[0-9]{1,4}[)]?[-\s.]?[(]?[0-9]{1,4}[)]?[-\s.]?[0-9]{1,9}$/
-  if (!phoneRegex.test(formData.value.contact)) {
+  if (!phoneRegex.test(formData.value.phone)) {
     error(`${t('error')}: ${t('invalidPhoneFormat')}`)
     return
   }
@@ -454,7 +471,9 @@ const handleSubmit = async () => {
       const newEmployee = {
         id: newId,
         ...formData.value,
-        hired: formData.value.hired || new Date().toISOString().split('T')[0]
+        name: formData.value.nameEnglish || formData.value.nameKhmer || '',
+        contact: formData.value.phone || '',
+        hired: formData.value.registered || new Date().toISOString().split('T')[0]
       }
       
       employees.value.push(newEmployee)
@@ -463,7 +482,8 @@ const handleSubmit = async () => {
       // Dispatch event to update EmployeeView
       window.dispatchEvent(new CustomEvent('employeesUpdated'))
       
-      success(`${t('employeeAdded')}: "${formData.value.name}" ${t('employeeAddedSuccess')}`)
+      const employeeName = formData.value.nameEnglish || formData.value.nameKhmer || 'Employee'
+      success(`${t('employeeAdded')}: "${employeeName}" ${t('employeeAddedSuccess')}`)
       
       // Reset form after successful registration
       setTimeout(() => {
@@ -510,6 +530,21 @@ onMounted(() => {
 .toast-leave-to {
   opacity: 0;
   transform: translateX(100%);
+}
+
+/* AKbalthom KhmerGothic Font */
+@font-face {
+  font-family: 'AKbalthom KhmerGothic';
+  src: url('../assets/fonts/AKbalthom%20KhmerGothic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+.akbalthom-khmer {
+  font-family: 'AKbalthom KhmerGothic', 'Khmer', 'Khmer OS', sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }
 </style>
 

@@ -1,5 +1,5 @@
 <template>
-    <div :class="['mx-auto transition-all duration-300 w-full', isSidebarCollapsed ? 'max-w-full px-3' : 'max-w-7xl px-3 lg:px-0']">
+  <div :class="['mx-auto transition-all duration-300 w-full', isSidebarCollapsed ? 'max-w-full px-3' : 'max-w-7xl px-3 lg:px-0']">
     <!-- Summary Cards -->
     <div class="flex flex-nowrap sm:flex-wrap gap-1 sm:gap-1.5 md:gap-2 lg:gap-3 mb-2 sm:mb-3">
       <!-- Total Employees Card -->
@@ -65,10 +65,10 @@
     
     <!-- Employees Table -->
     <div class="bg-white dark:bg-gray-800 rounded-sm shadow p-2 sm:p-3">
-      <!-- Search and Filter Bar -->
+      <!-- Search Filter Bar -->
       <div class="p-0 mb-2 sm:mb-3">
         <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 items-stretch sm:items-center justify-between">
-          <div class="relative w-full sm:w-[230px]">
+          <div class="relative w-full sm:w-[300px]">
             <div class="absolute inset-y-0 left-0 pl-2 sm:pl-3 flex items-center pointer-events-none">
               <svg class="h-4 w-4 sm:h-5 sm:w-5 text-gray-400 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -91,33 +91,6 @@
               </svg>
             </button>
           </div>
-          <div class="flex items-center gap-4 flex-wrap">
-            <!-- Date Range Picker -->
-            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
-              <label class="text-xs font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap">{{ t('dateBetween') }}:</label>
-              <input
-                v-model="filterDateFrom"
-                type="date"
-                class="px-3 py-2 px-3 .5 py-2 text-xs border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white h-[37px] w-[115px] h-[37px]"
-              />
-              <span class="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 self-center">{{ t('to') }}</span>
-              <input
-                v-model="filterDateTo"
-                type="date"
-                class="px-3 py-2 px-3 .5 py-2 text-xs border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white h-[37px] w-[115px] h-[37px]"
-              />
-              <button
-                v-if="filterDateFrom || filterDateTo"
-                @click="clearDateFilter"
-                class="px-3 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors"
-                :title="t('clear')"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -129,21 +102,23 @@
         <thead class="bg-gray-50 dark:bg-gray-700 sticky top-0 z-10">
           <tr>
             <th class="py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('no') }}</th>
-            <th class="px-2 py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('employee') }}</th>
+            <th class="px-2 py-3 text-left text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('employee') }}</th>
             <th class="py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('gender') }}</th>
+            <th class="py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('province') }}</th>
+            <th class="py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('dob') }}</th>
             <th class="py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('role') }}</th>
             <th class="py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('contract') }}</th>
             <th class="py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('contact') }}</th>
-            <th class="py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('schedule') }}</th>
-            <th class="py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('salary') }}</th>
+            <th class="py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">Telegram</th>
+            <th class="py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('registered') }}</th>
             <th class="py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('status') }}</th>
             <th class="py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600"></th>
           </tr>
         </thead>
         <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
           <!-- No Results Found -->
-          <tr v-if="filteredEmployees.length === 0 && (searchQuery || filterDateFrom || filterDateTo)">
-            <td colspan="10" class="px-4 py-12 text-center">
+          <tr v-if="filteredEmployees.length === 0 && searchQuery">
+            <td colspan="12" class="px-4 py-12 text-center">
               <div class="flex flex-col items-center justify-center gap-3">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -165,26 +140,38 @@
                   <img
                     v-if="employee.profileImage"
                     :src="employee.profileImage"
-                    :alt="employee.name"
+                    :alt="employee.nameEnglish || employee.nameKhmer || employee.name"
                     class="w-full h-full object-cover"
                   />
                   <span
                     v-else
                     class="text-blue-600 dark:text-blue-400 font-semibold text-xs"
-                  >{{ employee.name.charAt(0).toUpperCase() }}</span>
+                  >{{ (employee.nameEnglish || employee.nameKhmer || employee.name || '').charAt(0).toUpperCase() }}</span>
                 </div>
                 <div>
-                  <div class="font-medium text-gray-900 dark:text-white text-xs">{{ employee.name }}</div>
+                  <div class="font-medium text-gray-900 dark:text-white text-xs">
+                    <div v-if="employee.nameKhmer" class="akbalthom-khmer">{{ employee.nameKhmer }}</div>
+                    <div v-if="employee.nameEnglish" class="text-gray-900 dark:text-white">{{ employee.nameEnglish }}</div>
+                    <div v-if="!employee.nameKhmer && !employee.nameEnglish">{{ employee.name }}</div>
+                  </div>
                   <div class="text-[10px] text-gray-500 dark:text-gray-400">{{ employee.id }}</div>
                 </div>
               </div>
             </td>
             <td class="px-4 py-3 whitespace-nowrap text-xs text-gray-700 dark:text-gray-300 text-center">{{ employee.gender }}</td>
+            <td class="px-4 py-3 whitespace-nowrap text-xs text-gray-700 dark:text-gray-300 text-center">{{ employee.province || '-' }}</td>
+            <td class="px-4 py-3 whitespace-nowrap text-xs text-gray-700 dark:text-gray-300 text-center">{{ employee.dob ? formatDate(employee.dob) : '-' }}</td>
             <td class="px-4 py-3 whitespace-nowrap text-xs text-gray-700 dark:text-gray-300 text-center">{{ employee.role }}</td>
             <td class="px-4 py-3 whitespace-nowrap text-xs text-gray-700 dark:text-gray-300 text-center">{{ employee.contract }}</td>
-            <td class="px-4 py-3 whitespace-nowrap text-xs text-gray-700 dark:text-gray-300 text-center">{{ employee.contact }}</td>
-            <td class="px-4 py-3 whitespace-nowrap text-xs text-gray-700 dark:text-gray-300 text-center">{{ employee.schedule }}</td>
-            <td class="px-4 py-3 whitespace-nowrap text-xs text-gray-700 dark:text-gray-300 text-center">${{ employee.salary.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}</td>
+            <td class="px-4 py-3 whitespace-nowrap text-xs text-gray-700 dark:text-gray-300 text-center">
+              <div v-if="employee.phone || employee.email" class="flex flex-col gap-0.5">
+                <div v-if="employee.phone" class="text-gray-700 dark:text-gray-300">{{ employee.phone }}</div>
+                <div v-if="employee.email" class="text-gray-500 dark:text-gray-400 text-[10px]">{{ employee.email }}</div>
+              </div>
+              <span v-else>{{ employee.contact || '-' }}</span>
+            </td>
+            <td class="px-4 py-3 whitespace-nowrap text-xs text-gray-700 dark:text-gray-300 text-center">{{ employee.telegram || '-' }}</td>
+            <td class="px-4 py-3 whitespace-nowrap text-xs text-gray-700 dark:text-gray-300 text-center">{{ employee.registered ? formatDate(employee.registered) : (employee.hired ? formatDate(employee.hired) : '-') }}</td>
             <td class="px-4 py-3 whitespace-nowrap text-xs text-center">
               <span
                 :class="[
@@ -266,7 +253,7 @@
                 </svg>
               </div>
               <h2 class="text-xl font-bold text-black dark:text-white">
-                {{ isViewMode ? t('viewEmployee') : editingEmployee ? t('editEmployee') : t('add') }}
+                {{ isViewMode ? t('viewEmployee') : editingEmployee ? t('editEmployee') : t('addEmployee') }}
               </h2>
             </div>
             <button
@@ -280,19 +267,35 @@
           </div>
           
           <form @submit.prevent="handleSubmit" class="p-6 space-y-4">
-            <!-- Employee Name -->
+            <!-- Employee Name Khmer -->
             <div>
-              <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                {{ t('employeeName') }} <span class="text-red-500">*</span>
+              <label for="nameKhmer" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                {{ t('fullNameKhmer') }} <span class="text-red-500">*</span>
               </label>
               <input
-                id="name"
-                v-model="form.name"
+                id="nameKhmer"
+                v-model="form.nameKhmer"
                 type="text"
                 required
                 :disabled="isViewMode"
-                class="w-full px-3 py-2  border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed h-[37px]"
-                :placeholder="t('employeeName')"
+                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed h-[37px] akbalthom-khmer"
+                :placeholder="t('fullNameKhmerPlaceholder')"
+              />
+            </div>
+            
+            <!-- Employee Name English -->
+            <div>
+              <label for="nameEnglish" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                {{ t('fullNameEnglish') }} <span class="text-red-500">*</span>
+              </label>
+              <input
+                id="nameEnglish"
+                v-model="form.nameEnglish"
+                type="text"
+                required
+                :disabled="isViewMode"
+                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed h-[37px]"
+                :placeholder="t('fullNameEnglishPlaceholder')"
               />
             </div>
             
@@ -312,6 +315,48 @@
                 <option value="Male">{{ t('male') }}</option>
                 <option value="Female">{{ t('female') }}</option>
               </select>
+            </div>
+            
+            <!-- Province -->
+            <div>
+              <label for="province" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                {{ t('province') }} <span class="text-red-500">*</span>
+              </label>
+              <select
+                id="province"
+                v-model="form.province"
+                required
+                :disabled="isViewMode"
+                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed"
+              >
+                <option value="">{{ t('selectProvince') }}</option>
+                <option value="Phnom Penh">Phnom Penh</option>
+                <option value="Kandal">Kandal</option>
+                <option value="Kampong Cham">Kampong Cham</option>
+                <option value="Siem Reap">Siem Reap</option>
+                <option value="Battambang">Battambang</option>
+                <option value="Preah Sihanouk">Preah Sihanouk</option>
+                <option value="Kampot">Kampot</option>
+                <option value="Takeo">Takeo</option>
+                <option value="Kampong Thom">Kampong Thom</option>
+                <option value="Pursat">Pursat</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            
+            <!-- Date of Birth -->
+            <div>
+              <label for="dob" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                {{ t('dob') }} <span class="text-red-500">*</span>
+              </label>
+              <input
+                id="dob"
+                v-model="form.dob"
+                type="date"
+                required
+                :disabled="isViewMode"
+                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed h-[37px]"
+              />
             </div>
             
             <!-- Role -->
@@ -352,53 +397,64 @@
               </select>
             </div>
             
-            <!-- Contact -->
+            <!-- Phone -->
             <div>
-              <label for="contact" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                {{ t('contact') }} <span class="text-red-500">*</span>
+              <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                {{ t('phone') }} <span class="text-red-500">*</span>
               </label>
               <input
-                id="contact"
-                v-model="form.contact"
+                id="phone"
+                v-model="form.phone"
                 type="tel"
                 required
                 :disabled="isViewMode"
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed"
-                :placeholder="t('contact')"
+                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed h-[37px]"
+                :placeholder="t('phonePlaceholder')"
               />
             </div>
             
-            <!-- Schedule -->
+            <!-- Email -->
             <div>
-              <label for="schedule" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                {{ t('schedule') }} <span class="text-red-500">*</span>
+              <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                {{ t('email') }} <span class="text-red-500">*</span>
               </label>
               <input
-                id="schedule"
-                v-model="form.schedule"
+                id="email"
+                v-model="form.email"
+                type="email"
+                required
+                :disabled="isViewMode"
+                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed h-[37px]"
+                :placeholder="t('emailPlaceholder')"
+              />
+            </div>
+            
+            <!-- Telegram -->
+            <div>
+              <label for="telegram" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Telegram
+              </label>
+              <input
+                id="telegram"
+                v-model="form.telegram"
                 type="text"
-                required
                 :disabled="isViewMode"
-                class="w-full px-3 py-2  border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed h-[37px]"
-                :placeholder="t('schedulePlaceholder')"
+                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed h-[37px]"
+                placeholder="@username"
               />
             </div>
             
-            <!-- Salary -->
+            <!-- Registered Date -->
             <div>
-              <label for="salary" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                {{ t('salary') }} <span class="text-red-500">*</span>
+              <label for="registered" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                {{ t('registered') }}
               </label>
               <input
-                id="salary"
-                v-model.number="form.salary"
-                type="number"
-                step="0.01"
-                min="0"
-                required
+                id="registered"
+                v-model="form.registered"
+                type="date"
                 :disabled="isViewMode"
-                class="w-full px-3 py-2  border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed h-[37px]"
-                :placeholder="t('salary')"
+                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed h-[37px]"
               />
             </div>
             
@@ -451,93 +507,39 @@
     </Transition>
     
     <!-- Delete Confirmation Dialog -->
-    <Transition name="fade">
-      <div
-        v-if="showDeleteDialog"
-        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-        @click.self="showDeleteDialog = false"
-      >
-        <div class="bg-white dark:bg-gray-800 rounded-sm shadow-xl p-6 max-w-md w-full mx-4">
-          <div class="flex items-center gap-4 mb-4">
-            <div class="w-10 h-10 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-red-100 dark:bg-red-900/30 rounded-full flex-shrink-0 flex items-center justify-center order-1 sm:order-2 mb-2 sm:mb-0 flex-shrink-0">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-4 sm:w-4 md:h-5 md:w-5 lg:h-6 lg:w-6 text-red-600 dark:text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-              </svg>
-            </div>
-            <div class="flex-1">
-              <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ t('deleteEmployee') }}</h3>
-              <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">{{ t('areYouSureDeleteEmployee') }}</p>
-            </div>
+    <div
+      v-if="showDeleteDialog"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      @click.self="showDeleteDialog = false"
+    >
+      <div class="bg-white dark:bg-gray-800 rounded-sm shadow-xl p-6 max-w-md w-full mx-4">
+        <div class="flex items-center gap-4 mb-4">
+          <div class="w-10 h-10 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-red-100 dark:bg-red-900/30 rounded-full flex-shrink-0 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-4 sm:w-4 md:h-5 md:w-5 lg:h-6 lg:w-6 text-red-600 dark:text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
           </div>
-          <div class="flex gap-3">
-            <button
-              @click="confirmDelete"
-              class="flex-1 px-4 py-2 bg-red-600 text-white rounded-sm hover:bg-red-700 transition-colors font-medium"
-            >
-              {{ t('yes') }}, {{ t('delete') }}
-            </button>
-            <button
-              @click="showDeleteDialog = false"
-              class="flex-1 px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-sm hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors font-medium"
-            >
-              {{ t('cancel') }}
-            </button>
+          <div class="flex-1">
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ t('deleteEmployee') }}</h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400">{{ t('areYouSureDeleteEmployee') }}</p>
           </div>
         </div>
+        <div class="flex gap-3 justify-end">
+          <button
+            @click="showDeleteDialog = false"
+            class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-sm hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors font-medium"
+          >
+            {{ t('no') }}
+          </button>
+          <button
+            @click="confirmDelete"
+            class="px-4 py-2 bg-red-600 text-white rounded-sm hover:bg-red-700 transition-colors font-medium"
+          >
+            {{ t('yes') }}, {{ t('delete') }}
+          </button>
+        </div>
       </div>
-    </Transition>
-    
-    <!-- Success Message Toast -->
-    <Transition name="toast">
-      <div
-        v-if="showSuccessMessage"
-        class="fixed top-4 right-4 bg-green-500 text-white rounded-sm shadow-lg p-4 flex items-center gap-3 z-50 min-w-[300px]"
-      >
-        <div class="w-8 h-8 bg-white dark:bg-gray-700 bg-opacity-20 rounded-full flex items-center justify-center flex-shrink-0">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-          </svg>
-        </div>
-        <div class="flex-1">
-          <p class="font-semibold">{{ successMessageTitle }}</p>
-          <p class="text-sm text-green-50">{{ successMessageText }}</p>
-        </div>
-        <button
-          @click="showSuccessMessage = false"
-          class="text-white hover:text-green-100 transition-colors"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-      </div>
-    </Transition>
-    
-    <!-- Error Message Toast -->
-    <Transition name="toast">
-      <div
-        v-if="showErrorMessage"
-        class="fixed top-4 right-4 bg-red-500 text-white rounded-sm shadow-lg p-4 flex items-center gap-3 z-50 min-w-[300px]"
-      >
-        <div class="w-8 h-8 bg-white dark:bg-gray-700 bg-opacity-20 rounded-full flex items-center justify-center flex-shrink-0">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </div>
-        <div class="flex-1">
-          <p class="font-semibold">{{ errorMessageTitle }}</p>
-          <p class="text-sm text-red-50">{{ errorMessageText }}</p>
-        </div>
-        <button
-          @click="showErrorMessage = false"
-          class="text-white hover:text-red-100 transition-colors"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-      </div>
-    </Transition>
+    </div>
   </div>
 </template>
 
@@ -573,8 +575,6 @@ const saveEmployees = () => {
 const employees = ref([])
 
 const searchQuery = ref('')
-const filterDateFrom = ref('')
-const filterDateTo = ref('')
 
 // Action menu state
 const activeActionMenu = ref(null)
@@ -586,13 +586,17 @@ const isViewMode = ref(false)
 
 // Form state
 const form = reactive({
-  name: '',
+  nameKhmer: '',
+  nameEnglish: '',
   gender: '',
+  province: '',
+  dob: '',
   role: '',
   contract: '',
-  contact: '',
-  schedule: '',
-  salary: 0,
+  phone: '',
+  email: '',
+  telegram: '',
+  registered: '',
   status: ''
 })
 
@@ -600,8 +604,12 @@ const form = reactive({
 const showDeleteDialog = ref(false)
 const employeeToDelete = ref(null)
 
-// Success/Error message state
-// Toast state removed - now using global ToastContainer
+// Format date helper
+const formatDate = (dateString) => {
+  if (!dateString) return '-'
+  const date = new Date(dateString)
+  return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+}
 
 // Computed properties
 const filteredEmployees = computed(() => {
@@ -610,39 +618,16 @@ const filteredEmployees = computed(() => {
   if (searchQuery.value) {
     const query = searchQuery.value.toLowerCase()
     filtered = filtered.filter(emp => 
-      emp.name.toLowerCase().includes(query) ||
-      emp.id.toLowerCase().includes(query) ||
+      (emp.nameKhmer && emp.nameKhmer.toLowerCase().includes(query)) ||
+      (emp.nameEnglish && emp.nameEnglish.toLowerCase().includes(query)) ||
+      (emp.name && emp.name.toLowerCase().includes(query)) ||
+      (emp.id && emp.id.toLowerCase().includes(query)) ||
       (emp.role && emp.role.toLowerCase().includes(query)) ||
-      (emp.contact && emp.contact.toLowerCase().includes(query)) ||
-      (emp.contract && emp.contract.toLowerCase().includes(query))
+      (emp.phone && emp.phone.toLowerCase().includes(query)) ||
+      (emp.email && emp.email.toLowerCase().includes(query)) ||
+      (emp.province && emp.province.toLowerCase().includes(query)) ||
+      (emp.telegram && emp.telegram.toLowerCase().includes(query))
     )
-  }
-  
-  // Apply date range filter
-  if (filterDateFrom.value || filterDateTo.value) {
-    filtered = filtered.filter(emp => {
-      if (!emp.hired) return false
-      
-      const hiredDate = new Date(emp.hired)
-      hiredDate.setHours(0, 0, 0, 0)
-      
-      if (filterDateFrom.value && filterDateTo.value) {
-        const fromDate = new Date(filterDateFrom.value)
-        fromDate.setHours(0, 0, 0, 0)
-        const toDate = new Date(filterDateTo.value)
-        toDate.setHours(23, 59, 59, 999)
-        return hiredDate >= fromDate && hiredDate <= toDate
-      } else if (filterDateFrom.value) {
-        const fromDate = new Date(filterDateFrom.value)
-        fromDate.setHours(0, 0, 0, 0)
-        return hiredDate >= fromDate
-      } else if (filterDateTo.value) {
-        const toDate = new Date(filterDateTo.value)
-        toDate.setHours(23, 59, 59, 999)
-        return hiredDate <= toDate
-      }
-      return true
-    })
   }
   
   return filtered
@@ -674,12 +659,6 @@ const totalContracts = computed(() => {
   return contracts.size
 })
 
-// Clear date filter
-const clearDateFilter = () => {
-  filterDateFrom.value = ''
-  filterDateTo.value = ''
-}
-
 // Toggle action menu
 const toggleActionMenu = (employeeId) => {
   activeActionMenu.value = activeActionMenu.value === employeeId ? null : employeeId
@@ -696,7 +675,20 @@ const handleClickOutside = (event) => {
 const handleView = (employee) => {
   editingEmployee.value = null
   isViewMode.value = true
-  Object.assign(form, employee)
+  Object.assign(form, {
+    nameKhmer: employee.nameKhmer || '',
+    nameEnglish: employee.nameEnglish || employee.name || '',
+    gender: employee.gender || '',
+    province: employee.province || '',
+    dob: employee.dob || '',
+    role: employee.role || '',
+    contract: employee.contract || '',
+    phone: employee.phone || employee.contact || '',
+    email: employee.email || '',
+    telegram: employee.telegram || '',
+    registered: employee.registered || employee.hired || '',
+    status: employee.status || ''
+  })
   showDrawer.value = true
   activeActionMenu.value = null
 }
@@ -705,7 +697,20 @@ const handleView = (employee) => {
 const handleEdit = (employee) => {
   editingEmployee.value = employee
   isViewMode.value = false
-  Object.assign(form, { ...employee })
+  Object.assign(form, {
+    nameKhmer: employee.nameKhmer || '',
+    nameEnglish: employee.nameEnglish || employee.name || '',
+    gender: employee.gender || '',
+    province: employee.province || '',
+    dob: employee.dob || '',
+    role: employee.role || '',
+    contract: employee.contract || '',
+    phone: employee.phone || employee.contact || '',
+    email: employee.email || '',
+    telegram: employee.telegram || '',
+    registered: employee.registered || employee.hired || '',
+    status: employee.status || ''
+  })
   showDrawer.value = true
   activeActionMenu.value = null
 }
@@ -724,10 +729,11 @@ const confirmDelete = async () => {
       if (employeeToDelete.value) {
         const index = employees.value.findIndex(emp => emp.id === employeeToDelete.value.id)
         if (index !== -1) {
+          const employeeName = employeeToDelete.value.nameEnglish || employeeToDelete.value.nameKhmer || employeeToDelete.value.name || 'Employee'
           employees.value.splice(index, 1)
           saveEmployees()
           showDeleteDialog.value = false
-          success(`${t('employeeDeleted')}: "${employeeToDelete.value.name}" ${t('employeeDeletedSuccess')}`)
+          success(`${t('employeeDeleted')}: "${employeeName}" ${t('employeeDeletedSuccess')}`)
           employeeToDelete.value = null
         }
       }
@@ -743,13 +749,17 @@ const closeDrawer = () => {
   editingEmployee.value = null
   isViewMode.value = false
   Object.assign(form, {
-    name: '',
+    nameKhmer: '',
+    nameEnglish: '',
     gender: '',
+    province: '',
+    dob: '',
     role: '',
     contract: '',
-    contact: '',
-    schedule: '',
-    salary: 0,
+    phone: '',
+    email: '',
+    telegram: '',
+    registered: '',
     status: ''
   })
 }
@@ -764,31 +774,36 @@ const handleSubmit = async () => {
         if (index !== -1) {
           employees.value[index] = {
             ...employees.value[index],
-            ...form
+            ...form,
+            name: form.nameEnglish || form.nameKhmer || form.name || '',
+            contact: form.phone || form.contact || '',
+            hired: form.registered || employees.value[index].hired || new Date().toISOString().split('T')[0]
           }
           saveEmployees()
           closeDrawer()
-          success(`${t('employeeUpdated')}: "${form.name}" ${t('employeeUpdatedSuccess')}`)
+          const employeeName = form.nameEnglish || form.nameKhmer || 'Employee'
+          success(`${t('employeeUpdated')}: "${employeeName}" ${t('employeeUpdatedSuccess')}`)
         }
       } else {
         // Add new employee
         const newEmployee = {
           id: `EMP${String(employees.value.length + 1).padStart(3, '0')}`,
           ...form,
-          hired: new Date().toISOString().split('T')[0]
+          name: form.nameEnglish || form.nameKhmer || '',
+          contact: form.phone || '',
+          hired: form.registered || new Date().toISOString().split('T')[0]
         }
         employees.value.push(newEmployee)
         saveEmployees()
         closeDrawer()
-        success(`${t('employeeAdded')}: "${form.name}" ${t('employeeAddedSuccess')}`)
+        const employeeName = form.nameEnglish || form.nameKhmer || 'Employee'
+        success(`${t('employeeAdded')}: "${employeeName}" ${t('employeeAddedSuccess')}`)
       }
     }, editingEmployee.value ? 'Updating employee...' : 'Adding employee...')
   } catch (err) {
     handleError(err, { userMessage: 'Failed to save employee. Please try again.' })
   }
 }
-
-// Toast functions - now using composable (already defined above)
 
 onMounted(() => {
   loadEmployees()
@@ -833,25 +848,6 @@ onUnmounted(() => {
   transform: translateX(100%);
 }
 
-/* Toast Animation */
-.toast-enter-active {
-  transition: all 0.3s ease-out;
-}
-
-.toast-leave-active {
-  transition: all 0.3s ease-in;
-}
-
-.toast-enter-from {
-  opacity: 0;
-  transform: translateX(100%);
-}
-
-.toast-leave-to {
-  opacity: 0;
-  transform: translateX(100%);
-}
-
 /* Fade Animation */
 .fade-enter-active,
 .fade-leave-active {
@@ -861,5 +857,20 @@ onUnmounted(() => {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+
+/* AKbalthom KhmerGothic Font */
+@font-face {
+  font-family: 'AKbalthom KhmerGothic';
+  src: url('../assets/fonts/AKbalthom%20KhmerGothic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+.akbalthom-khmer {
+  font-family: 'AKbalthom KhmerGothic', 'Khmer', 'Khmer OS', sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }
 </style>

@@ -164,20 +164,25 @@
                   <img
                     v-if="attendance.employee && attendance.employee.profileImage"
                     :src="attendance.employee.profileImage"
-                    :alt="attendance.employee.name"
+                    :alt="attendance.employee.nameEnglish || attendance.employee.nameKhmer || attendance.employee.name"
                     class="w-full h-full object-cover"
                   />
                   <span
                     v-else-if="attendance.employee"
                     class="text-blue-600 dark:text-blue-400 font-semibold text-xs"
-                  >{{ attendance.employee.name.charAt(0).toUpperCase() }}</span>
+                  >{{ (attendance.employee.nameEnglish || attendance.employee.nameKhmer || attendance.employee.name || '').charAt(0).toUpperCase() }}</span>
                   <span
                     v-else
                     class="text-blue-600 dark:text-blue-400 font-semibold text-xs"
                   >?</span>
                 </div>
                 <div>
-                  <div class="font-medium text-gray-900 dark:text-white text-xs">{{ attendance.employee ? attendance.employee.name : 'N/A' }}</div>
+                  <div class="font-medium text-gray-900 dark:text-white text-xs">
+                    <div v-if="attendance.employee && attendance.employee.nameKhmer" class="akbalthom-khmer">{{ attendance.employee.nameKhmer }}</div>
+                    <div v-if="attendance.employee && attendance.employee.nameEnglish" class="text-gray-900 dark:text-white">{{ attendance.employee.nameEnglish }}</div>
+                    <div v-if="attendance.employee && !attendance.employee.nameKhmer && !attendance.employee.nameEnglish">{{ attendance.employee.name }}</div>
+                    <div v-if="!attendance.employee">N/A</div>
+                  </div>
                   <div class="text-[10px] text-gray-500 dark:text-gray-400">{{ attendance.employeeId }}</div>
                 </div>
               </div>
@@ -659,9 +664,11 @@ const filteredAttendance = computed(() => {
   if (searchQuery.value) {
     const query = searchQuery.value.toLowerCase()
     filtered = filtered.filter(att => 
-      (att.employee && att.employee.name.toLowerCase().includes(query)) ||
-      att.employeeId.toLowerCase().includes(query) ||
-      att.status.toLowerCase().includes(query)
+      (att.employee && att.employee.nameKhmer && att.employee.nameKhmer.toLowerCase().includes(query)) ||
+      (att.employee && att.employee.nameEnglish && att.employee.nameEnglish.toLowerCase().includes(query)) ||
+      (att.employee && att.employee.name && att.employee.name.toLowerCase().includes(query)) ||
+      (att.employeeId && att.employeeId.toLowerCase().includes(query)) ||
+      (att.status && att.status.toLowerCase().includes(query))
     )
   }
   
@@ -760,11 +767,15 @@ const formatDate = (dateString) => {
 // Calculate work hours
 const calculateWorkHrs = (entry) => {
   if (!entry.checkIn || !entry.checkOut) return 0
-  const checkIn = new Date(`2000-01-01 ${entry.checkIn}`)
-  const checkOut = new Date(`2000-01-01 ${entry.checkOut}`)
-  const diff = (checkOut - checkIn) / (1000 * 60 * 60) // Convert to hours
-  const mealBreak = entry.mealBreak || 0
-  return Math.max(0, diff - mealBreak)
+  try {
+    const checkIn = new Date(`2000-01-01 ${entry.checkIn}`)
+    const checkOut = new Date(`2000-01-01 ${entry.checkOut}`)
+    const diff = (checkOut - checkIn) / (1000 * 60 * 60) // Convert to hours
+    const mealBreak = entry.mealBreak || 0
+    return Math.max(0, diff - mealBreak)
+  } catch (error) {
+    return 0
+  }
 }
 
 // Calculate overtime (hours over 8)
@@ -818,29 +829,108 @@ const handleEdit = (att) => {
   activeActionMenu.value = null
 }
 
+// Load schedules for calculating expected hours
+const employeeSchedules = ref([])
+
+const loadSchedules = async () => {
+  try {
+    const saved = localStorage.getItem('employee_schedules_data')
+    if (saved) {
+      employeeSchedules.value = JSON.parse(saved)
+    }
+  } catch (error) {
+    console.error('Error loading schedules:', error)
+    employeeSchedules.value = []
+  }
+}
+
+// Get expected hours from schedule for a specific day
+const getExpectedHoursFromSchedule = (employeeId, dayOfWeek) => {
+  const schedule = employeeSchedules.value.find(s => s.employeeId === employeeId)
+  if (!schedule || !schedule.shifts) return 0
+  
+  const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+  const dayName = dayNames[dayOfWeek]
+  
+  const dayShifts = schedule.shifts.filter(shift => shift.day === dayName)
+  let totalHours = 0
+  
+  dayShifts.forEach(shift => {
+    const start = parseTime(shift.startTime)
+    const end = parseTime(shift.endTime)
+    totalHours += (end - start)
+  })
+  
+  return totalHours
+}
+
+// Parse time string (HH:MM) to hour number
+const parseTime = (timeString) => {
+  if (!timeString) return 0
+  const [hours, minutes] = timeString.split(':').map(Number)
+  return hours + minutes / 60
+}
+
 // Load time entries for attendance
 const loadTimeEntries = (att) => {
-  // Generate sample time entries for the month
+  // Load schedules first
+  loadSchedules()
+  
+  // Generate time entries for the month based on schedule
   const [year, month] = att.month.split('-')
   const daysInMonth = new Date(year, parseInt(month), 0).getDate()
   
   timeEntries.value = []
-  for (let day = 1; day <= Math.min(daysInMonth, 7); day++) {
+  
+  // Get existing time entries from attendance if available
+  const existingEntries = att.timeEntries || []
+  
+  for (let day = 1; day <= daysInMonth; day++) {
     const date = new Date(year, parseInt(month) - 1, day)
     const dayOfWeek = date.getDay()
-    const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+    const dateString = `${year}-${month}-${String(day).padStart(2, '0')}`
     
-    // Only add weekdays for sample
-    if (dayOfWeek > 0 && dayOfWeek < 6) {
+    // Check if entry already exists
+    const existingEntry = existingEntries.find(e => e.date === dateString)
+    
+    if (existingEntry) {
+      // Use existing entry
       timeEntries.value.push({
-        date: `${year}-${month}-${String(day).padStart(2, '0')}`,
-        checkIn: '09:00',
-        checkOut: '17:00',
-        mealBreak: 1,
-        workHrs: 7,
+        ...existingEntry,
+        workHrs: calculateWorkHrs(existingEntry),
+        overtime: calculateOvertime(calculateWorkHrs(existingEntry))
+      })
+    } else {
+      // Create new entry based on schedule
+      const expectedHours = getExpectedHoursFromSchedule(att.employeeId, dayOfWeek)
+      const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+      const dayName = dayNames[dayOfWeek]
+      
+      // Get schedule for this day
+      const schedule = employeeSchedules.value.find(s => s.employeeId === att.employeeId)
+      let checkIn = ''
+      let checkOut = ''
+      
+      if (schedule && schedule.shifts) {
+        const dayShifts = schedule.shifts.filter(shift => shift.day === dayName)
+        if (dayShifts.length > 0) {
+          // Use first shift's start time as default check-in
+          checkIn = dayShifts[0].startTime
+          // Use last shift's end time as default check-out
+          checkOut = dayShifts[dayShifts.length - 1].endTime
+        }
+      }
+      
+      timeEntries.value.push({
+        date: dateString,
+        checkIn: checkIn,
+        checkOut: checkOut,
+        mealBreak: expectedHours > 0 ? 1 : 0,
+        workHrs: 0,
         overtime: 0,
         note: '',
-        status: 'Pending'
+        status: 'Pending',
+        present: expectedHours > 0 // Mark as expected to be present if has schedule
       })
     }
   }
@@ -855,7 +945,8 @@ const loadTimeEntries = (att) => {
       workHrs: 0,
       overtime: 0,
       note: '',
-      status: 'Pending'
+      status: 'Pending',
+      present: false
     })
   }
 }
@@ -941,9 +1032,19 @@ const handleSubmit = async () => {
   
   timeEntries.value.forEach(entry => {
     if (entry.status === 'Approved') {
-      regular += entry.workHrs
+      // Regular hours (up to 8 hours per day)
+      const dailyRegular = Math.min(entry.workHrs, 8)
+      regular += dailyRegular
+      // Overtime (hours over 8)
       overtime += entry.overtime
-      // You can add logic to determine sick, pto, holiday based on entry type
+      // You can add logic to determine sick, pto, holiday based on entry note or type
+      if (entry.note && entry.note.toLowerCase().includes('sick')) {
+        sick += entry.workHrs
+      } else if (entry.note && entry.note.toLowerCase().includes('pto')) {
+        pto += entry.workHrs
+      } else if (entry.note && entry.note.toLowerCase().includes('holiday')) {
+        holiday += entry.workHrs
+      }
     }
   })
   
@@ -961,10 +1062,25 @@ const handleSubmit = async () => {
         pto,
         holiday,
         total,
-        status: selectedAttendance.value.status
+        status: selectedAttendance.value.status,
+        timeEntries: timeEntries.value.map(e => ({
+          date: e.date,
+          checkIn: e.checkIn,
+          checkOut: e.checkOut,
+          mealBreak: e.mealBreak,
+          workHrs: e.workHrs,
+          overtime: e.overtime,
+          note: e.note,
+          status: e.status,
+          present: e.present
+        }))
       }
       saveAttendance()
       closeDrawer()
+      
+      // Dispatch event to update payroll
+      window.dispatchEvent(new CustomEvent('attendanceUpdated', { detail: attendance.value[index] }))
+      
       success(`${t('attendanceUpdated')}: ${t('attendanceUpdatedSuccess')}`)
     }
   } else {
@@ -981,11 +1097,26 @@ const handleSubmit = async () => {
         holiday,
         total,
         status: 'Pending',
-        created: new Date().toISOString().split('T')[0]
+        created: new Date().toISOString().split('T')[0],
+        timeEntries: timeEntries.value.map(e => ({
+          date: e.date,
+          checkIn: e.checkIn,
+          checkOut: e.checkOut,
+          mealBreak: e.mealBreak,
+          workHrs: e.workHrs,
+          overtime: e.overtime,
+          note: e.note,
+          status: e.status,
+          present: e.present
+        }))
       }
       attendance.value.push(newAttendance)
       saveAttendance()
       closeDrawer()
+      
+      // Dispatch event to update payroll
+      window.dispatchEvent(new CustomEvent('attendanceUpdated', { detail: newAttendance }))
+      
       success(`${t('attendanceAdded')}: ${t('attendanceAddedSuccess')}`)
     }, 'Adding attendance...')
   }
@@ -995,19 +1126,28 @@ const handleSubmit = async () => {
 
 onMounted(() => {
   loadAttendance()
+  loadSchedules()
   document.addEventListener('click', handleClickOutside)
   
   // Listen for storage events
   window.addEventListener('storage', (e) => {
-    if (e.key === 'employee_attendance_data') {
+    if (e.key === 'employee_attendance_data' || e.key === 'employees_data' || e.key === 'employee_schedules_data') {
       loadAttendance()
+      loadSchedules()
     }
+  })
+  
+  // Listen for employees updated event
+  window.addEventListener('employeesUpdated', () => {
+    loadAttendance()
+    loadSchedules()
   })
 })
 
 onUnmounted(() => {
   document.removeEventListener('click', handleClickOutside)
   window.removeEventListener('storage', loadAttendance)
+  window.removeEventListener('employeesUpdated', loadAttendance)
 })
 </script>
 
@@ -1061,5 +1201,20 @@ onUnmounted(() => {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+
+/* AKbalthom KhmerGothic Font */
+@font-face {
+  font-family: 'AKbalthom KhmerGothic';
+  src: url('../assets/fonts/AKbalthom%20KhmerGothic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+.akbalthom-khmer {
+  font-family: 'AKbalthom KhmerGothic', 'Khmer', 'Khmer OS', sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }
 </style>

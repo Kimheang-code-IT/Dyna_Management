@@ -40,16 +40,20 @@
                 <img
                   v-if="staff.employee.profileImage"
                   :src="staff.employee.profileImage"
-                  :alt="staff.employee.name"
+                  :alt="staff.employee.nameEnglish || staff.employee.nameKhmer || staff.employee.name"
                   class="w-full h-full object-cover"
                 />
                 <span
                   v-else
                   class="text-blue-600 dark:text-blue-400 font-semibold text-xs"
-                >{{ staff.employee.name.charAt(0).toUpperCase() }}</span>
+                >{{ (staff.employee.nameEnglish || staff.employee.nameKhmer || staff.employee.name || '').charAt(0).toUpperCase() }}</span>
               </div>
               <div class="flex-1 min-w-0">
-                <div class="text-sm font-medium text-gray-900 dark:text-white truncate">{{ staff.employee.name }}</div>
+                <div class="text-sm font-medium text-gray-900 dark:text-white truncate">
+                  <div v-if="staff.employee.nameKhmer" class="akbalthom-khmer text-xs">{{ staff.employee.nameKhmer }}</div>
+                  <div v-if="staff.employee.nameEnglish" class="text-xs">{{ staff.employee.nameEnglish }}</div>
+                  <div v-if="!staff.employee.nameKhmer && !staff.employee.nameEnglish">{{ staff.employee.name }}</div>
+                </div>
                 <div class="text-xs text-gray-500 dark:text-gray-400 truncate">{{ getDepartment(staff.employee) }}</div>
                 <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">{{ staff.shifts.length }} {{ t('blocks') }}</div>
               </div>
@@ -64,7 +68,7 @@
           <div class="flex items-center justify-between">
             <div>
               <h2 class="text-lg font-bold text-gray-900 dark:text-white">{{ t('weeklyBoard') }}</h2>
-              <p v-if="selectedStaff" class="text-sm text-gray-500 dark:text-gray-400 mt-1">{{ selectedStaff.employee.name }}'s {{ t('shifts') }}</p>
+              <p v-if="selectedStaff" class="text-sm text-gray-500 dark:text-gray-400 mt-1">{{ (selectedStaff.employee.nameEnglish || selectedStaff.employee.nameKhmer || selectedStaff.employee.name) }}'s {{ t('shifts') }}</p>
             </div>
             <button
               v-if="selectedStaff"
@@ -196,16 +200,19 @@
       </div>
     </div>
     
-    <!-- Shift List Modal -->
+    <!-- Shift List Modal - Visual Schedule Board -->
     <Transition name="fade">
       <div
         v-if="showShiftList && selectedStaff"
         class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
         @click.self="showShiftList = false"
       >
-        <div class="bg-white dark:bg-gray-800 rounded-sm shadow-xl p-6 max-w-2xl w-full mx-4 max-h-[80vh] overflow-y-auto">
+        <div class="bg-white dark:bg-gray-800 rounded-sm shadow-xl p-4 max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto" id="schedule-board-view">
           <div class="flex items-center justify-between mb-4">
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ t('shiftList') }} - {{ selectedStaff.employee.name }}</h3>
+            <div>
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ t('shiftList') }} - {{ (selectedStaff.employee.nameEnglish || selectedStaff.employee.nameKhmer || selectedStaff.employee.name) }}</h3>
+              <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">{{ t('weeklySchedule') || 'Weekly Schedule' }}</p>
+            </div>
             <button
               @click="showShiftList = false"
               class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
@@ -216,41 +223,67 @@
             </button>
           </div>
           
-          <div class="space-y-2">
+          <!-- Compact Visual Schedule Board -->
+          <div v-if="selectedStaff.shifts.length > 0" class="border border-gray-200 dark:border-gray-700 rounded-sm overflow-hidden">
+            <!-- Time Header -->
+            <div class="flex border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700">
+              <div class="w-16 flex-shrink-0 p-1.5 text-[10px] font-semibold text-gray-700 dark:text-gray-300 border-r border-gray-200 dark:border-gray-600 text-center">
+                {{ t('day') }}
+              </div>
+              <div class="flex-1 grid grid-cols-18 gap-0">
+                <div
+                  v-for="hour in timeSlots"
+                  :key="hour"
+                  class="p-1 text-[9px] text-center text-gray-600 dark:text-gray-400 border-r border-gray-200 dark:border-gray-600"
+                >
+                  {{ hour }}
+                </div>
+              </div>
+            </div>
+            
+            <!-- Days Rows -->
             <div
-              v-for="shift in selectedStaff.shifts"
-              :key="shift.id"
-              class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-sm"
+              v-for="day in daysOfWeek"
+              :key="day"
+              class="flex border-b border-gray-200 dark:border-gray-700 relative"
+              style="min-height: 40px;"
             >
-              <div>
-                <div class="text-sm font-medium text-gray-900 dark:text-white">{{ dayNames[shift.day] }}</div>
-                <div class="text-xs text-gray-500 dark:text-gray-400">{{ formatTimeRange(shift.startTime, shift.endTime) }}</div>
-                <div v-if="shift.note" class="text-xs text-gray-600 dark:text-gray-300 mt-1">{{ shift.note }}</div>
+              <!-- Day Label -->
+              <div class="w-16 flex-shrink-0 p-1.5 text-[10px] font-medium text-gray-700 dark:text-gray-300 border-r border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-center">
+                {{ day }}
               </div>
-              <div class="flex items-center gap-2">
-                <button
-                  @click="openNoteDialog(shift)"
-                  class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
-                  :title="t('note')"
+              
+              <!-- Time Slots Grid -->
+              <div class="flex-1 flex relative" style="min-height: 40px;">
+                <!-- Time slot cells -->
+                <div
+                  v-for="(hour) in timeSlots"
+                  :key="hour"
+                  class="flex-1 border-r border-gray-200 dark:border-gray-600 min-w-[30px]"
+                ></div>
+                
+                <!-- Shift Blocks (View Only) -->
+                <div
+                  v-for="shift in getShiftsForDay(day)"
+                  :key="shift.id"
+                  :style="getShiftStyleForView(shift)"
+                  class="absolute bg-blue-500 dark:bg-blue-600 text-white rounded text-[9px] p-1 flex flex-col justify-center"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                  </svg>
-                </button>
-                <button
-                  @click="removeShift(shift)"
-                  class="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300"
-                  :title="t('remove')"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
+                  <div class="font-medium whitespace-nowrap">{{ formatTimeRange(shift.startTime, shift.endTime) }}</div>
+                  <div v-if="shift.note" class="text-[8px] text-blue-100 dark:text-blue-200 truncate mt-0.5" :title="shift.note">
+                    {{ shift.note }}
+                  </div>
+                </div>
               </div>
             </div>
-            <div v-if="selectedStaff.shifts.length === 0" class="text-center py-8 text-gray-500 dark:text-gray-400 text-sm">
-              {{ t('noShifts') }}
-            </div>
+          </div>
+          
+          <!-- Empty State -->
+          <div v-else class="text-center py-12 text-gray-500 dark:text-gray-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <p class="text-sm">{{ t('noShifts') }}</p>
           </div>
         </div>
       </div>
@@ -472,9 +505,12 @@ const filteredStaff = computed(() => {
   
   const query = staffSearchQuery.value.toLowerCase()
   return schedules.value.filter(s => 
-    s.employee.name.toLowerCase().includes(query) ||
+    (s.employee.nameKhmer && s.employee.nameKhmer.toLowerCase().includes(query)) ||
+    (s.employee.nameEnglish && s.employee.nameEnglish.toLowerCase().includes(query)) ||
+    (s.employee.name && s.employee.name.toLowerCase().includes(query)) ||
+    (s.employee.id && s.employee.id.toLowerCase().includes(query)) ||
     (s.employee.role && s.employee.role.toLowerCase().includes(query)) ||
-    (s.employee.department && s.employee.department.toLowerCase().includes(query))
+    (s.employee.province && s.employee.province.toLowerCase().includes(query))
   )
 })
 
@@ -530,6 +566,41 @@ const getShiftStyle = (shift) => {
     top: '4px',
     bottom: '4px',
     minHeight: shift.note ? '50px' : 'auto'
+  }
+}
+
+// Get shift style for view-only schedule board (compact version)
+const getShiftStyleForView = (shift) => {
+  const startHour = parseTime(shift.startTime)
+  const endHour = parseTime(shift.endTime)
+  
+  // Find the slot indices
+  let startIndex = -1
+  let endIndex = -1
+  
+  timeSlots.value.forEach((slot, index) => {
+    const slotHour = parseTimeSlot(slot)
+    if (startIndex === -1 && slotHour >= startHour) {
+      startIndex = index
+    }
+    if (endIndex === -1 && slotHour >= endHour) {
+      endIndex = index
+    }
+  })
+  
+  if (startIndex === -1) startIndex = 0
+  if (endIndex === -1) endIndex = timeSlots.value.length
+  
+  const totalSlots = timeSlots.value.length
+  const left = (startIndex / totalSlots) * 100
+  const width = ((endIndex - startIndex) / totalSlots) * 100
+  
+  return {
+    left: `${left}%`,
+    width: `${width}%`,
+    top: '2px',
+    bottom: '2px',
+    minHeight: shift.note ? '35px' : '25px'
   }
 }
 
@@ -915,14 +986,18 @@ onMounted(() => {
   
   // Listen for storage events
   window.addEventListener('storage', (e) => {
-    if (e.key === 'employee_schedules_data') {
+    if (e.key === 'employee_schedules_data' || e.key === 'employees_data') {
       loadSchedules()
     }
   })
+  
+  // Listen for employees updated event
+  window.addEventListener('employeesUpdated', loadSchedules)
 })
 
 onUnmounted(() => {
   window.removeEventListener('storage', loadSchedules)
+  window.removeEventListener('employeesUpdated', loadSchedules)
 })
 </script>
 
@@ -960,5 +1035,20 @@ onUnmounted(() => {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+
+/* AKbalthom KhmerGothic Font */
+@font-face {
+  font-family: 'AKbalthom KhmerGothic';
+  src: url('../assets/fonts/AKbalthom%20KhmerGothic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+.akbalthom-khmer {
+  font-family: 'AKbalthom KhmerGothic', 'Khmer', 'Khmer OS', sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }
 </style>

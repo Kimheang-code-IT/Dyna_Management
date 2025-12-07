@@ -1,7 +1,10 @@
 // Utility function to load data from JSON files
 export const loadDataFromJSON = async (filePath, localStorageKey) => {
   try {
-    const data = await import(filePath)
+    // Dynamic import is intentional - different JSON files loaded at runtime
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const data = await import(/* @vite-ignore */ filePath)
     if (data.default && data.default.length > 0) {
       // Save to localStorage for compatibility
       localStorage.setItem(localStorageKey, JSON.stringify(data.default))
