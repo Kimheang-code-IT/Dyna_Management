@@ -360,6 +360,7 @@ import { useI18n } from '../composables/useI18n'
 import { useToast } from '../composables/useToast'
 import { useLoading } from '../composables/useLoading'
 import { useErrorHandler } from '../composables/useErrorHandler'
+import { addHistory } from '../utils/history'
 import usersData from '../data/users.json'
 
 // Inject sidebar collapse state
@@ -443,7 +444,16 @@ const confirmDelete = async () => {
       if (userToDelete.value) {
         const index = users.value.findIndex(u => u.id === userToDelete.value.id)
         if (index !== -1) {
+          const userName = userToDelete.value.name
+          const userId = userToDelete.value.id
           users.value.splice(index, 1)
+          addHistory('delete', {
+            type: 'user',
+            itemName: userName,
+            itemId: userId,
+            description: `User "${userName}" deleted`,
+            user: 'Admin'
+          })
           success(t('userDeletedSuccess'))
         }
       }
@@ -468,6 +478,13 @@ const handleSubmit = async () => {
             email: form.value.email,
             gender: form.value.gender
           }
+          addHistory('update', {
+            type: 'user',
+            itemName: form.value.name,
+            itemId: form.value.id,
+            description: `User "${form.value.name}" updated`,
+            user: 'Admin'
+          })
           success(t('userUpdatedSuccess'))
         }
       } else {
@@ -483,6 +500,13 @@ const handleSubmit = async () => {
           logoutTime: ''
         }
         users.value.push(newUser)
+        addHistory('add', {
+          type: 'user',
+          itemName: form.value.name,
+          itemId: newUser.id,
+          description: `User "${form.value.name}" added`,
+          user: 'Admin'
+        })
         success(t('userAddedSuccess'))
       }
       closeDrawer()

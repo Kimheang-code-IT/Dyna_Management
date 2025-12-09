@@ -585,6 +585,7 @@ import { useI18n } from '../composables/useI18n'
 import { useToast } from '../composables/useToast'
 import { useLoading } from '../composables/useLoading'
 import { useErrorHandler } from '../composables/useErrorHandler'
+import { addHistory } from '../utils/history'
 
 // Inject sidebar collapse state
 const isSidebarCollapsed = inject('isSidebarCollapsed', ref(false))
@@ -768,11 +769,11 @@ const formatDate = (dateString) => {
 const calculateWorkHrs = (entry) => {
   if (!entry.checkIn || !entry.checkOut) return 0
   try {
-    const checkIn = new Date(`2000-01-01 ${entry.checkIn}`)
-    const checkOut = new Date(`2000-01-01 ${entry.checkOut}`)
-    const diff = (checkOut - checkIn) / (1000 * 60 * 60) // Convert to hours
-    const mealBreak = entry.mealBreak || 0
-    return Math.max(0, diff - mealBreak)
+  const checkIn = new Date(`2000-01-01 ${entry.checkIn}`)
+  const checkOut = new Date(`2000-01-01 ${entry.checkOut}`)
+  const diff = (checkOut - checkIn) / (1000 * 60 * 60) // Convert to hours
+  const mealBreak = entry.mealBreak || 0
+  return Math.max(0, diff - mealBreak)
   } catch (error) {
     return 0
   }
@@ -903,7 +904,7 @@ const loadTimeEntries = (att) => {
     } else {
       // Create new entry based on schedule
       const expectedHours = getExpectedHoursFromSchedule(att.employeeId, dayOfWeek)
-      const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+    const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
       const dayName = dayNames[dayOfWeek]
       
       // Get schedule for this day
@@ -1076,6 +1077,15 @@ const handleSubmit = async () => {
         }))
       }
       saveAttendance()
+      const employee = employees.value.find(emp => emp.id === attendance.value[index].employeeId)
+      const employeeName = employee ? (employee.nameEnglish || employee.nameKhmer || employee.name) : 'Employee'
+      addHistory('update', {
+        type: 'user',
+        itemName: employeeName,
+        itemId: attendance.value[index].id,
+        description: `Employee attendance updated - ${employeeName}, Month: ${attendance.value[index].month}, Total Hours: ${total}`,
+        user: 'Admin'
+      })
       closeDrawer()
       
       // Dispatch event to update payroll
@@ -1112,6 +1122,15 @@ const handleSubmit = async () => {
       }
       attendance.value.push(newAttendance)
       saveAttendance()
+      const employee = employees.value.find(emp => emp.id === newAttendance.employeeId)
+      const employeeName = employee ? (employee.nameEnglish || employee.nameKhmer || employee.name) : 'Employee'
+      addHistory('add', {
+        type: 'user',
+        itemName: employeeName,
+        itemId: newAttendance.id,
+        description: `Employee attendance added - ${employeeName}, Month: ${newAttendance.month}, Total Hours: ${total}`,
+        user: 'Admin'
+      })
       closeDrawer()
       
       // Dispatch event to update payroll

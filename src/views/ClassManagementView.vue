@@ -664,9 +664,19 @@
         class="bg-white dark:bg-gray-800 rounded-sm shadow-xl p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
         <div
           class="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left justify-center sm:justify-between mb-4">
-          <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-            {{ t('addStudentToClass') }}: {{ selectedClassForStudent?.className }}
-          </h3>
+          <div class="flex items-center gap-3">
+            <div
+              class="w-10 h-10 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-blue-100 dark:bg-blue-900/30 rounded-full flex-shrink-0 flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 sm:h-4 sm:w-4 md:h-5 md:w-5 lg:h-6 lg:w-6 text-blue-600 dark:text-blue-400" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+              {{ t('addStudentToClass') }}: {{ selectedClassForStudent?.className }}
+            </h3>
+          </div>
           <button @click="showAddStudentDialog = false"
             class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
@@ -915,6 +925,7 @@ import { useI18n } from '../composables/useI18n'
 import { useToast } from '../composables/useToast'
 import { useLoading } from '../composables/useLoading'
 import { useErrorHandler } from '../composables/useErrorHandler'
+import { addHistory } from '../utils/history'
 
 // Inject sidebar collapse state
 const isSidebarCollapsed = inject('isSidebarCollapsed', ref(false))
@@ -1317,6 +1328,13 @@ const confirmAdd = async () => {
 
       classes.value.push(newClass)
       saveClasses()
+      addHistory('add', {
+        type: 'student',
+        itemName: form.className,
+        itemId: newId,
+        description: `Class added - Class: ${form.className}, Teacher: ${form.teacher}`,
+        user: 'Admin'
+      })
       closeDrawer()
       success(`${t('classAdded')}: "${form.className}" ${t('classAddedSuccess')}`)
     }, 'Adding class...')
@@ -1342,6 +1360,13 @@ const confirmEdit = async () => {
           status: form.status
         }
         saveClasses()
+        addHistory('update', {
+          type: 'student',
+          itemName: form.className,
+          itemId: editingClass.value.id,
+          description: `Class updated - Class: ${form.className}, Teacher: ${form.teacher}`,
+          user: 'Admin'
+        })
         showEditConfirmDialog.value = false
         closeDrawer()
         success(`${t('classUpdated')}: "${form.className}" ${t('classUpdatedSuccess')}`)
@@ -1361,8 +1386,16 @@ const confirmDelete = async () => {
         const className = classToDelete.value.className
         const index = classes.value.findIndex((c) => c.id === classToDelete.value.id)
         if (index !== -1) {
+          const classId = classToDelete.value.id
           classes.value.splice(index, 1)
           saveClasses()
+          addHistory('delete', {
+            type: 'student',
+            itemName: className,
+            itemId: classId,
+            description: `Class deleted - Class: ${className}`,
+            user: 'Admin'
+          })
           showDeleteDialog.value = false
           classToDelete.value = null
           success(`${t('classDeleted')}: "${className}" ${t('classDeletedSuccess')}`)
@@ -1406,6 +1439,13 @@ const actuallyAddStudents = async () => {
           })
 
           saveClasses()
+          addHistory('update', {
+            type: 'student',
+            itemName: classes.value[index].className,
+            itemId: classes.value[index].id,
+            description: `Students added to class - Class: ${classes.value[index].className}, Students: ${newStudents.length} student(s)`,
+            user: 'Admin'
+          })
           showAddStudentConfirmDialog.value = false
           showAddStudentDialog.value = false
           selectedClassForStudent.value = null
@@ -1457,6 +1497,14 @@ const confirmDeleteStudentFromClass = async () => {
           }
 
           saveClasses()
+          const studentName = studentToDeleteFromClass.value.name || studentId
+          addHistory('update', {
+            type: 'student',
+            itemName: classes.value[index].className,
+            itemId: classes.value[index].id,
+            description: `Student removed from class - Class: ${classes.value[index].className}, Student: ${studentName}`,
+            user: 'Admin'
+          })
           showDeleteStudentDialog.value = false
           studentToDeleteFromClass.value = null
 
@@ -1467,7 +1515,7 @@ const confirmDeleteStudentFromClass = async () => {
           }
 
           success(
-            `${t('studentDeleted')}: "${studentToDeleteFromClass.value?.name || studentId}" ${t('studentDeletedSuccess')}`
+            `${t('studentDeleted')}: "${studentName}" ${t('studentDeletedSuccess')}`
           )
         }
       }

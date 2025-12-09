@@ -439,6 +439,7 @@ import { useI18n } from '../composables/useI18n'
 import { useToast } from '../composables/useToast'
 import { useLoading } from '../composables/useLoading'
 import { useErrorHandler } from '../composables/useErrorHandler'
+import { addHistory } from '../utils/history'
 
 // Inject sidebar collapse state
 const isSidebarCollapsed = inject('isSidebarCollapsed', ref(false))
@@ -785,6 +786,13 @@ const processPayment = () => {
       const employeeName = selectedPayroll.value.employee
         ? (selectedPayroll.value.employee.nameEnglish || selectedPayroll.value.employee.nameKhmer || selectedPayroll.value.employee.name)
         : 'employee'
+      addHistory('update', {
+        type: 'user',
+        itemName: employeeName,
+        itemId: selectedPayroll.value.id,
+        description: `Employee salary paid - ${employeeName}, Amount: $${paymentForm.totalPayout.toFixed(2)}`,
+        user: 'Admin'
+      })
       success(`${t('paymentProcessed')}: $${paymentForm.totalPayout.toFixed(2)} ${t('hasBeenPaidTo')} ${employeeName}`)
     }
   } catch (err) {
@@ -833,6 +841,13 @@ const confirmPayAll = async () => {
     showPayAllDialog.value = false
 
     if (successCount > 0) {
+      addHistory('update', {
+        type: 'user',
+        itemName: `${successCount} Employee(s)`,
+        itemId: null,
+        description: `Bulk salary payment processed - ${successCount} employee(s) paid. Total: $${totalAmount.toFixed(2)}`,
+        user: 'Admin'
+      })
       success(`${t('paymentsProcessed') || 'Payments Processed'}: ${successCount} ${t('employee')}(s) paid. Total: $${totalAmount.toFixed(2)}`)
     } else {
       error(t('noPaymentsProcessed') || 'No payments were processed.')

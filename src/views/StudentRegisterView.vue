@@ -384,6 +384,7 @@ import { useI18n } from '../composables/useI18n'
 import { useToast } from '../composables/useToast'
 import { useLoading } from '../composables/useLoading'
 import { useErrorHandler } from '../composables/useErrorHandler'
+import { addHistory } from '../utils/history'
 
 // Inject sidebar collapse state
 const isSidebarCollapsed = inject('isSidebarCollapsed', ref(false))
@@ -609,6 +610,15 @@ const confirmRegistration = () => {
 
     // Save to localStorage
     localStorage.setItem('students_data', JSON.stringify(existingStudents))
+
+    // Log history
+    addHistory('add', {
+      type: 'student',
+      itemName: getStudentName(),
+      itemId: studentId,
+      description: `Student "${getStudentName()}" registered - Course: ${form.course}, Session: ${form.session}`,
+      user: 'Admin'
+    })
 
     // Close dialog and show success message
     showConfirmDialog.value = false

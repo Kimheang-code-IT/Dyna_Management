@@ -134,32 +134,32 @@
               </button>
             </div>
             
-            <!-- Date Range Picker -->
-            <div class="flex items-center gap-2">
-              <label class="text-xs font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap">{{ t('dateBetween') }}:</label>
-              <input
-                v-model="filterDateFrom"
-                type="date"
+          <!-- Date Range Picker -->
+          <div class="flex items-center gap-2">
+            <label class="text-xs font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap">{{ t('dateBetween') }}:</label>
+            <input
+              v-model="filterDateFrom"
+              type="date"
                 @change="handleDatePickerChange"
                 class="px-3 py-2 text-xs border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white w-[115px] h-[37px]"
-              />
-              <span class="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">{{ t('to') }}</span>
-              <input
-                v-model="filterDateTo"
-                type="date"
+            />
+            <span class="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">{{ t('to') }}</span>
+            <input
+              v-model="filterDateTo"
+              type="date"
                 @change="handleDatePickerChange"
                 class="px-3 py-2 text-xs border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white w-[115px] h-[37px]"
-              />
-              <button
+            />
+            <button
                 v-if="filterDateFrom || filterDateTo || selectedPeriod"
-                @click="clearDateFilter"
-                class="px-3 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors"
-                :title="t('clear')"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
+              @click="clearDateFilter"
+              class="px-3 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors"
+              :title="t('clear')"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
             </div>
           </div>
         </div>
@@ -243,36 +243,36 @@
     
     <!-- Sale Details Drawer -->
     <Transition name="drawer">
-      <div
-        v-if="showDrawer"
+    <div
+      v-if="showDrawer"
         class="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-end"
-        @click.self="closeDrawer"
-      >
+      @click.self="closeDrawer"
+    >
         <div class="bg-white dark:bg-gray-800 w-full max-w-lg h-full shadow-2xl overflow-y-auto">
-          <!-- Drawer Header -->
+        <!-- Drawer Header -->
           <div class="sticky top-0 bg-white dark:bg-gray-800 px-6 py-4 flex items-center justify-between z-10 border-b border-gray-200 dark:border-gray-700">
-            <div class="flex items-center gap-3">
+          <div class="flex items-center gap-3">
               <div class="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-sm flex items-center justify-center">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-              </div>
-              <h2 class="text-xl font-bold text-gray-900 dark:text-white">{{ t('saleDetails') }}</h2>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
             </div>
-            <button
-              @click="closeDrawer"
+              <h2 class="text-xl font-bold text-gray-900 dark:text-white">{{ t('saleDetails') }}</h2>
+          </div>
+          <button
+            @click="closeDrawer"
               class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-sm p-2 transition-colors"
               :title="t('close') || 'Close'"
-            >
+          >
               <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-          
-          <!-- Drawer Content -->
-          <div class="p-6" v-if="selectedSale">
-            <!-- Summary Card -->
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        
+        <!-- Drawer Content -->
+        <div class="p-6" v-if="selectedSale">
+          <!-- Summary Card -->
             <div class="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-lg p-6 mb-6 border border-blue-100 dark:border-blue-800/50">
               <div class="flex items-center justify-between">
                 <div>
@@ -282,10 +282,10 @@
                 <div class="text-right">
                   <p class="text-sm text-gray-600 dark:text-gray-400 font-medium mb-1">{{ t('totalAmount') }}</p>
                   <p class="text-3xl font-bold text-blue-600 dark:text-blue-400">${{ selectedSale.total.toFixed(2) }}</p>
-                </div>
               </div>
             </div>
-            
+          </div>
+          
             <!-- Quick Info Grid -->
             <div class="grid grid-cols-2 gap-4 mb-6">
               <!-- Date -->
@@ -308,8 +308,8 @@
                   <p class="text-xs text-gray-500 dark:text-gray-400 font-medium">{{ t('time') || 'Time' }}</p>
                 </div>
                 <p class="text-sm font-semibold text-gray-900 dark:text-white">{{ selectedSale.time }}</p>
-              </div>
-              
+            </div>
+            
               <!-- Items Sold -->
               <div class="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
                 <div class="flex items-center gap-2 mb-2">
@@ -344,41 +344,41 @@
                 <div class="flex-1">
                   <p class="text-xs text-gray-500 dark:text-gray-400 font-medium mb-1">{{ t('whoSale') || 'Sold By' }}</p>
                   <p class="text-sm font-semibold text-gray-900 dark:text-white">{{ selectedSale.soldBy || t('admin') || 'Admin' }}</p>
-                </div>
               </div>
             </div>
-            
-            <!-- Products List -->
+          </div>
+          
+          <!-- Products List -->
             <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
-              <div class="bg-gray-50 dark:bg-gray-700 px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+            <div class="bg-gray-50 dark:bg-gray-700 px-4 py-3 border-b border-gray-200 dark:border-gray-700">
                 <div class="flex items-center justify-between">
-                  <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                    </svg>
+              <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                </svg>
                     {{ t('productName') || 'Products' }}
-                  </h3>
+              </h3>
                   <span class="text-xs text-gray-500 dark:text-gray-400 bg-gray-200 dark:bg-gray-600 px-2 py-1 rounded-full">{{ selectedSale.topProducts.length }}</span>
                 </div>
-              </div>
+            </div>
               <div class="divide-y divide-gray-200 dark:divide-gray-700 max-h-[300px] overflow-y-auto">
-                <div
-                  v-for="(product, index) in selectedSale.topProducts"
-                  :key="index"
+              <div
+                v-for="(product, index) in selectedSale.topProducts"
+                :key="index"
                   class="px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
-                >
-                  <div class="flex items-center gap-3">
+              >
+                <div class="flex items-center gap-3">
                     <div class="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <span class="text-xs font-bold text-blue-600 dark:text-blue-400">{{ index + 1 }}</span>
-                    </div>
-                    <p class="text-sm font-medium text-gray-900 dark:text-white flex-1">{{ product }}</p>
+                    <span class="text-xs font-bold text-blue-600 dark:text-blue-400">{{ index + 1 }}</span>
                   </div>
+                  <p class="text-sm font-medium text-gray-900 dark:text-white flex-1">{{ product }}</p>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
     </Transition>
   </div>
 </template>

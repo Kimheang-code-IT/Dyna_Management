@@ -166,7 +166,7 @@
                   />
                   <span v-else class="text-blue-600 dark:text-blue-400 font-semibold text-xs">
                     {{ getInitials(studentBook.student.nameEnglish || studentBook.student.nameKhmer || studentBook.student.name) }}
-                  </span>
+              </span>
                 </div>
                 <!-- Student Info -->
                 <div class="flex-1 min-w-0">
@@ -215,8 +215,8 @@
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
                     <path
                       d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
-                  </svg>
-                </button>
+                </svg>
+              </button>
 
                 <!-- Dropdown Menu -->
                 <div v-if="activeActionMenu === studentBook.id"
@@ -498,7 +498,7 @@
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                   </svg>
-                </div>
+              </div>
               </div>
             </div>
             
@@ -546,11 +546,11 @@
                   </tbody>
                 </table>
               </div>
-            </div>
-            
+              </div>
+              
             <!-- Close Button -->
             <div class="pt-4">
-              <button
+                <button
                 @click="showBooksDrawer = false"
                 class="w-full px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-sm hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors font-medium"
               >
@@ -789,7 +789,17 @@
     >
       <div class="bg-white dark:bg-gray-800 rounded-sm shadow-xl p-6 max-w-md w-full mx-4">
         <div class="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left justify-center sm:justify-between mb-4">
-          <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ t('add') }}</h3>
+          <div class="flex items-center gap-3">
+            <div
+              class="w-10 h-10 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-blue-100 dark:bg-blue-900/30 rounded-full flex-shrink-0 flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 sm:h-4 sm:w-4 md:h-5 md:w-5 lg:h-6 lg:w-6 text-blue-600 dark:text-blue-400" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ t('add') }}</h3>
+          </div>
           <button
             @click="showAddBookDialog = false"
             class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
@@ -868,6 +878,7 @@ import { useI18n } from '../composables/useI18n'
 import { useToast } from '../composables/useToast'
 import { useLoading } from '../composables/useLoading'
 import { useErrorHandler } from '../composables/useErrorHandler'
+import { addHistory } from '../utils/history'
 
 // Inject sidebar collapse state
 const isSidebarCollapsed = inject('isSidebarCollapsed', ref(false))
@@ -1147,6 +1158,13 @@ const handleSubmit = async () => {
       
       studentBooks.value.push(newStudentBook)
       saveStudentBooks()
+      addHistory('add', {
+        type: 'student',
+        itemName: selectedStudent.value.name,
+        itemId: newStudentBook.id,
+        description: `Student books added - Student: ${selectedStudent.value.name}, Books: ${formBooks.value.length} book(s)`,
+        user: 'Admin'
+      })
       closeAddDrawer()
       success(`${t('studentBooksAdded')}: "${selectedStudent.value.name}" ${t('studentBooksAddedSuccess')}`)
     }, 'Adding student books...')
@@ -1218,8 +1236,16 @@ const confirmDelete = async () => {
       const index = studentBooks.value.findIndex(sb => sb.id === studentBookToDelete.value.id)
       if (index !== -1) {
         const studentName = studentBooks.value[index].student.name
+        const studentBookId = studentBooks.value[index].id
         studentBooks.value.splice(index, 1)
         saveStudentBooks()
+        addHistory('delete', {
+          type: 'student',
+          itemName: studentName,
+          itemId: studentBookId,
+          description: `Student books deleted - Student: ${studentName}`,
+          user: 'Admin'
+        })
         showDeleteDialog.value = false
         studentBookToDelete.value = null
         success(`${t('studentBooksDeleted') || 'Student Books Deleted'}: "${studentName}" ${t('studentBooksDeletedSuccess') || 'has been successfully deleted!'}`)
@@ -1246,8 +1272,16 @@ const confirmDeleteBook = async () => {
       const index = studentBooks.value.findIndex(sb => sb.id === selectedStudentBook.value.id)
       if (index !== -1) {
         const bookName = studentBooks.value[index].books[bookToDeleteIndex.value].bookName
+        const studentName = studentBooks.value[index].student.name
         studentBooks.value[index].books.splice(bookToDeleteIndex.value, 1)
         saveStudentBooks()
+        addHistory('delete', {
+          type: 'student',
+          itemName: studentName,
+          itemId: selectedStudentBook.value.id,
+          description: `Book deleted from student - Student: ${studentName}, Book: ${bookName}`,
+          user: 'Admin'
+        })
         // Update the selected student book reference
         selectedStudentBook.value = studentBooks.value[index]
         showDeleteBookDialog.value = false
@@ -1337,6 +1371,14 @@ const confirmAddBook = async () => {
             qty: newBook.qty
           })
           saveStudentBooks()
+          const studentName = studentBooks.value[index].student.name
+          addHistory('add', {
+            type: 'student',
+            itemName: studentName,
+            itemId: selectedStudentBook.value.id,
+            description: `Book added to student - Student: ${studentName}, Book: ${newBook.bookName}, Qty: ${newBook.qty}`,
+            user: 'Admin'
+          })
           // Update the selected student book reference
           selectedStudentBook.value = studentBooks.value[index]
           showAddBookDialog.value = false

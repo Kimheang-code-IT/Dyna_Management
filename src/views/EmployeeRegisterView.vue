@@ -50,26 +50,26 @@
             
             <!-- Gender -->
             <div>
-              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 {{ t('gender') }} <span class="text-red-500">*</span>
-              </label>
-              <div class="relative">
-                <select
-                  v-model="formData.gender"
+            </label>
+            <div class="relative">
+              <select
+                v-model="formData.gender"
                   required
-                  class="w-full px-3 py-2 pr-10 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white appearance-none transition-colors h-[37px]"
-                >
-                  <option value="">{{ t('selectGender') }}</option>
-                  <option value="Male">{{ t('male') }}</option>
-                  <option value="Female">{{ t('female') }}</option>
-                </select>
-                <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                  <svg class="h-5 w-5 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                  </svg>
-                </div>
+                class="w-full px-3 py-2 pr-10 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white appearance-none transition-colors h-[37px]"
+              >
+                <option value="">{{ t('selectGender') }}</option>
+                <option value="Male">{{ t('male') }}</option>
+                <option value="Female">{{ t('female') }}</option>
+              </select>
+              <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                <svg class="h-5 w-5 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
               </div>
             </div>
+          </div>
             
             <!-- Phone -->
             <div>
@@ -272,7 +272,7 @@
               type="date"
               class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white transition-colors h-[37px]"
             />
-          </div>
+        </div>
           
           <!-- Status -->
           <div>
@@ -296,7 +296,7 @@
               </div>
             </div>
           </div>
-        </div>
+          </div>
           
           <!-- Action Buttons -->
           <div class="flex gap-4 justify-end mt-8">
@@ -325,6 +325,7 @@ import { useI18n } from '../composables/useI18n'
 import { useToast } from '../composables/useToast'
 import { useLoading } from '../composables/useLoading'
 import { useErrorHandler } from '../composables/useErrorHandler'
+import { addHistory } from '../utils/history'
 
 // Inject sidebar collapse state
 const isSidebarCollapsed = inject('isSidebarCollapsed', ref(false))
@@ -483,6 +484,13 @@ const handleSubmit = async () => {
       window.dispatchEvent(new CustomEvent('employeesUpdated'))
       
       const employeeName = formData.value.nameEnglish || formData.value.nameKhmer || 'Employee'
+      addHistory('add', {
+        type: 'user',
+        itemName: employeeName,
+        itemId: newId,
+        description: `Employee "${employeeName}" registered - Role: ${formData.value.role}, Contract: ${formData.value.contract}`,
+        user: 'Admin'
+      })
       success(`${t('employeeAdded')}: "${employeeName}" ${t('employeeAddedSuccess')}`)
       
       // Reset form after successful registration

@@ -143,6 +143,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from '../composables/useI18n'
+import { addHistory } from '../utils/history'
 
 const route = useRoute()
 const router = useRouter()
@@ -210,6 +211,16 @@ const grandTotal = computed(() => {
 })
 
 const printInvoice = () => {
+  // Log sale completion when invoice is printed
+  const itemsCount = cartItems.value.reduce((sum, item) => sum + item.quantity, 0)
+  const productsList = cartItems.value.map(item => `${item.name} (x${item.quantity})`).join(', ')
+  addHistory('add', {
+    type: 'pos',
+    itemName: invoiceNumber.value,
+    itemId: invoiceNumber.value,
+    description: `Sale completed - Invoice: ${invoiceNumber.value}, Items: ${itemsCount}, Total: $${grandTotal.value.toFixed(2)}, Products: ${productsList}`,
+    user: 'Admin'
+  })
   window.print()
 }
 

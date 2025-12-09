@@ -235,6 +235,7 @@ import { ref, reactive, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from '../composables/useI18n'
 import { useToast } from '../composables/useToast'
+import { addHistory } from '../utils/history'
 import certificateImage from '../assets/Certificate.png'
 
 const route = useRoute()
@@ -445,6 +446,14 @@ const formatDateKhmer = (dateString) => {
 
 // Handle print
 const handlePrint = () => {
+  const studentName = certificateData.nameEnglish || certificateData.nameKhmer || 'Student'
+  addHistory('update', {
+    type: 'report',
+    itemName: studentName,
+    itemId: route.params.id || null,
+    description: `Certificate printed - Student: ${studentName}`,
+    user: 'Admin'
+  })
   window.print()
 }
 
@@ -496,6 +505,13 @@ const handleDownload = async () => {
         }
       )
 
+      addHistory('update', {
+        type: 'report',
+        itemName: `${selectedGraduatedStudents.length} Certificate(s)`,
+        itemId: null,
+        description: `Bulk certificates downloaded - ${selectedGraduatedStudents.length} certificate(s) generated`,
+        user: 'Admin'
+      })
       success(t('certificatesGeneratedSuccess') || `Successfully generated ${selectedGraduatedStudents.length} certificate(s)!`)
     } else {
       // Single download: Download the currently displayed certificate
@@ -520,15 +536,23 @@ const handleDownload = async () => {
       link.href = url
 
       // Create filename from student name
-      const studentName = (certificateData.nameEnglish || certificateData.nameKhmer || 'Certificate').replace(/[^a-zA-Z0-9]/g, '_')
+      const fileNameStudentName = (certificateData.nameEnglish || certificateData.nameKhmer || 'Certificate').replace(/[^a-zA-Z0-9]/g, '_')
       const dateStr = certificateData.date ? certificateData.date.replace(/-/g, '') : new Date().toISOString().split('T')[0].replace(/-/g, '')
-      link.download = `Certificate_${studentName}_${dateStr}.png`
+      link.download = `Certificate_${fileNameStudentName}_${dateStr}.png`
 
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
       URL.revokeObjectURL(url)
 
+      const studentName = certificateData.nameEnglish || certificateData.nameKhmer || 'Student'
+      addHistory('update', {
+        type: 'report',
+        itemName: studentName,
+        itemId: route.params.id || null,
+        description: `Certificate downloaded - Student: ${studentName}`,
+        user: 'Admin'
+      })
       success(t('certificateDownloaded') || 'Certificate downloaded successfully!')
     }
   } catch (err) {

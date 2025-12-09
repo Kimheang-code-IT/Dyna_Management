@@ -114,6 +114,11 @@ const routes = [
     name: 'Certificate',
     component: () => import('../views/CertificateView.vue')
   },
+  {
+    path: '/student-card/:id',
+    name: 'StudentCard',
+    component: () => import('../views/StudentCardView.vue')
+  },
   // EMPLOYEE section routes
   {
     path: '/employee',
@@ -139,6 +144,11 @@ const routes = [
     path: '/employee-schedule',
     name: 'EmployeeSchedule',
     component: EmployeeScheduleView
+  },
+  {
+    path: '/employee-card/:id',
+    name: 'EmployeeCard',
+    component: () => import('../views/EmployeeCardView.vue')
   },
   // FINANCIAL section routes
   {

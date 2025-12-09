@@ -679,6 +679,7 @@ import { useI18n } from '../composables/useI18n'
 import { useToast } from '../composables/useToast'
 import { useLoading } from '../composables/useLoading'
 import { useErrorHandler } from '../composables/useErrorHandler'
+import { addHistory } from '../utils/history'
 
 // Inject sidebar collapse state
 const isSidebarCollapsed = inject('isSidebarCollapsed', ref(false))
@@ -1197,6 +1198,13 @@ const handleAddPayment = async () => {
 
       payments.value.push(newPayment)
       savePayments()
+      addHistory('add', {
+        type: 'pos',
+        itemName: newPayment.invoiceNo,
+        itemId: newId,
+        description: `Student payment added - Invoice: ${newPayment.invoiceNo}, Student: ${student.nameEnglish || student.name}, Amount: ${newPayment.amountDue}`,
+        user: 'Admin'
+      })
       closeAddDrawer()
       success(`${t('paymentAdded') || 'Payment added'}: "${newPayment.invoiceNo}" ${t('paymentAddedSuccess') || 'successfully'}`)
     }, 'Adding payment...')
@@ -1223,6 +1231,14 @@ const confirmPayment = () => {
           status: 'Paid'
         })
         savePaymentHistory(paymentToConfirm.value.id, history)
+        
+        addHistory('update', {
+          type: 'pos',
+          itemName: payments.value[index].invoiceNo,
+          itemId: paymentToConfirm.value.id,
+          description: `Student payment confirmed - Invoice: ${payments.value[index].invoiceNo}, Amount: ${paymentToConfirm.value.amountDue}`,
+          user: 'Admin'
+        })
         
         showConfirmDialog.value = false
         paymentToConfirm.value = null

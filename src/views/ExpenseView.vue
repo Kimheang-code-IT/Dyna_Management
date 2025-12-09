@@ -347,7 +347,7 @@
                 type="date"
                 required
                 :disabled="isViewMode"
-                class="w-full px-3 py-2  border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed w-[115px] h-[37px]"
+                class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed w-[115px] h-[37px]"
               />
             </div>
             
@@ -439,8 +439,21 @@
         @click.self="showConfirmDialog = false"
       >
         <div class="bg-white dark:bg-gray-800 rounded-sm shadow-xl p-6 max-w-md w-full mx-4">
-          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">{{ confirmDialogTitle }}</h3>
-          <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">{{ confirmDialogMessage }}</p>
+          <div class="flex items-center gap-4 mb-4">
+            <div
+              class="w-10 h-10 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-blue-100 dark:bg-blue-900/30 rounded-full flex-shrink-0 flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 sm:h-4 sm:w-4 md:h-5 md:w-5 lg:h-6 lg:w-6 text-blue-600 dark:text-blue-400" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div class="flex-1">
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">{{ confirmDialogTitle }}</h3>
+              <p class="text-sm text-gray-600 dark:text-gray-400">{{ confirmDialogMessage }}</p>
+            </div>
+          </div>
           <div class="flex gap-3">
             <button
               @click="confirmActionFn"
@@ -468,6 +481,7 @@ import { useI18n } from '../composables/useI18n'
 import { useToast } from '../composables/useToast'
 import { useLoading } from '../composables/useLoading'
 import { useErrorHandler } from '../composables/useErrorHandler'
+import { addHistory } from '../utils/history'
 
 // Inject sidebar collapse state
 const isSidebarCollapsed = inject('isSidebarCollapsed', ref(false))
@@ -626,8 +640,17 @@ const handleDelete = (expense) => {
       await withLoading(async () => {
         const index = expenses.value.findIndex(exp => exp.id === expense.id)
         if (index !== -1) {
+          const expenseName = expense.expenseName
+          const expenseId = expense.id
           expenses.value.splice(index, 1)
           saveExpenses()
+          addHistory('delete', {
+            type: 'expense',
+            itemName: expenseName,
+            itemId: expenseId,
+            description: `Expense "${expenseName}" deleted`,
+            user: 'Admin'
+          })
           success(`${t('expenseDeleted')}: ${t('expenseDeletedSuccess')}`)
         }
       }, 'Deleting expense...')
@@ -650,6 +673,13 @@ const handleSubmit = async () => {
         if (index !== -1) {
           expenses.value[index] = { ...form.value, id: editingExpense.value.id }
           saveExpenses()
+          addHistory('update', {
+            type: 'expense',
+            itemName: form.value.expenseName,
+            itemId: editingExpense.value.id,
+            description: `Expense "${form.value.expenseName}" updated - Amount: ${form.value.amount}`,
+            user: 'Admin'
+          })
           success(`${t('expenseUpdated')}: ${t('expenseUpdatedSuccess')}`)
         }
       } else {
@@ -660,6 +690,13 @@ const handleSubmit = async () => {
         }
         expenses.value.push(newExpense)
         saveExpenses()
+        addHistory('add', {
+          type: 'expense',
+          itemName: form.value.expenseName,
+          itemId: newExpense.id,
+          description: `Expense "${form.value.expenseName}" added - Amount: ${form.value.amount}`,
+          user: 'Admin'
+        })
         success(`${t('expenseAdded')}: ${t('expenseAddedSuccess')}`)
       }
       closeDrawer()

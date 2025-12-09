@@ -298,7 +298,18 @@
       >
         <div class="bg-white dark:bg-gray-800 rounded-sm shadow-xl p-6 max-w-md w-full mx-4">
           <div class="flex items-center justify-between mb-4">
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ t('addNote') }}</h3>
+            <div class="flex items-center gap-3">
+              <div
+                class="w-10 h-10 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-blue-100 dark:bg-blue-900/30 rounded-full flex-shrink-0 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5 sm:h-4 sm:w-4 md:h-5 md:w-5 lg:h-6 lg:w-6 text-blue-600 dark:text-blue-400" fill="none"
+                  viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                </svg>
+              </div>
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ t('addNote') }}</h3>
+            </div>
             <button
               @click="showNoteDialog = false"
               class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
@@ -375,6 +386,7 @@ import { useI18n } from '../composables/useI18n'
 import { useToast } from '../composables/useToast'
 import { useLoading } from '../composables/useLoading'
 import { useErrorHandler } from '../composables/useErrorHandler'
+import { addHistory } from '../utils/history'
 
 // Inject sidebar collapse state
 const isSidebarCollapsed = inject('isSidebarCollapsed', ref(false))
@@ -728,6 +740,15 @@ const handleMouseUp = (event, day) => {
   autoMergeShiftsForDay(day)
   
   saveSchedules()
+  const employee = employees.value.find(emp => emp.id === selectedStaff.value.id)
+  const employeeName = employee ? (employee.nameEnglish || employee.nameKhmer || employee.name) : 'Employee'
+  addHistory('add', {
+    type: 'user',
+    itemName: employeeName,
+    itemId: selectedStaff.value.id,
+    description: `Employee schedule shift added - ${employeeName}, Day: ${day}, Time: ${formatTimeRange(newShift.startTime, newShift.endTime)}`,
+    user: 'Admin'
+  })
   success(`${t('shiftAdded')}: ${t('shiftAddedSuccess')}`)
   
   resetDrag()
@@ -954,6 +975,15 @@ const removeShift = (shift) => {
   if (index !== -1) {
     selectedStaff.value.shifts.splice(index, 1)
     saveSchedules()
+    const employee = employees.value.find(emp => emp.id === selectedStaff.value.id)
+    const employeeName = employee ? (employee.nameEnglish || employee.nameKhmer || employee.name) : 'Employee'
+    addHistory('delete', {
+      type: 'user',
+      itemName: employeeName,
+      itemId: selectedStaff.value.id,
+      description: `Employee schedule shift removed - ${employeeName}, Time: ${formatTimeRange(shift.startTime, shift.endTime)}`,
+      user: 'Admin'
+    })
     success(`${t('shiftRemoved')}: ${t('shiftRemovedSuccess')}`)
   }
 }

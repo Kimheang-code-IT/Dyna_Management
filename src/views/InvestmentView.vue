@@ -439,8 +439,21 @@
         @click.self="showConfirmDialog = false"
       >
         <div class="bg-white dark:bg-gray-800 rounded-sm shadow-xl p-6 max-w-md w-full mx-4">
-          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">{{ confirmDialogTitle }}</h3>
-          <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">{{ confirmDialogMessage }}</p>
+          <div class="flex items-center gap-4 mb-4">
+            <div
+              class="w-10 h-10 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-blue-100 dark:bg-blue-900/30 rounded-full flex-shrink-0 flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 sm:h-4 sm:w-4 md:h-5 md:w-5 lg:h-6 lg:w-6 text-blue-600 dark:text-blue-400" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div class="flex-1">
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">{{ confirmDialogTitle }}</h3>
+              <p class="text-sm text-gray-600 dark:text-gray-400">{{ confirmDialogMessage }}</p>
+            </div>
+          </div>
           <div class="flex gap-3">
             <button
               @click="confirmActionFn"
@@ -493,6 +506,7 @@ import { useI18n } from '../composables/useI18n'
 import { useToast } from '../composables/useToast'
 import { useLoading } from '../composables/useLoading'
 import { useErrorHandler } from '../composables/useErrorHandler'
+import { addHistory } from '../utils/history'
 
 // Inject sidebar collapse state
 const isSidebarCollapsed = inject('isSidebarCollapsed', ref(false))
@@ -649,13 +663,22 @@ const handleDelete = (investment) => {
   confirmDialogTitle.value = t('deleteInvestment')
   confirmDialogMessage.value = t('confirmDeleteInvestment', { name: investment.expenseName })
   confirmAction.value = () => {
-    const index = investments.value.findIndex(inv => inv.id === investment.id)
-    if (index !== -1) {
-      investments.value.splice(index, 1)
-      saveInvestments()
-      showSuccessMessage.value = true
-      successMessageTitle.value = t('investmentDeleted')
-      successMessageText.value = t('investmentDeletedSuccess')
+      const index = investments.value.findIndex(inv => inv.id === investment.id)
+      if (index !== -1) {
+        const investmentName = investment.expenseName
+        const investmentId = investment.id
+        investments.value.splice(index, 1)
+        saveInvestments()
+        addHistory('delete', {
+          type: 'expense',
+          itemName: investmentName,
+          itemId: investmentId,
+          description: `Investment "${investmentName}" deleted`,
+          user: 'Admin'
+        })
+        showSuccessMessage.value = true
+        successMessageTitle.value = t('investmentDeleted')
+        successMessageText.value = t('investmentDeletedSuccess')
       setTimeout(() => {
         showSuccessMessage.value = false
       }, 3000)
@@ -674,6 +697,13 @@ const handleSubmit = () => {
     if (index !== -1) {
       investments.value[index] = { ...form.value, id: editingInvestment.value.id }
       saveInvestments()
+      addHistory('update', {
+        type: 'expense',
+        itemName: form.value.expenseName,
+        itemId: editingInvestment.value.id,
+        description: `Investment "${form.value.expenseName}" updated - Amount: ${form.value.amount}`,
+        user: 'Admin'
+      })
       showSuccessMessage.value = true
       successMessageTitle.value = t('investmentUpdated')
       successMessageText.value = t('investmentUpdatedSuccess')
@@ -689,6 +719,13 @@ const handleSubmit = () => {
     }
     investments.value.push(newInvestment)
     saveInvestments()
+    addHistory('add', {
+      type: 'expense',
+      itemName: form.value.expenseName,
+      itemId: newInvestment.id,
+      description: `Investment "${form.value.expenseName}" added - Amount: ${form.value.amount}`,
+      user: 'Admin'
+    })
     showSuccessMessage.value = true
     successMessageTitle.value = t('investmentAdded')
     successMessageText.value = t('investmentAddedSuccess')
