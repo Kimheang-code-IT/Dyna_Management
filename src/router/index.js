@@ -100,6 +100,11 @@ const routes = [
     component: StudentPaymentView
   },
   {
+    path: '/student-payment/add',
+    name: 'AddPayment',
+    component: () => import('../views/AddPaymentView.vue')
+  },
+  {
     path: '/student-book',
     name: 'StudentBook',
     component: StudentBookView

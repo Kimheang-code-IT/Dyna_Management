@@ -140,10 +140,10 @@
               <label class="text-sm font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap">{{ t('dateBetween')
               }}:</label>
               <input v-model="filterDateFrom" type="date"
-                class="px-3 py-2  border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white w-[115px] h-[37px]" />
+                class="px-3 py-2  border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white w-[140px] h-[37px]" />
               <span class="text-gray-500 dark:text-gray-400">{{ t('to') }}</span>
               <input v-model="filterDateTo" type="date"
-                class="px-3 py-2  border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white w-[115px] h-[37px]" />
+                class="px-3 py-2  border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white w-[140px] h-[37px]" />
               <button v-if="filterDateFrom || filterDateTo" @click="clearDateFilter"
                 class="px-3 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors"
                 title="Clear date filter">
@@ -157,7 +157,7 @@
             <!-- Filter Dropdown -->
             <div class="relative">
               <select v-model="filterType"
-                class="appearance-none bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-sm px-4 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                class="appearance-none bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-sm px-4 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white">
                 <option value="">{{ t('allTypes') }}</option>
                 <option value="system">{{ t('system') }}</option>
                 <option value="category">{{ t('category') }}</option>
@@ -180,7 +180,7 @@
             <!-- Action Filter -->
             <div class="relative">
               <select v-model="filterAction"
-                class="appearance-none bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-sm px-4 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                class="appearance-none bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-sm px-4 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white">
                 <option value="">{{ t('allActions') }}</option>
                 <option value="login">{{ t('login') }}</option>
                 <option value="logout">{{ t('logout') }}</option>

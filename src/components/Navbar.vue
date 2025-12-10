@@ -1,315 +1,276 @@
 <template>
-  <nav class="sticky top-0 bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 px-2 sm:px-4 py-2 z-40">
+  <nav
+    class="sticky top-0 bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 px-2 sm:px-4 py-2 z-40">
     <div class="flex items-center justify-between gap-2">
       <!-- Left: Sidebar Toggle + Search Bar -->
       <div class="flex items-center gap-2 flex-1 min-w-0">
         <!-- Sidebar Toggle Icon Button -->
-        <button
-          @click="toggleSidebar"
+        <button @click="toggleSidebar"
           class="p-2 rounded-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex-shrink-0"
-          title="Toggle Sidebar"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5 text-gray-600 dark:text-gray-300"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M4 6h16M4 12h16M4 18h16"
-            />
+          title="Toggle Sidebar">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600 dark:text-gray-300" fill="none"
+            viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         </button>
-        
+
         <!-- Search Bar -->
-        <div class="flex-1 relative min-w-0" ref="searchContainer">
+        <div class="relative min-w-0 max-w-[1000px]" ref="searchContainer">
           <div class="relative">
             <div class="absolute inset-y-0 left-0 pl-2 sm:pl-3 flex items-center pointer-events-none">
-              <svg class="h-4 w-4 sm:h-5 sm:w-5 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              <svg class="h-4 w-4 sm:h-5 sm:w-5 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor"
+                viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </div>
-            <input
-              v-model="searchQuery"
-              @input="handleSearch"
-              @focus="showSearchResults = true"
-              type="text"
+            <input v-model="searchQuery" @input="handleSearch" @focus="showSearchResults = true" type="text"
               :placeholder="t('search')"
-              class="w-full pl-8 sm:pl-10 pr-8 sm:pr-10 py-1.5 sm:py-2 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400"
-            />
-            <button
-              v-if="searchQuery"
-              @click="clearSearch"
+              class="w-full pl-8 sm:pl-10 pr-8 sm:pr-10 py-1.5 sm:py-2 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400" />
+            <button v-if="searchQuery" @click="clearSearch"
               class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
-              type="button"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              type="button">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
           </div>
-          
+
           <!-- Search Results Dropdown -->
-        <div
-          v-if="showSearchResults && searchQuery && searchResults.length > 0"
-          class="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-gray-800 rounded-sm shadow-lg border border-gray-200 dark:border-gray-700 max-h-96 overflow-y-auto z-50"
-        >
-          <div class="p-2">
-            <div
-              v-for="result in searchResults"
-              :key="`${result.type}-${result.id}`"
-              @click="navigateToResult(result)"
-              class="p-3 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-sm cursor-pointer transition-colors"
-            >
-              <div class="flex items-start gap-3">
-                <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
-                     :class="getResultIconClass(result.type)">
-                  <span v-html="getResultIcon(result.type)"></span>
-                </div>
-                <div class="flex-1 min-w-0">
-                  <div class="flex items-center gap-2">
-                    <p class="font-medium text-gray-900 dark:text-white">{{ result.title }}</p>
-                    <span class="px-2 py-0.5 text-xs font-medium rounded-full"
-                          :class="getResultTypeClass(result.type)">
-                      {{ result.type }}
-                    </span>
+          <div v-if="showSearchResults && searchQuery && searchResults.length > 0"
+            class="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-gray-800 rounded-sm shadow-lg border border-gray-200 dark:border-gray-700 max-h-96 overflow-y-auto z-50">
+            <div class="p-2">
+              <div v-for="result in searchResults" :key="`${result.type}-${result.id}`"
+                @click="navigateToResult(result)"
+                class="p-3 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-sm cursor-pointer transition-colors">
+                <div class="flex items-start gap-3">
+                  <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
+                    :class="getResultIconClass(result.type)">
+                    <span v-html="getResultIcon(result.type)"></span>
                   </div>
-                  <p class="text-sm text-gray-500 dark:text-gray-400 mt-1 truncate">{{ result.subtitle }}</p>
+                  <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-2">
+                      <p class="font-medium text-gray-900 dark:text-white">{{ result.title }}</p>
+                      <span class="px-2 py-0.5 text-xs font-medium rounded-full"
+                        :class="getResultTypeClass(result.type)">
+                        {{ result.type }}
+                      </span>
+                    </div>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1 truncate">{{ result.subtitle }}</p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        
+
           <!-- No Results Message -->
-          <div
-            v-if="showSearchResults && searchQuery && searchResults.length === 0"
-            class="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-gray-800 rounded-sm shadow-lg border border-gray-200 dark:border-gray-700 p-4 z-50"
-          >
+          <div v-if="showSearchResults && searchQuery && searchResults.length === 0"
+            class="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-gray-800 rounded-sm shadow-lg border border-gray-200 dark:border-gray-700 p-4 z-50">
             <div class="flex flex-col items-center justify-center gap-3">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400 dark:text-gray-500" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               <p class="text-sm font-medium text-gray-600 dark:text-gray-400">{{ t('noResults') }}</p>
             </div>
           </div>
         </div>
       </div>
-      
+
       <!-- Right: Language, Fullscreen, Profile, Logout -->
-      <div class="flex items-center gap-1 sm:gap-2 lg:gap-4 flex-shrink-0">
+      <div class="flex items-center gap-1  flex-shrink-0">
         <!-- Language Dropdown -->
-        <div class="relative">
-          <button
-            @click="toggleLanguageDropdown"
+        <div class="relative" data-language-dropdown>
+          <button @click="toggleLanguageDropdown"
             class="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-2 rounded-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-            title="Change Language"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-4 w-4 sm:h-5 sm:w-5 text-gray-600 dark:text-gray-300"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"
-              />
+            title="Change Language">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-gray-600 dark:text-gray-300"
+              fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
             </svg>
-            <span class="hidden sm:inline text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">{{ currentLanguage === 'en' ? 'English' : 'ខ្មែរ' }}</span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
+            <span class="hidden sm:inline text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">{{
+              currentLanguage === 'en' ? 'English' : 'ខ្មែរ' }}</span>
+            <svg xmlns="http://www.w3.org/2000/svg"
               class="h-4 w-4 text-gray-600 dark:text-gray-300 transition-transform"
-              :class="{ 'rotate-180': showLanguageDropdown }"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
+              :class="{ 'rotate-180': showLanguageDropdown }" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
             </svg>
           </button>
-          
+
           <!-- Language Dropdown Menu -->
-          <div
-            v-if="showLanguageDropdown"
-            class="absolute right-0 mt-2 w-40 bg-white dark:bg-gray-800 rounded-sm shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50"
-          >
-            <button
-              @click="selectLanguage('en')"
-              class="w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center justify-between"
-            >
-              <span class="font-medium" :class="currentLanguage === 'en' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300'">
+          <div v-if="showLanguageDropdown"
+            class="absolute right-0 mt-2 w-40 bg-white dark:bg-gray-800 rounded-sm shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50">
+            <button @click="selectLanguage('en')"
+              class="w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center justify-between">
+              <span class="font-medium"
+                :class="currentLanguage === 'en' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300'">
                 English
               </span>
-              <svg v-if="currentLanguage === 'en'" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg v-if="currentLanguage === 'en'" xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
               </svg>
             </button>
-            <button
-              @click="selectLanguage('km')"
-              class="w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center justify-between"
-            >
-              <span class="font-medium" :class="currentLanguage === 'km' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300'">
+            <button @click="selectLanguage('km')"
+              class="w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center justify-between">
+              <span class="font-medium"
+                :class="currentLanguage === 'km' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300'">
                 ភាសាខ្មែរ
               </span>
-              <svg v-if="currentLanguage === 'km'" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg v-if="currentLanguage === 'km'" xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
               </svg>
             </button>
           </div>
         </div>
-        
+
+        <!-- Notifications -->
+        <div class="relative" data-notification-dropdown>
+          <button @click="toggleNotificationDropdown"
+            class="p-1.5 sm:p-2 rounded-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center relative"
+            title="Notifications">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5  text-gray-600 dark:text-gray-300"
+              fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+            </svg>
+            <span v-if="unreadCount > 0"
+              class="absolute top-1 right-1 min-w-[14px] h-[14px] px-1 rounded-full bg-red-600 text-white text-[10px] leading-[16px] flex items-center justify-center">
+              {{ unreadCount }}
+            </span>
+          </button>
+          <div v-if="showNotificationDropdown"
+            class="absolute right-0 mt-2 w-80 bg-white dark:bg-gray-800 rounded-sm shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50">
+            <div class="flex items-center justify-between px-4 pb-2 border-b border-gray-200 dark:border-gray-700">
+              <p class="text-sm font-semibold text-gray-900 dark:text-white">{{ t('notifications') || 'Notifications' }}
+              </p>
+              <button v-if="unreadCount > 0" @click="markAllNotificationsRead"
+                class="text-xs text-blue-600 dark:text-blue-400 hover:underline">
+                {{ t('markAllAsRead') || 'Mark all as read' }}
+              </button>
+            </div>
+            <div class="max-h-80 overflow-y-auto">
+              <div v-for="notif in notifications" :key="notif.id"
+                class="px-4 py-3 flex gap-3 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                <div class="mt-1">
+                  <span :class="[
+                    'w-2 h-2 rounded-full inline-block',
+                    notif.unread ? 'bg-blue-500' : 'bg-gray-400'
+                  ]"></span>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <p class="text-sm font-medium text-gray-900 dark:text-white truncate">{{ notif.title }}</p>
+                  <p class="text-xs text-gray-600 dark:text-gray-400 truncate">{{ notif.subtitle }}</p>
+                  <p class="text-[11px] text-gray-500 dark:text-gray-500 mt-1">{{ notif.time }}</p>
+                </div>
+              </div>
+              <div v-if="notifications.length === 0" class="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">
+                {{ t('noResults') || 'No notifications' }}
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- Dark Mode Toggle Button -->
-        <button
-          @click="handleToggleDarkMode"
+        <button @click="handleToggleDarkMode"
           class="p-1.5 sm:p-2 rounded-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
-          :title="isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'"
-        >
+          :title="isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'">
           <!-- Moon Icon - Show when in DARK mode (dark mode is active) -->
-          <svg
-            v-if="isDarkMode"
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-4 w-4 sm:h-5 sm:w-5 text-gray-600 dark:text-gray-300"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
-            />
+          <svg v-if="isDarkMode" xmlns="http://www.w3.org/2000/svg"
+            class="h-4 w-4 sm:h-5 sm:w-5 text-gray-600 dark:text-gray-300" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
           </svg>
           <!-- Sun Icon - Show when in LIGHT mode (light mode is active) -->
-          <svg
-            v-else
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-4 w-4 sm:h-5 sm:w-5 text-gray-600 dark:text-gray-300"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
-            />
+          <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-gray-600 dark:text-gray-300"
+            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
           </svg>
         </button>
-        
+
         <!-- Fullscreen Icon Button (hidden on mobile) -->
-        <button
-          @click="toggleFullScreen"
+        <button @click="toggleFullScreen"
           class="hidden sm:flex p-1.5 sm:p-2 rounded-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors min-w-[44px] min-h-[44px] items-center justify-center"
-          title="Toggle Fullscreen"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-4 w-4 sm:h-5 sm:w-5 text-gray-600 dark:text-gray-300"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"
-            />
+          title="Toggle Fullscreen">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-gray-600 dark:text-gray-300"
+            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
           </svg>
         </button>
-        
+
         <!-- Profile Section with Dropdown -->
-        <div class="relative">
-          <button
-            @click="toggleProfileDropdown"
-            class="flex items-center gap-1 sm:gap-2 lg:gap-3 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-sm px-1 sm:px-2 py-1 transition-colors min-h-[44px]"
-          >
-            <div class="w-8 h-8 sm:w-10 sm:h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-semibold text-xs sm:text-sm flex-shrink-0">
+        <div class="relative" data-profile-dropdown>
+          <button @click="toggleProfileDropdown"
+            class="flex items-center gap-1 sm:gap-2 lg:gap-3 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-sm px-1 sm:px-2 py-1 transition-colors min-h-[44px]">
+            <div
+              class="w-8 h-8 sm:w-10 sm:h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-semibold text-xs sm:text-sm flex-shrink-0">
               AD
             </div>
-            <span class="hidden sm:inline text-sm sm:text-base text-gray-700 dark:text-gray-300 font-medium">{{ t('admin') }}</span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
+            <span class="hidden sm:inline text-sm sm:text-base text-gray-700 dark:text-gray-300 font-medium">{{
+              t('admin') }}</span>
+            <svg xmlns="http://www.w3.org/2000/svg"
               class="h-4 w-4 text-gray-600 dark:text-gray-300 transition-transform"
-              :class="{ 'rotate-180': showProfileDropdown }"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
+              :class="{ 'rotate-180': showProfileDropdown }" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
             </svg>
           </button>
-          
+
           <!-- Dropdown Menu -->
-          <div
-            v-if="showProfileDropdown"
-            class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-sm shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50"
-          >
+          <div v-if="showProfileDropdown"
+            class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-sm shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50">
             <div class="px-4 py-2 border-b border-gray-200 dark:border-gray-700">
               <p class="text-sm font-semibold text-gray-900 dark:text-white">{{ t('admin') }}</p>
               <p class="text-xs text-gray-500 dark:text-gray-400">admin@example.com</p>
             </div>
-            
+
             <!-- Report Menu Item -->
-            <router-link
-              :to="'/report'"
-              @click="showProfileDropdown = false"
-              class="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center gap-2"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+            <router-link :to="'/report'" @click="showProfileDropdown = false"
+              class="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
               </svg>
               {{ getTranslation('report') }}
             </router-link>
-            
+
             <!-- User Menu Item -->
-            <router-link
-              :to="'/user'"
-              @click="showProfileDropdown = false"
-              class="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center gap-2"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            <router-link :to="'/user'" @click="showProfileDropdown = false"
+              class="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
               {{ getTranslation('user') }}
             </router-link>
-            
+
             <!-- History Menu Item -->
-            <router-link
-              :to="'/history'"
-              @click="showProfileDropdown = false"
-              class="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center gap-2"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            <router-link :to="'/history'" @click="showProfileDropdown = false"
+              class="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               {{ getTranslation('history') }}
             </router-link>
-            
+
             <div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
-            
-            <button
-              @click="handleLogout"
-              class="w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900 transition-colors flex items-center gap-2"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-4 w-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+
+            <button @click="handleLogout"
+              class="w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900 transition-colors flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
               </svg>
               {{ t('logout') }}
             </button>
@@ -335,11 +296,11 @@ import salesData from '../data/sales.json'
 const router = useRouter()
 
 // Inject sidebar toggle function from App.vue
-const toggleSidebar = inject('toggleSidebar', () => {})
+const toggleSidebar = inject('toggleSidebar', () => { })
 
 // Inject language state from App.vue
 const currentLanguage = inject('currentLanguage', ref('en'))
-const changeLanguage = inject('changeLanguage', () => {})
+const changeLanguage = inject('changeLanguage', () => { })
 
 // Use dark mode composable directly (singleton pattern ensures shared state)
 const { isDark, toggleDarkMode } = useDarkMode()
@@ -373,7 +334,7 @@ const t = (key) => {
       noResults: 'រកមិនឃើញលទ្ធផល',
     }
   }
-  
+
   let value = translations[lang]
   for (const k of keys) {
     if (value && typeof value === 'object' && k in value) {
@@ -411,20 +372,40 @@ const searchContainer = ref(null)
 
 // Profile dropdown state
 const showProfileDropdown = ref(false)
+const showNotificationDropdown = ref(false)
 
 // Language dropdown state
 const showLanguageDropdown = ref(false)
+const notifications = ref([
+  { id: 1, title: 'New student registered', subtitle: 'John Doe enrolled', time: '2m ago', unread: true },
+  { id: 2, title: 'Payment received', subtitle: 'Invoice ORD-20251210', time: '15m ago', unread: true },
+  { id: 3, title: 'Inventory low', subtitle: 'Product ABC stock is low', time: '1h ago', unread: false }
+])
+
+const unreadCount = computed(() => notifications.value.filter(n => n.unread).length)
 
 // Toggle profile dropdown
 const toggleProfileDropdown = () => {
   showProfileDropdown.value = !showProfileDropdown.value
   showLanguageDropdown.value = false // Close language dropdown when opening profile
+  showNotificationDropdown.value = false
 }
 
 // Toggle language dropdown
 const toggleLanguageDropdown = () => {
   showLanguageDropdown.value = !showLanguageDropdown.value
   showProfileDropdown.value = false // Close profile dropdown when opening language
+  showNotificationDropdown.value = false
+}
+
+const toggleNotificationDropdown = () => {
+  showNotificationDropdown.value = !showNotificationDropdown.value
+  showProfileDropdown.value = false
+  showLanguageDropdown.value = false
+}
+
+const markAllNotificationsRead = () => {
+  notifications.value = notifications.value.map(n => ({ ...n, unread: false }))
 }
 
 // Select language
@@ -435,14 +416,18 @@ const selectLanguage = (lang) => {
 
 // Close dropdown when clicking outside
 const handleClickOutside = (event) => {
-  const profileSection = event.target.closest('.relative')
+  const profileSection = event.target.closest('[data-profile-dropdown]')
+  const languageSection = event.target.closest('[data-language-dropdown]')
+  const notificationSection = event.target.closest('[data-notification-dropdown]')
+
   if (!profileSection) {
-    if (showProfileDropdown.value) {
-      showProfileDropdown.value = false
-    }
-    if (showLanguageDropdown.value) {
-      showLanguageDropdown.value = false
-    }
+    showProfileDropdown.value = false
+  }
+  if (!languageSection) {
+    showLanguageDropdown.value = false
+  }
+  if (!notificationSection) {
+    showNotificationDropdown.value = false
   }
 }
 
@@ -459,7 +444,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   document.removeEventListener('click', handleClickOutside)
-  window.removeEventListener('languagechange', () => {})
+  window.removeEventListener('languagechange', () => { })
 })
 
 // Fullscreen toggle method
@@ -481,7 +466,7 @@ const toggleFullScreen = () => {
 const handleLogout = () => {
   console.log('Logging out...')
   showProfileDropdown.value = false
-  
+
   // Log logout history
   addHistory('logout', {
     type: 'system',
@@ -489,12 +474,12 @@ const handleLogout = () => {
     description: 'User logged out successfully',
     user: 'Admin'
   })
-  
+
   // In a real app, you would:
   // - Clear authentication tokens
   // - Clear user state
   // - Clear any stored data
-  
+
   // Navigate to login page
   router.push('/login')
 }
@@ -625,7 +610,7 @@ const handleSearch = () => {
   } catch (e) {
     // Ignore errors
   }
-  
+
   if (studentsData && Array.isArray(studentsData)) {
     studentsData.forEach(student => {
       if (
@@ -653,7 +638,7 @@ const handleSearch = () => {
   } catch (e) {
     // Ignore errors
   }
-  
+
   if (employeesData && Array.isArray(employeesData)) {
     employeesData.forEach(employee => {
       if (
@@ -682,7 +667,7 @@ const handleSearch = () => {
   } catch (e) {
     // Ignore errors
   }
-  
+
   if (incomesData && Array.isArray(incomesData)) {
     incomesData.forEach(income => {
       if (
@@ -709,7 +694,7 @@ const handleSearch = () => {
   } catch (e) {
     // Ignore errors
   }
-  
+
   if (expensesData && Array.isArray(expensesData)) {
     expensesData.forEach(expense => {
       if (
@@ -736,7 +721,7 @@ const handleSearch = () => {
   } catch (e) {
     // Ignore errors
   }
-  
+
   if (investmentsData && Array.isArray(investmentsData)) {
     investmentsData.forEach(investment => {
       if (
@@ -841,4 +826,3 @@ onUnmounted(() => {
   document.removeEventListener('click', handleSearchClickOutside)
 })
 </script>
-

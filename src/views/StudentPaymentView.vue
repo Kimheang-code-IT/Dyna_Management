@@ -143,7 +143,7 @@
               </button>
             </div>
             <!-- Add Button -->
-            <button @click="openAddDrawer"
+            <button @click="router.push('/student-payment/add')"
               class="px-3 py-2 bg-blue-600 text-white rounded-sm hover:bg-blue-700 transition-colors font-medium flex items-center gap-2 h-[37px]">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor">
@@ -169,7 +169,8 @@
             <th class="px-3 py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('invoiceNo') }}</th>
             <th class="px-3 py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('amountDue') }}</th>
             <th class="px-3 py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('method') || 'Method' }}</th>
-            <th class="px-3 py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('dueDate') }}</th>
+            <th class="px-3 py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('startDate') || 'Start Date' }}</th>
+            <th class="px-3 py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('endDate') || 'End Date' }}</th>
             <th class="px-3 py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600">{{ t('status') }}</th>
             <th class="px-2 py-3 text-center text-[10px] font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b dark:border-gray-600"></th>
           </tr>
@@ -255,7 +256,8 @@
               </span>
             </td>
             <!-- Due Date -->
-            <td class="px-3 py-3 whitespace-nowrap text-xs text-gray-700 dark:text-gray-300 text-center">{{ formatDueDate(payment.dueDate) }}</td>
+            <td class="px-3 py-3 whitespace-nowrap text-xs text-gray-700 dark:text-gray-300 text-center">{{ formatDateOnly(payment.startDate || payment.created) }}</td>
+            <td class="px-3 py-3 whitespace-nowrap text-xs text-gray-700 dark:text-gray-300 text-center">{{ formatDateOnly(payment.endDate || payment.dueDate) }}</td>
             <td class="px-3 py-3 whitespace-nowrap">
               <span class="px-2 py-1 text-[10px] font-medium rounded-full flex items-center gap-1 justify-center"
                     :class="getStatusClass(payment.status)">
@@ -402,8 +404,12 @@
                   <p class="text-lg font-bold text-gray-900 dark:text-white mt-1">${{ selectedPayment.amountDue.toFixed(2) }}</p>
                 </div>
                 <div>
-                  <label class="text-xs font-medium text-gray-500 dark:text-gray-400">{{ t('dueDate') }}</label>
-                  <p class="text-sm text-gray-900 dark:text-white mt-1">{{ formatDueDate(selectedPayment.dueDate) }}</p>
+                  <label class="text-xs font-medium text-gray-500 dark:text-gray-400">{{ t('startDate') || 'Start Date' }}</label>
+                  <p class="text-sm text-gray-900 dark:text-white mt-1">{{ formatDateOnly(selectedPayment.startDate || selectedPayment.created) }}</p>
+                </div>
+                <div>
+                  <label class="text-xs font-medium text-gray-500 dark:text-gray-400">{{ t('endDate') || 'End Date' }}</label>
+                  <p class="text-sm text-gray-900 dark:text-white mt-1">{{ formatDateOnly(selectedPayment.endDate || selectedPayment.dueDate) }}</p>
                 </div>
                 <div>
                   <label class="text-xs font-medium text-gray-500 dark:text-gray-400">{{ t('status') }}</label>
@@ -454,138 +460,6 @@
               </button>
             </div>
           </div>
-        </div>
-      </div>
-    </Transition>
-    
-    <!-- Add Payment Drawer -->
-    <Transition name="drawer">
-      <div v-if="showAddDrawer" class="fixed inset-0 bg-black bg-opacity-50 z-50" @click.self="closeAddDrawer">
-        <div class="absolute right-0 top-0 h-full w-full max-w-md bg-white dark:bg-gray-800 shadow-xl overflow-y-auto">
-          <div
-            class="sticky top-0 bg-white dark:bg-gray-800 text-black dark:text-white px-6 py-5 flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left justify-center sm:justify-between z-10 border-b border-gray-200 dark:border-gray-700">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 bg-gray-100 dark:bg-gray-700 rounded-sm flex items-center justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-black dark:text-white" fill="none"
-                  viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                </svg>
-              </div>
-              <h2 class="text-xl font-bold text-black dark:text-white">{{ t('add') }} {{ t('payment') || 'Payment' }}</h2>
-            </div>
-            <button @click="closeAddDrawer"
-              class="text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-sm p-2 transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-black dark:text-white" fill="none"
-                viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-
-          <form @submit.prevent="handleAddPayment" class="p-6 space-y-4">
-            <!-- Student Selection -->
-            <div>
-              <label for="studentId" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                {{ t('student') }} <span class="text-red-500">*</span>
-              </label>
-              <select id="studentId" v-model="paymentForm.studentId" required
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white h-[37px]">
-                <option value="">{{ t('selectStudent') || 'Select Student' }}</option>
-                <option v-for="student in allStudents" :key="student.id" :value="student.id">
-                  {{ student.nameEnglish || student.name }} ({{ student.id }})
-                </option>
-              </select>
-              <p v-if="errors.studentId" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.studentId }}</p>
-            </div>
-
-            <!-- Class Selection -->
-            <div>
-              <label for="classId" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                {{ t('className') }} <span class="text-red-500">*</span>
-              </label>
-              <select id="classId" v-model="paymentForm.classId" required
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white h-[37px]">
-                <option value="">{{ t('selectClass') || 'Select Class' }}</option>
-                <option v-for="classItem in allClasses" :key="classItem.id" :value="classItem.id">
-                  {{ classItem.className }}
-                </option>
-              </select>
-              <p v-if="errors.classId" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.classId }}</p>
-            </div>
-
-            <!-- Invoice No -->
-            <div>
-              <label for="invoiceNo" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                {{ t('invoiceNo') }} <span class="text-red-500">*</span>
-              </label>
-              <input id="invoiceNo" v-model="paymentForm.invoiceNo" type="text" required
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 h-[37px]"
-                :placeholder="t('invoiceNo')" />
-              <p v-if="errors.invoiceNo" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.invoiceNo }}</p>
-            </div>
-
-            <!-- Amount Due -->
-            <div>
-              <label for="amountDue" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                {{ t('amountDue') }} <span class="text-red-500">*</span>
-              </label>
-              <input id="amountDue" v-model.number="paymentForm.amountDue" type="number" step="0.01" min="0" required
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 h-[37px]"
-                :placeholder="t('amountDue')" />
-              <p v-if="errors.amountDue" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.amountDue }}</p>
-            </div>
-
-            <!-- Method -->
-            <div>
-              <label for="method" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                {{ t('method') || 'Method' }} <span class="text-red-500">*</span>
-              </label>
-              <select id="method" v-model="paymentForm.method" required
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white h-[37px]">
-                <option value="">{{ t('selectMethod') || 'Select Method' }}</option>
-                <option value="Bank">{{ t('bank') || 'Bank' }}</option>
-                <option value="Physical">{{ t('physical') || 'Physical' }}</option>
-              </select>
-              <p v-if="errors.method" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.method }}</p>
-            </div>
-
-            <!-- Due Date -->
-            <div>
-              <label for="dueDate" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                {{ t('dueDate') }} <span class="text-red-500">*</span>
-              </label>
-              <input id="dueDate" v-model="paymentForm.dueDate" type="date" required
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white h-[37px]" />
-              <p v-if="errors.dueDate" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.dueDate }}</p>
-            </div>
-
-            <!-- Status -->
-            <div>
-              <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                {{ t('status') }} <span class="text-red-500">*</span>
-              </label>
-              <select id="status" v-model="paymentForm.status" required
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white h-[37px]">
-                <option value="">{{ t('selectStatus') || 'Select Status' }}</option>
-                <option value="Paid">{{ t('paid') }}</option>
-                <option value="Pending">{{ t('pending') }}</option>
-                <option value="Overdue">{{ t('overdue') }}</option>
-              </select>
-              <p v-if="errors.status" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.status }}</p>
-            </div>
-
-            <!-- Buttons -->
-            <div class="flex gap-3 pt-4">
-              <button type="submit"
-                class="flex-1 px-4 py-2 bg-blue-600 text-white rounded-sm hover:bg-blue-700 transition-colors font-medium">
-                {{ t('add') }}
-              </button>
-              <button type="button" @click="closeAddDrawer"
-                class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-sm hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors font-medium">
-                {{ t('cancel') }}
-              </button>
-            </div>
-          </form>
         </div>
       </div>
     </Transition>
@@ -675,6 +549,7 @@
 
 <script setup>
 import { ref, reactive, computed, inject, onMounted, onUnmounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { useI18n } from '../composables/useI18n'
 import { useToast } from '../composables/useToast'
 import { useLoading } from '../composables/useLoading'
@@ -683,42 +558,12 @@ import { addHistory } from '../utils/history'
 
 // Inject sidebar collapse state
 const isSidebarCollapsed = inject('isSidebarCollapsed', ref(false))
+const router = useRouter()
 const { t } = useI18n()
 const { success, error } = useToast()
 const { withLoading } = useLoading()
 const { handleError } = useErrorHandler()
 
-// Load students
-const loadStudents = async () => {
-  try {
-    const { loadDataFromJSON } = await import('../utils/dataLoader')
-    allStudents.value = await loadDataFromJSON('../data/students.json', 'students_data')
-  } catch (error) {
-    console.error('Error loading students:', error)
-    const saved = localStorage.getItem('students_data')
-    if (saved) {
-      allStudents.value = JSON.parse(saved)
-    } else {
-      allStudents.value = []
-    }
-  }
-}
-
-// Load classes
-const loadClasses = async () => {
-  try {
-    const { loadDataFromJSON } = await import('../utils/dataLoader')
-    allClasses.value = await loadDataFromJSON('../data/classes.json', 'classes_data')
-  } catch (error) {
-    console.error('Error loading classes:', error)
-    const saved = localStorage.getItem('classes_data')
-    if (saved) {
-      allClasses.value = JSON.parse(saved)
-    } else {
-      allClasses.value = []
-    }
-  }
-}
 
 // Load payments from JSON file or localStorage, then merge with student and class data
 const loadPayments = async () => {
@@ -842,8 +687,6 @@ const savePaymentHistory = (paymentId, history) => {
 }
 
 const payments = ref([])
-const allStudents = ref([])
-const allClasses = ref([])
 
 const searchQuery = ref('')
 const filterDateFrom = ref('')
@@ -865,30 +708,6 @@ const showRejectDialog = ref(false)
 const paymentToConfirm = ref(null)
 const paymentToReject = ref(null)
 
-// Add drawer state
-const showAddDrawer = ref(false)
-
-// Payment form
-const paymentForm = reactive({
-  studentId: '',
-  classId: '',
-  invoiceNo: '',
-  amountDue: 0,
-  method: 'Physical',
-  dueDate: '',
-  status: 'Pending'
-})
-
-// Form errors
-const errors = reactive({
-  studentId: '',
-  classId: '',
-  invoiceNo: '',
-  amountDue: '',
-  method: '',
-  dueDate: '',
-  status: ''
-})
 
 // Success/Error message state
 // Toast state removed - now using global ToastContainer
@@ -924,25 +743,26 @@ const filteredPayments = computed(() => {
   // Apply date range filter
   if (filterDateFrom.value || filterDateTo.value) {
     filtered = filtered.filter(payment => {
-      if (!payment.dueDate) return false
+      const target = payment.endDate || payment.dueDate || payment.startDate
+      if (!target) return false
       
-      const dueDate = new Date(payment.dueDate)
-      dueDate.setHours(0, 0, 0, 0)
+      const targetDate = new Date(target)
+      targetDate.setHours(0, 0, 0, 0)
       
       if (filterDateFrom.value && filterDateTo.value) {
         const fromDate = new Date(filterDateFrom.value)
         fromDate.setHours(0, 0, 0, 0)
         const toDate = new Date(filterDateTo.value)
         toDate.setHours(23, 59, 59, 999)
-        return dueDate >= fromDate && dueDate <= toDate
+        return targetDate >= fromDate && targetDate <= toDate
       } else if (filterDateFrom.value) {
         const fromDate = new Date(filterDateFrom.value)
         fromDate.setHours(0, 0, 0, 0)
-        return dueDate >= fromDate
+        return targetDate >= fromDate
       } else if (filterDateTo.value) {
         const toDate = new Date(filterDateTo.value)
         toDate.setHours(23, 59, 59, 999)
-        return dueDate <= toDate
+        return targetDate <= toDate
       }
       return true
     })
@@ -1009,6 +829,21 @@ const formatDueDate = (dateString) => {
       minute: '2-digit',
       second: '2-digit',
       hour12: true
+    })
+  } catch (error) {
+    return 'N/A'
+  }
+}
+
+// Format date only
+const formatDateOnly = (dateString) => {
+  if (!dateString) return 'N/A'
+  try {
+    const date = new Date(dateString)
+    return date.toLocaleDateString('en-US', {
+      month: 'numeric',
+      day: 'numeric',
+      year: 'numeric'
     })
   } catch (error) {
     return 'N/A'
@@ -1089,129 +924,6 @@ const handleReject = (payment) => {
   activeActionMenu.value = null
 }
 
-// Open add drawer
-const openAddDrawer = () => {
-  resetPaymentForm()
-  loadStudents()
-  loadClasses()
-  showAddDrawer.value = true
-}
-
-// Close add drawer
-const closeAddDrawer = () => {
-  showAddDrawer.value = false
-  resetPaymentForm()
-}
-
-// Reset payment form
-const resetPaymentForm = () => {
-  paymentForm.studentId = ''
-  paymentForm.classId = ''
-  paymentForm.invoiceNo = ''
-  paymentForm.amountDue = 0
-  paymentForm.method = 'Physical'
-  paymentForm.dueDate = ''
-  paymentForm.status = 'Pending'
-  Object.keys(errors).forEach(key => errors[key] = '')
-}
-
-// Validate payment form
-const validatePaymentForm = () => {
-  Object.keys(errors).forEach(key => errors[key] = '')
-  let hasErrors = false
-
-  if (!paymentForm.studentId) {
-    errors.studentId = 'Student is required'
-    hasErrors = true
-  }
-
-  if (!paymentForm.classId) {
-    errors.classId = 'Class is required'
-    hasErrors = true
-  }
-
-  if (!paymentForm.invoiceNo.trim()) {
-    errors.invoiceNo = 'Invoice number is required'
-    hasErrors = true
-  }
-
-  if (!paymentForm.amountDue || paymentForm.amountDue <= 0) {
-    errors.amountDue = 'Amount must be greater than 0'
-    hasErrors = true
-  }
-
-  if (!paymentForm.method) {
-    errors.method = 'Method is required'
-    hasErrors = true
-  }
-
-  if (!paymentForm.dueDate) {
-    errors.dueDate = 'Due date is required'
-    hasErrors = true
-  }
-
-  if (!paymentForm.status) {
-    errors.status = 'Status is required'
-    hasErrors = true
-  }
-
-  return !hasErrors
-}
-
-// Handle add payment
-const handleAddPayment = async () => {
-  if (!validatePaymentForm()) {
-    error(`${t('validationError') || 'Validation Error'}: ${t('pleaseFixErrors') || 'Please fix the errors'}`)
-    return
-  }
-
-  try {
-    await withLoading(async () => {
-      const student = allStudents.value.find(s => s.id === paymentForm.studentId)
-      const classItem = allClasses.value.find(c => c.id === paymentForm.classId)
-
-      if (!student || !classItem) {
-        error('Student or class not found')
-        return
-      }
-
-      // Generate new payment ID
-      const newId = `PAY${String(payments.value.length + 1).padStart(3, '0')}`
-
-      // Generate invoice number if not provided
-      const invoiceNo = paymentForm.invoiceNo.trim() || `INV-${String(payments.value.length + 1).padStart(4, '0')}`
-
-      // Create new payment
-      const newPayment = {
-        id: newId,
-        studentId: paymentForm.studentId,
-        student: student,
-        classId: paymentForm.classId,
-        className: classItem.className,
-        invoiceNo: invoiceNo,
-        amountDue: parseFloat(paymentForm.amountDue),
-        method: paymentForm.method,
-        dueDate: new Date(paymentForm.dueDate).toISOString(),
-        status: paymentForm.status,
-        created: new Date().toISOString().split('T')[0]
-      }
-
-      payments.value.push(newPayment)
-      savePayments()
-      addHistory('add', {
-        type: 'pos',
-        itemName: newPayment.invoiceNo,
-        itemId: newId,
-        description: `Student payment added - Invoice: ${newPayment.invoiceNo}, Student: ${student.nameEnglish || student.name}, Amount: ${newPayment.amountDue}`,
-        user: 'Admin'
-      })
-      closeAddDrawer()
-      success(`${t('paymentAdded') || 'Payment added'}: "${newPayment.invoiceNo}" ${t('paymentAddedSuccess') || 'successfully'}`)
-    }, 'Adding payment...')
-  } catch (err) {
-    handleError(err, { userMessage: 'Failed to add payment. Please try again.' })
-  }
-}
 
 // Confirm payment
 const confirmPayment = () => {
@@ -1293,15 +1005,11 @@ const handleClickOutside = (event) => {
 onMounted(() => {
   document.addEventListener('click', handleClickOutside)
   loadPayments()
-  loadStudents()
-  loadClasses()
   
   // Listen for storage events
   window.addEventListener('storage', (e) => {
     if (e.key === 'enrollments_data' || e.key === 'students_data' || e.key === 'classes_data') {
       generatePayments()
-      loadStudents()
-      loadClasses()
     }
     if (e.key === 'payments_data') {
       loadPayments()

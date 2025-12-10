@@ -117,6 +117,7 @@
                 </svg>
               </button>
             </div>
+            
             <!-- Status Filter -->
             <div class="relative">
               <select
@@ -128,6 +129,16 @@
                 <option value="Inactive">{{ t('inactive') }}</option>
               </select>
             </div>
+            <!-- Add Investment Button -->
+            <button
+              @click="openAddDrawer"
+              class="h-[37px] px-4 rounded-sm text-sm font-semibold flex items-center gap-2 transition-colors bg-green-600 text-white hover:bg-green-700"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+              </svg>
+              {{ t('add') }}
+            </button>
           </div>
         </div>
       </div>
@@ -621,6 +632,26 @@ const filteredInvestments = computed(() => {
   return filtered
 })
 
+const resetForm = () => {
+  form.value = {
+    expenseName: '',
+    description: '',
+    amount: 0,
+    saler: '',
+    created: '',
+    supplier: '',
+    contact: '',
+    status: 'Active'
+  }
+}
+
+const openAddDrawer = () => {
+  resetForm()
+  isViewMode.value = false
+  editingInvestment.value = null
+  showDrawer.value = true
+}
+
 // Format date
 const formatDate = (dateString) => {
   if (!dateString) return ''
@@ -741,16 +772,7 @@ const closeDrawer = () => {
   showDrawer.value = false
   isViewMode.value = false
   editingInvestment.value = null
-  form.value = {
-    expenseName: '',
-    description: '',
-    amount: 0,
-    saler: '',
-    created: '',
-    supplier: '',
-    contact: '',
-    status: 'Active'
-  }
+  resetForm()
 }
 
 // Clear date filter

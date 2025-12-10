@@ -130,7 +130,7 @@
                 </svg>
               </button>
             </div>
-            
+
           </div>
           <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-4 flex-wrap">
             <button @click="handleGenerateCardFromToolbar" :disabled="filteredStudents.length === 0"
@@ -286,12 +286,14 @@
                 </span>
               </td>
               <td class="px-4 py-3 text-xs">
-                <div class="flex flex-col gap-1">
+                <div class="flex items-center gap-2">
                   <span class="px-2 py-1 text-[10px] font-medium rounded-full inline-block w-fit"
                     :class="getSessionColorClass(student.session)">
-                    {{ student.session }}
+                    {{ student.session || t('session') }}
                   </span>
-                  <div v-if="student.time" class="text-[10px] text-gray-500 dark:text-gray-400">{{ student.time }}</div>
+                  <span class="text-[10px] text-gray-600 dark:text-gray-400">
+                    {{ student.time || 'N/A' }}
+                  </span>
                 </div>
               </td>
               <td class="px-4 py-3 whitespace-nowrap text-xs text-gray-700 dark:text-gray-300">{{ student.province }}
@@ -630,12 +632,19 @@ const { success, error } = useToast()
 const { withLoading } = useLoading()
 const { handleError } = useErrorHandler()
 
-// Load students from localStorage or fallback to JSON
+// Load students from localStorage or fallback to JSON, ensuring time is present from JSON when missing
 const loadStudents = () => {
   try {
     const stored = localStorage.getItem('students_data')
     if (stored) {
-      return JSON.parse(stored)
+      const parsed = JSON.parse(stored)
+      const jsonMap = Object.fromEntries(studentsData.map((s) => [s.id, s]))
+      return parsed.map((s) => {
+        if (!s.time && jsonMap[s.id]?.time) {
+          return { ...s, time: jsonMap[s.id].time }
+        }
+        return s
+      })
     }
   } catch (e) {
     console.error('Error loading students from localStorage:', e)
