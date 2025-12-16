@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="['mx-auto transition-all duration-300 w-full', isSidebarCollapsed ? 'max-w-full px-3' : 'max-w-7xl px-3 lg:px-0']">
+    :class="['mx-auto transition-all duration-300 w-full capitalize', isSidebarCollapsed ? 'max-w-full px-3' : 'max-w-7xl px-3 lg:px-0']">
     <!-- Summary Cards -->
     <div class="flex flex-nowrap sm:flex-wrap gap-1 sm:gap-1.5 md:gap-2 lg:gap-3 mb-2 sm:mb-3">
       <!-- Total Enrollments Card -->
@@ -171,7 +171,7 @@
     </div>
 
     <!-- Scrollable table container with sticky header -->
-    <div class="max-h-[500px] overflow-y-auto border border-gray-200 dark:border-gray-700 rounded-sm">
+    <div class="max-h-[600px] overflow-y-auto border border-gray-200 dark:border-gray-700 rounded-sm">
       <table class="w-full">
         <!-- Sticky Header -->
         <thead class="bg-gray-50 dark:bg-gray-700 sticky top-0 z-10">
@@ -372,7 +372,7 @@
                     d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                 </svg>
               </div>
-              <h2 class="text-xl font-bold text-black dark:text-white">{{ t('studentDetail') }}</h2>
+              <h2 class="text-xl font-bold text-black dark:text-white capitalize">{{ t('studentDetail') }}</h2>
             </div>
             <button @click="showDetailDrawer = false"
               class="text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-sm p-2 transition-colors">
@@ -391,7 +391,7 @@
                   getInitials(selectedEnrollment.student.name) }}</span>
               </div>
               <div>
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ selectedEnrollment.student.name }}
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white capitalize">{{ selectedEnrollment.student.name }}
                 </h3>
                 <p class="text-sm text-gray-500 dark:text-gray-400">{{ selectedEnrollment.student.id }}</p>
               </div>
@@ -498,7 +498,7 @@
             </svg>
           </div>
           <div>
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ t('confirmEnrollment') }}</h3>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white capitalize">{{ t('confirmEnrollment') }}</h3>
             <p class="text-sm text-gray-600 dark:text-gray-400">{{ t('areYouSureConfirm') }}</p>
           </div>
         </div>
@@ -534,7 +534,7 @@
             </svg>
           </div>
           <div>
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ t('rejectEnrollment') }}</h3>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white capitalize">{{ t('rejectEnrollment') }}</h3>
             <p class="text-sm text-gray-600 dark:text-gray-400">{{ t('areYouSureReject') }}</p>
           </div>
         </div>
@@ -555,6 +555,26 @@
       </div>
     </div>
 
+    <!-- Success Message Toast -->
+    <Transition name="toast">
+      <div v-if="showSuccessMessage"
+        class="fixed top-4 right-4 bg-green-500 text-white rounded-sm shadow-lg p-4 flex items-center gap-3 z-50 min-w-[300px]">
+        <div class="w-8 h-8 bg-green-400 rounded-full flex items-center justify-center flex-shrink-0">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        <div class="flex-1">
+          <p class="font-semibold text-white">{{ successMessageTitle }}</p>
+          <p class="text-sm text-white">{{ successMessageText }}</p>
+        </div>
+        <button @click="showSuccessMessage = false" class="text-white hover:text-green-100 transition-colors flex-shrink-0">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </Transition>
   </div>
 </template>
 
@@ -564,6 +584,8 @@ import { useI18n } from '../composables/useI18n'
 import { useToast } from '../composables/useToast'
 import { useLoading } from '../composables/useLoading'
 import { useErrorHandler } from '../composables/useErrorHandler'
+import { textContains } from '../utils/search'
+import { addHistory } from '../utils/history'
 
 // Inject sidebar collapse state
 const isSidebarCollapsed = inject('isSidebarCollapsed', ref(false))
@@ -676,6 +698,9 @@ const selectedEnrollment = ref(null)
 
 // Action menu state
 const activeActionMenu = ref(null)
+const showSuccessMessage = ref(false)
+const successMessageTitle = ref('')
+const successMessageText = ref('')
 
 // Confirmation dialogs state
 const showConfirmDialog = ref(false)
@@ -704,15 +729,14 @@ const filteredEnrollments = computed(() => {
   filtered = filtered.filter(e => e.status !== 'Confirmed')
 
   if (searchQuery.value) {
-    const query = searchQuery.value.toLowerCase()
     filtered = filtered.filter(e =>
-      (e.student.name && e.student.name.toLowerCase().includes(query)) ||
-      (e.student.nameEnglish && e.student.nameEnglish.toLowerCase().includes(query)) ||
-      (e.student.nameKhmer && e.student.nameKhmer.toLowerCase().includes(query)) ||
-      (e.student.id && e.student.id.toLowerCase().includes(query)) ||
-      (e.student.email && e.student.email.toLowerCase().includes(query)) ||
-      (e.student.contact && e.student.contact.toLowerCase().includes(query)) ||
-      (e.className && e.className.toLowerCase().includes(query))
+      textContains(e.student.name || '', searchQuery.value) ||
+      textContains(e.student.nameEnglish || '', searchQuery.value) ||
+      textContains(e.student.nameKhmer || '', searchQuery.value) ||
+      textContains(e.student.id || '', searchQuery.value) ||
+      textContains(e.student.email || '', searchQuery.value) ||
+      textContains(e.student.contact || '', searchQuery.value) ||
+      textContains(e.className || '', searchQuery.value)
     )
   }
 
@@ -882,9 +906,25 @@ const confirmEnrollment = () => {
       if (index !== -1) {
         enrollments.value[index].status = 'Confirmed'
         saveEnrollments()
+        
+        // Add history entry
+        const studentName = enrollments.value[index].student?.name || 'Student'
+        addHistory('update', {
+          type: 'student',
+          itemName: studentName,
+          itemId: enrollmentToConfirm.value.id,
+          description: `Enrollment confirmed - Student: ${studentName}, Course: ${enrollments.value[index].courseName || 'N/A'}`,
+          user: 'Admin'
+        })
+        
         showConfirmDialog.value = false
         enrollmentToConfirm.value = null
-        success(`${t('enrollmentConfirmed')}: "${enrollments.value[index].student.name}" ${t('enrollmentConfirmedSuccess')}`)
+        showSuccessMessage.value = true
+        successMessageTitle.value = t('enrollmentConfirmed')
+        successMessageText.value = `"${enrollments.value[index].student.name}" ${t('enrollmentConfirmedSuccess')}`
+        setTimeout(() => {
+          showSuccessMessage.value = false
+        }, 3000)
       }
     }
   } catch (err) {
@@ -901,6 +941,17 @@ const confirmReject = () => {
       if (index !== -1) {
         enrollments.value[index].status = 'Not Confirmed'
         saveEnrollments()
+        
+        // Add history entry
+        const studentName = enrollments.value[index].student?.name || 'Student'
+        addHistory('update', {
+          type: 'student',
+          itemName: studentName,
+          itemId: enrollmentToReject.value.id,
+          description: `Enrollment rejected - Student: ${studentName}, Course: ${enrollments.value[index].courseName || 'N/A'}`,
+          user: 'Admin'
+        })
+        
         showRejectDialog.value = false
         enrollmentToReject.value = null
         success(`${t('enrollmentRejected')}: "${enrollments.value[index].student.name}" ${t('enrollmentRejectedSuccess')}`)

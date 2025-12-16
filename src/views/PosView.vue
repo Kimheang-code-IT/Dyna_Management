@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="['mx-auto transition-all duration-300 w-full', isSidebarCollapsed ? 'max-w-full px-3' : 'max-w-7xl px-3 lg:px-0']">
+    :class="['mx-auto transition-all duration-300 w-full capitalize', isSidebarCollapsed ? 'max-w-full px-3' : 'max-w-7xl px-3 lg:px-0']">
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-2 sm:gap-3">
       <!-- Left Panel: Product Listing -->
       <div class="lg:col-span-2 bg-white dark:bg-gray-800 rounded-sm shadow px-3">
@@ -70,7 +70,7 @@
               <!-- Search Icon Overlay -->
               <button @click="showProductDetails(product)"
                 class="absolute top-2 right-2 w-8 h-8 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-opacity hover:bg-blue-50 dark:hover:bg-gray-700 z-10"
-                :title="t('viewDetails') || 'View Details'">
+                :title="t('viewDetails')">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-600 dark:text-blue-400" fill="none"
                   viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -111,7 +111,7 @@
         <div class="bg-white dark:bg-gray-800 rounded-sm shadow p-3 sticky top-0 ">
           <!-- Cart Header -->
           <div class="flex items-center justify-between mb-2 pb-2 border-b border-gray-200 dark:border-gray-700">
-            <h2 class="text-xl font-semibold text-gray-800 dark:text-white flex items-center gap-2">
+            <h2 class="text-xl font-semibold text-gray-800 dark:text-white flex items-center gap-2 capitalize">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -126,7 +126,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
-              {{ t('customerInfo') || 'Customer Info' }}
+              {{ t('customerInfo') }}
             </button>
             <button v-if="cart.length > 0" @click="showClearCartDialog = true"
               class="text-sm text-red-400 dark:text-red-500 hover:text-red-600 dark:hover:text-red-400 font-medium bg-red-100 px-2 py-1 rounded-md flex items-center gap-1">
@@ -229,7 +229,7 @@
           <!-- Modal Header -->
           <div
             class="sticky top-0 bg-white dark:bg-gray-800 px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between z-10">
-            <h2 class="text-xl font-bold text-gray-900 dark:text-white">{{ t('productDetails') || 'Product Details' }}
+            <h2 class="text-xl font-bold text-gray-900 dark:text-white capitalize">{{ t('productDetails') }}
             </h2>
             <button @click="closeProductDetails"
               class="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
@@ -247,7 +247,7 @@
               <div class="space-y-4">
                 <!-- Product Name and SKU -->
                 <div>
-                  <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">{{ selectedProduct.name }}</h3>
+                  <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-1 capitalize">{{ selectedProduct.name }}</h3>
                   <p class="text-sm text-gray-500 dark:text-gray-400">{{ t('sku') }}: {{ selectedProduct.sku }}</p>
                 </div>
 
@@ -334,20 +334,93 @@
                 </svg>
               </div>
               <div>
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ t('customerInfo') ||
-                  'CustomerInformation' }}</h3>
-                <p class="text-sm text-gray-500 dark:text-gray-400">{{ t('Enter Customer Details') || 'Please entercustomer details' }}</p>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white capitalize">{{ t('customerInfo') }}</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400">{{ t('enterCustomerDetails') }}</p>
               </div>
             </div>
           </div>
 
           <!-- Dialog Body -->
           <div class="px-6 py-4 space-y-4">
+            <!-- Tabs -->
+            <div class="flex gap-2 flex-wrap">
+              <button
+                @click="activeCustomerTab = 'customer'"
+                :class="[
+                  'px-3 py-2 text-sm font-medium rounded-sm border transition-colors',
+                  activeCustomerTab === 'customer'
+                    ? 'bg-blue-100 dark:bg-blue-900/30 border-blue-400 dark:border-blue-600 text-blue-700 dark:text-blue-200'
+                    : 'bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200'
+                ]"
+              >
+                {{ t('customer') }}
+              </button>
+              <button
+                @click="activeCustomerTab = 'student'"
+                :class="[
+                  'px-3 py-2 text-sm font-medium rounded-sm border transition-colors',
+                  activeCustomerTab === 'student'
+                    ? 'bg-blue-100 dark:bg-blue-900/30 border-blue-400 dark:border-blue-600 text-blue-700 dark:text-blue-200'
+                    : 'bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200'
+                ]"
+              >
+                {{ t('student') }}
+              </button>
+              <button
+                @click="setWalkInCustomer"
+                class="px-3 py-2 text-sm font-medium rounded-sm border transition-colors bg-blue-600 text-white border-blue-600 hover:bg-blue-700"
+              >
+                {{ t('walkIn') }}
+              </button>
+            </div>
+
+            <!-- Student Tab -->
+            <div v-if="activeCustomerTab === 'student'" class="space-y-3">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  {{ t('search') }}
+                </label>
+                <input
+                  v-model="studentSearchQuery"
+                  type="text"
+                  :placeholder="t('searchByNamePhoneId')"
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 h-[37px]"
+                />
+              </div>
+
+              <div class="max-h-40 overflow-y-auto border border-gray-200 dark:border-gray-700 rounded-sm divide-y divide-gray-200 dark:divide-gray-700">
+                <div
+                  v-for="student in filteredStudentsList"
+                  :key="student.id"
+                  class="p-2 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer"
+                  @click="selectStudent(student)"
+                >
+                  <div>
+                    <p class="text-sm font-medium text-gray-900 dark:text-white">
+                      {{ student.nameEnglish || student.nameKhmer || student.name || student.id }}
+                    </p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">
+                      {{ student.phone || student.contact || '-' }}
+                    </p>
+                  </div>
+                  <span class="text-[11px] px-2 py-1 rounded-sm bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-200">
+                    {{ t('select') }}
+                  </span>
+                </div>
+              </div>
+
+              <p class="text-xs text-gray-500 dark:text-gray-400">
+                {{ t('selectStudentHint') }}
+              </p>
+            </div>
+
+            <!-- Customer Tab -->
+            <div v-else class="space-y-4">
             <div>
               <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 {{ t('name') }} <span class="text-red-500">*</span>
               </label>
-              <input v-model="customerInfo.name" type="text" :placeholder="t('enterName') || 'Enter customer name'"
+              <input v-model="customerInfo.name" type="text" :placeholder="t('enterName')"
                 class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 h-[37px]" />
             </div>
 
@@ -355,7 +428,7 @@
               <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 {{ t('phone') }} <span class="text-red-500">*</span>
               </label>
-              <input v-model="customerInfo.phone" type="tel" :placeholder="t('enterPhone') || 'Enter phone number'"
+              <input v-model="customerInfo.phone" type="tel" :placeholder="t('enterPhone')"
                 class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 h-[37px]" />
             </div>
 
@@ -364,8 +437,9 @@
                 {{ t('address') }}
               </label>
               <textarea v-model="customerInfo.address" rows="3"
-                :placeholder="t('enterAddress') || 'Enter address (optional)'"
+                :placeholder="t('enterAddress')"
                 class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 resize-y"></textarea>
+            </div>
             </div>
           </div>
 
@@ -377,7 +451,7 @@
             </button>
             <button @click="saveCustomerInfo"
               class="px-4 py-2 bg-blue-600 text-white rounded-sm hover:bg-blue-700 transition-colors font-medium">
-              {{ t('save') || 'Save' }}
+              {{ t('save') }}
             </button>
           </div>
         </div>
@@ -401,7 +475,7 @@
                 </svg>
               </div>
               <div>
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ t('clearCart') }}</h3>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white capitalize">{{ t('clearCart') }}</h3>
                 <p class="text-sm text-gray-500 dark:text-gray-400">{{ t('clearCartConfirm') }}</p>
               </div>
             </div>
@@ -422,6 +496,48 @@
       </div>
     </Transition>
 
+    <!-- Success Message Toast -->
+    <Transition name="toast">
+      <div v-if="showSuccessMessage"
+        class="fixed top-4 right-4 bg-green-500 text-white rounded-sm shadow-lg p-4 flex items-center gap-3 z-50 min-w-[300px]">
+        <div class="w-8 h-8 bg-green-400 rounded-full flex items-center justify-center flex-shrink-0">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        <div class="flex-1">
+          <p class="font-semibold text-white">{{ successMessageTitle }}</p>
+          <p class="text-sm text-white">{{ successMessageText }}</p>
+        </div>
+        <button @click="showSuccessMessage = false" class="text-white hover:text-green-100 transition-colors flex-shrink-0">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </Transition>
+
+    <!-- Error Message Toast -->
+    <Transition name="toast">
+      <div v-if="showErrorMessage"
+        class="fixed top-4 right-4 bg-red-500 text-white rounded-sm shadow-lg p-4 flex items-center gap-3 z-50 min-w-[300px]">
+        <div class="w-8 h-8 bg-red-400 rounded-full flex items-center justify-center flex-shrink-0">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </div>
+        <div class="flex-1">
+          <p class="font-semibold text-white">{{ errorMessageTitle }}</p>
+          <p class="text-sm text-white">{{ errorMessageText }}</p>
+        </div>
+        <button @click="showErrorMessage = false" class="text-white hover:text-red-100 transition-colors flex-shrink-0">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </Transition>
+
   </div>
 </template>
 
@@ -432,6 +548,8 @@ import { useI18n } from '../composables/useI18n'
 import { useToast } from '../composables/useToast'
 import { useLoading } from '../composables/useLoading'
 import { useErrorHandler } from '../composables/useErrorHandler'
+import { textContains } from '../utils/search'
+import { addHistory } from '../utils/history'
 
 // Inject sidebar collapse state
 const isSidebarCollapsed = inject('isSidebarCollapsed', ref(false))
@@ -474,6 +592,57 @@ const customerInfo = ref({
   address: ''
 })
 
+// Success/Error message state
+const showSuccessMessage = ref(false)
+const successMessageTitle = ref('')
+const successMessageText = ref('')
+const showErrorMessage = ref(false)
+const errorMessageTitle = ref('')
+const errorMessageText = ref('')
+
+// Customer tabs (customer / student)
+const activeCustomerTab = ref('customer')
+import studentsData from '../data/students.json'
+const studentSearchQuery = ref('')
+const selectedStudentId = ref('')
+
+const filteredStudentsList = computed(() => {
+  if (!studentSearchQuery.value || !studentSearchQuery.value.trim()) return studentsData
+  return studentsData.filter(s =>
+    textContains(s.nameEnglish || '', studentSearchQuery.value) ||
+    textContains(s.nameKhmer || '', studentSearchQuery.value) ||
+    textContains(s.phone || '', studentSearchQuery.value) ||
+    textContains(s.id || '', studentSearchQuery.value)
+  )
+})
+
+const selectStudent = (student) => {
+  selectedStudentId.value = student.id
+  customerInfo.value.name = student.nameEnglish || student.nameKhmer || student.name || ''
+  customerInfo.value.phone = student.phone || student.contact || ''
+  customerInfo.value.address = student.address || student.province || ''
+  activeCustomerTab.value = 'customer' // switch back to customer tab after selection
+  showSuccessMessage.value = true
+  successMessageTitle.value = t('customerInfoSaved') || 'Customer Info Saved'
+  successMessageText.value = t('customerInfoSaved') || 'Customer information has been saved successfully!'
+  setTimeout(() => {
+    showSuccessMessage.value = false
+  }, 3000)
+}
+
+const setWalkInCustomer = () => {
+  customerInfo.value.name = t('walkInCustomer')
+  customerInfo.value.phone = '+00000000'
+  customerInfo.value.address = 'no'
+  activeCustomerTab.value = 'customer'
+  showSuccessMessage.value = true
+  successMessageTitle.value = t('customerInfoSaved') || 'Customer Info Saved'
+  successMessageText.value = t('customerInfoSaved') || 'Customer information has been saved successfully!'
+  setTimeout(() => {
+    showSuccessMessage.value = false
+  }, 3000)
+}
+
 const filteredProducts = computed(() => {
   let filtered = products.value
 
@@ -484,10 +653,9 @@ const filteredProducts = computed(() => {
   }
 
   if (searchQuery.value) {
-    const query = searchQuery.value.toLowerCase()
     filtered = filtered.filter(p =>
-      p.name.toLowerCase().includes(query) ||
-      p.sku.toLowerCase().includes(query)
+      textContains(p.name, searchQuery.value) ||
+      textContains(p.sku, searchQuery.value)
     )
   }
 
@@ -544,7 +712,12 @@ const clearCart = () => {
 const confirmClearCart = () => {
   clearCart()
   showClearCartDialog.value = false
-  success(`${t('cartCleared') || 'Cart Cleared'}: ${t('cartClearedSuccess') || 'All items have been removed from the cart successfully'}`)
+  showSuccessMessage.value = true
+  successMessageTitle.value = t('cartCleared') || 'Cart Cleared'
+  successMessageText.value = t('cartClearedSuccess') || 'Cart has been cleared successfully!'
+  setTimeout(() => {
+    showSuccessMessage.value = false
+  }, 3000)
 }
 
 // Toast functions - now using composable (already defined above)
@@ -567,11 +740,21 @@ const total = computed(() => {
 
 const saveCustomerInfo = () => {
   if (!customerInfo.value.name || !customerInfo.value.phone) {
-    error(t('pleaseFillRequiredFields') || 'Please fill in all required fields')
+    showErrorMessage.value = true
+    errorMessageTitle.value = t('error') || 'Error'
+    errorMessageText.value = t('pleaseFillRequiredFields') || 'Please fill in all required fields'
+    setTimeout(() => {
+      showErrorMessage.value = false
+    }, 3000)
     return
   }
   showCustomerInfoDialog.value = false
-  success(t('customerInfoSaved') || 'Customer information saved successfully')
+  showSuccessMessage.value = true
+  successMessageTitle.value = t('customerInfoSaved') || 'Customer Info Saved'
+  successMessageText.value = t('customerInfoSaved') || 'Customer information has been saved successfully!'
+  setTimeout(() => {
+    showSuccessMessage.value = false
+  }, 3000)
 }
 
 // Check if customer info is complete
@@ -580,8 +763,29 @@ const isCustomerInfoComplete = computed(() => {
 })
 
 const handleCheckout = () => {
+  // Validate stock availability before checkout
+  const insufficient = cart.value.find(item => {
+    const product = products.value.find(p => p.id === item.id)
+    return !product || item.quantity > product.inStock
+  })
+
+  if (insufficient) {
+    showErrorMessage.value = true
+    errorMessageTitle.value = t('insufficientStock') || 'Insufficient Stock'
+    errorMessageText.value = `${insufficient.name} (${t('inStock')}: ${products.value.find(p => p.id === insufficient.id)?.inStock || 0})`
+    setTimeout(() => {
+      showErrorMessage.value = false
+    }, 3000)
+    return
+  }
+
   if (cart.value.length === 0) {
-    error(t('cartIsEmptyAlert') || 'Cart is empty')
+    showErrorMessage.value = true
+    errorMessageTitle.value = t('error') || 'Error'
+    errorMessageText.value = t('cartIsEmptyAlert') || 'Cart is empty. Please add items to cart.'
+    setTimeout(() => {
+      showErrorMessage.value = false
+    }, 3000)
     return
   }
 
@@ -589,7 +793,12 @@ const handleCheckout = () => {
   if (!customerInfo.value.name || !customerInfo.value.phone) {
     // Show customer info dialog to complete the information
     showCustomerInfoDialog.value = true
-    error(t('pleaseCompleteCustomerInfo') || 'Please complete customer information before checkout')
+    showErrorMessage.value = true
+    errorMessageTitle.value = t('error') || 'Error'
+    errorMessageText.value = t('pleaseCompleteCustomerInfo') || 'Please complete customer information'
+    setTimeout(() => {
+      showErrorMessage.value = false
+    }, 3000)
     return
   }
 
@@ -600,6 +809,69 @@ const handleCheckout = () => {
     total: total.value,
     customerInfo: customerInfo.value
   }
+
+  // Deduct stock and update sold counts locally
+  cart.value.forEach(item => {
+    const index = products.value.findIndex(p => p.id === item.id)
+    if (index !== -1) {
+      const product = { ...products.value[index] }
+      product.inStock = Math.max(0, product.inStock - item.quantity)
+      product.sold = (product.sold || 0) + item.quantity
+      products.value.splice(index, 1, product)
+    }
+  })
+
+  // Generate unique transaction ID and invoice number
+  const transactionId = `POS-${Date.now()}`
+  const invoiceNo = `INV-POS-${String(Date.now()).slice(-8)}`
+  const now = new Date()
+  const date = now.toISOString().split('T')[0]
+  const time = now.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' })
+
+  // Create transaction record
+  const transaction = {
+    id: transactionId,
+    invoiceNo: invoiceNo,
+    date: date,
+    time: time,
+    customerInfo: { ...customerInfo.value },
+    cart: cart.value.map(item => ({ ...item })),
+    total: total.value,
+    discount: discount.value,
+    created: now.toISOString()
+  }
+
+  // Save transaction to permanent storage
+  const existingTransactions = JSON.parse(localStorage.getItem('pos_transactions_data') || '[]')
+  existingTransactions.push(transaction)
+  localStorage.setItem('pos_transactions_data', JSON.stringify(existingTransactions))
+
+  // Save checkout data for income generation
+  localStorage.setItem('last_checkout_data', JSON.stringify(checkoutData))
+  
+  // Dispatch event for income generation
+  window.dispatchEvent(new CustomEvent('checkoutCompleted', { detail: checkoutData }))
+  
+  // Dispatch event for transaction saved
+  window.dispatchEvent(new CustomEvent('posTransactionSaved', { detail: transaction }))
+
+  // Add history entry for checkout
+  addHistory('checkout', {
+    type: 'pos',
+    itemName: `POS Sale to ${customerInfo.value.name || 'Guest'}`,
+    itemId: transactionId,
+    description: `Checkout completed - Invoice: ${invoiceNo}, Total: $${total.value.toFixed(2)}, Items: ${cart.value.length}`,
+    user: 'Admin'
+  })
+
+  // Clear cart and notify
+  cart.value = []
+  showSuccessMessage.value = true
+  successMessageTitle.value = t('checkoutSuccess') || 'Checkout Successful'
+  successMessageText.value = t('checkoutSuccess') || 'Checkout has been completed successfully!'
+  setTimeout(() => {
+    showSuccessMessage.value = false
+  }, 3000)
 
   // Encode data for URL
   const encodedData = encodeURIComponent(JSON.stringify(checkoutData))

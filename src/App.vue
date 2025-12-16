@@ -1,6 +1,5 @@
 <template>
-  <ErrorBoundary>
-    <div class="h-screen bg-gray-50 dark:bg-gray-900 flex overflow-hidden">
+  <div class="h-screen bg-gray-50 dark:bg-gray-900 flex overflow-hidden">
       <!-- Global Loading Overlay -->
       <Transition name="fade">
         <div
@@ -85,7 +84,6 @@
       <!-- Global Toast Container -->
       <ToastContainer />
     </div>
-  </ErrorBoundary>
 </template>
 
 <script setup>
@@ -94,7 +92,6 @@ import { useRoute } from 'vue-router'
 import Sidebar from './components/Sidebar.vue'
 import Navbar from './components/Navbar.vue'
 import ToastContainer from './components/ToastContainer.vue'
-import ErrorBoundary from './components/ErrorBoundary.vue'
 import { getCurrentLanguage, setCurrentLanguage } from './utils/i18n'
 import { useDarkMode } from './composables/useDarkMode'
 import { isLoading, loadingMessage } from './composables/useLoading'
@@ -210,6 +207,14 @@ provide('toggleDarkMode', toggleDarkMode)
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Khmer:wght@400;600;700&display=swap');
+
+/* Khmer font when language is Khmer (keeps default Tailwind for English) */
+:global(html.lang-km),
+:global(body.lang-km),
+:global(.lang-km *) {
+  font-family: 'Noto Sans Khmer', 'Khmer OS', 'Inter', 'Arial', sans-serif;
+}
 /* Page Transition */
 .page-enter-active,
 .page-leave-active {

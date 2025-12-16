@@ -101,9 +101,14 @@
             v-model="email"
             type="email"
             required
-            class="w-full px-3 py-2  border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 h-[37px]"
+            @input="validateEmailField('email', email, true)"
             placeholder="admin@example.com"
+            :class="[
+              'w-full px-3 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 h-[37px]',
+              errors.email ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+            ]"
           />
+          <p v-if="errors.email" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.email }}</p>
         </div>
         
         <div>
@@ -116,9 +121,15 @@
               v-model="password"
               :type="showPassword ? 'text' : 'password'"
               required
-              class="w-full px-4 py-2 pr-10 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400"
+              @input="validateTextField('password', password, { required: true, minLength: 6, maxLength: 100 })"
               :placeholder="t('passwordPlaceholder')"
+              :class="[
+                'w-full px-4 py-2 pr-10 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400',
+                errors.password ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+              ]"
             />
+          </div>
+          <p v-if="errors.password" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.password }}</p>
             <button
               type="button"
               @click="showPassword = !showPassword"
@@ -201,6 +212,7 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { addHistory } from '../utils/history'
 import { useI18n } from '../composables/useI18n'
+import { useFormValidation } from '../composables/useFormValidation'
 
 const router = useRouter()
 const { t } = useI18n()
@@ -208,11 +220,37 @@ const { t } = useI18n()
 const email = ref('')
 const password = ref('')
 const rememberMe = ref(false)
-const error = ref('')
 const showPassword = ref(false)
 
+// Form validation
+const {
+  errors,
+  validateEmailField,
+  validateTextField
+} = useFormValidation({
+  email: '',
+  password: ''
+})
+
+// Validate form
+const validateForm = () => {
+  let isValid = true
+
+  if (!validateEmailField('email', email.value, true)) {
+    isValid = false
+  }
+
+  if (!validateTextField('password', password.value, { required: true, minLength: 6, maxLength: 100 })) {
+    isValid = false
+  }
+
+  return isValid
+}
+
 const handleLogin = () => {
-  error.value = ''
+  if (!validateForm()) {
+    return
+  }
   
   // Simple validation - in a real app, this would call an API
   if (email.value && password.value) {
@@ -232,8 +270,6 @@ const handleLogin = () => {
     
     // Navigate to dashboard
     router.push('/')
-  } else {
-    error.value = t('pleaseEnterBoth')
   }
 }
 </script>

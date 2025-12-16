@@ -90,17 +90,17 @@ const isDevelopment = computed(() => {
 })
 
 onErrorCaptured((err, instance, info) => {
-  hasError.value = true
+  // Don't show error UI - just log it silently
   error.value = err
   errorMessage.value = err.message || 'An unexpected error occurred'
   errorStack.value = err.stack || info || 'No stack trace available'
 
-  // Detect if this is a system-level error that should redirect
+  // Detect if this is a system-level error
   const errorType = detectErrorType(err)
   const isSystemError = ['maintenance', 'server', 'network', 'timeout', 'serviceUnavailable'].includes(errorType)
 
-  // For system errors, redirect to appropriate error page
-  if (isSystemError) {
+  // Only redirect for maintenance mode if explicitly needed
+  if (isSystemError && errorType === 'maintenance') {
     handleSystemError(err, { redirect: true })
     return false
   }
@@ -113,11 +113,12 @@ onErrorCaptured((err, instance, info) => {
   // Emit error event
   emit('error', err, instance, info)
 
-  // Log error in development
-  if (isDevelopment.value) {
-    console.error('ErrorBoundary caught error:', err)
-    console.error('Component info:', info)
-  }
+  // Log error silently (always log, not just in development)
+  console.error('ErrorBoundary caught error:', err)
+  console.error('Component info:', info)
+
+  // Don't show error UI - just continue normally
+  hasError.value = false
 
   // Return false to prevent the error from propagating
   return false

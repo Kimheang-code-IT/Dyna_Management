@@ -28,7 +28,7 @@ export function useErrorHandler() {
       showToast: shouldShowToast = true,
       logToConsole: shouldLog = true,
       userMessage = null,
-      redirectToErrorPage = true
+      redirectToErrorPage = true // Default to true to show SystemErrorView for system errors
     } = options
 
     const id = `error-${++errorIdCounter}`
@@ -39,7 +39,7 @@ export function useErrorHandler() {
     const errorType = detectErrorType(err)
     const isSystemError = ['maintenance', 'server', 'network', 'timeout', 'serviceUnavailable'].includes(errorType)
 
-    // Handle system-level errors (redirect to error/maintenance page)
+    // Handle system-level errors (redirect to SystemErrorView)
     if (isSystemError && redirectToErrorPage) {
       handleSystemError(err, { redirect: true })
       return id

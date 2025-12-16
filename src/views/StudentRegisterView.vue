@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="['mx-auto transition-all duration-300 w-full', isSidebarCollapsed ? 'max-w-full px-3' : 'max-w-7xl px-3 lg:px-0']">
+    :class="['mx-auto transition-all duration-300 w-full capitalize', isSidebarCollapsed ? 'max-w-full px-3' : 'max-w-7xl px-3 lg:px-0']">
     <!-- Register Student Form -->
     <div class="bg-white dark:bg-gray-800 rounded-sm shadow-lg">
       <!-- Header -->
@@ -14,7 +14,7 @@
                 d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
             </svg>
           </div>
-          <h1 class="text-xl font-bold text-white">{{ t('registerStudent') }}</h1>
+          <h1 class="text-xl font-bold text-white capitalize">{{ t('registerStudent') }}</h1>
         </div>
         <p class="text-blue-100 dark:text-blue-200 text-sm mt-2">{{ t('fillFormToRegisterNewStudent') }}</p>
       </div>
@@ -34,8 +34,13 @@
                   {{ t('fullNameEnglish') }} <span class="text-red-500">*</span>
                 </label>
                 <input id="nameEnglish" v-model="form.nameEnglish" type="text" required
+                  @input="validateNameField('nameEnglish', form.nameEnglish, true)"
+                  @keypress="preventNonNameChars"
                   :placeholder="t('fullNameEnglishPlaceholder')"
-                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 transition-colors h-[37px]" />
+                  :class="[
+                    'w-full px-3 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 transition-colors h-[37px]',
+                    errors.nameEnglish ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                  ]" />
                 <p v-if="errors.nameEnglish" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.nameEnglish
                 }}</p>
               </div>
@@ -45,8 +50,14 @@
                 <label for="nameKhmer" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   {{ t('fullNameKhmer') }}
                 </label>
-                <input id="nameKhmer" v-model="form.nameKhmer" type="text" :placeholder="t('fullNameKhmerPlaceholder')"
-                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 transition-colors h-[37px]" />
+                <input id="nameKhmer" v-model="form.nameKhmer" type="text" 
+                  @input="validateKhmerNameField('nameKhmer', form.nameKhmer, false)"
+                  :placeholder="t('fullNameKhmerPlaceholder')"
+                  :class="[
+                    'w-full px-3 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 transition-colors h-[37px]',
+                    errors.nameKhmer ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                  ]" />
+                <p v-if="errors.nameKhmer" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.nameKhmer }}</p>
               </div>
 
               <!-- Gender -->
@@ -56,7 +67,11 @@
                 </label>
                 <div class="relative">
                   <select id="gender" v-model="form.gender" required
-                    class="w-full px-3 py-2 pr-10 text-[14px] border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white appearance-none transition-colors">
+                    @change="validateSelectField('gender', form.gender, true)"
+                    :class="[
+                      'w-full px-3 py-2 pr-10 text-[14px] border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white appearance-none transition-colors',
+                      errors.gender ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                    ]">
                     <option value="">{{ t('selectGender') }}</option>
                     <option value="Male">{{ t('male') }}</option>
                     <option value="Female">{{ t('female') }}</option>
@@ -164,8 +179,13 @@
               <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 {{ t('email') }} <span class="text-red-500">*</span>
               </label>
-              <input id="email" v-model="form.email" type="email" required :placeholder="t('emailPlaceholder')"
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 transition-colors h-[37px]" />
+              <input id="email" v-model="form.email" type="email" required 
+                @input="validateEmailField('email', form.email, true)"
+                :placeholder="t('emailPlaceholder')"
+                :class="[
+                  'w-full px-3 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 transition-colors h-[37px]',
+                  errors.email ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                ]" />
               <p v-if="errors.email" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.email }}</p>
             </div>
             <div class="lg:col-span-2">
@@ -175,8 +195,14 @@
                 <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   {{ t('phone') }} <span class="text-red-500">*</span>
                 </label>
-                <input id="phone" v-model="form.phone" type="tel" required :placeholder="t('phonePlaceholder')"
-                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 transition-colors" />
+                <input id="phone" v-model="form.phone" type="tel" required 
+                  @input="validatePhoneField('phone', form.phone, true)"
+                  @keypress="preventNonPhoneChars"
+                  :placeholder="t('phonePlaceholder')"
+                  :class="[
+                    'w-full px-3 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 transition-colors h-[37px]',
+                    errors.phone ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                  ]" />
                 <p v-if="errors.phone" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.phone }}</p>
               </div>
 
@@ -187,7 +213,11 @@
                 </label>
                 <div class="relative">
                   <select id="province" v-model="form.province" required
-                    class="w-full px-3 py-2 pr-10 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white appearance-none transition-colors">
+                    @change="validateSelectField('province', form.province, true)"
+                    :class="[
+                      'w-full px-3 py-2 pr-10 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white appearance-none transition-colors',
+                      errors.province ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                    ]">
                     <option value="">{{ t('selectProvince') }}</option>
                     <option v-for="prov in provinces" :key="prov" :value="prov">{{ prov }}</option>
                   </select>
@@ -204,8 +234,14 @@
                 <label for="Telegram" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   {{ t('Telegram') }} <span class="text-red-500">*</span>
                 </label>
-                <input id="Telegram" v-model="form.Telegram" type="tel" required :placeholder="t('TelegramPlaceholder')"
-                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 transition-colors" />
+                <input id="Telegram" v-model="form.Telegram" type="tel" required 
+                  @input="validatePhoneField('Telegram', form.Telegram, true)"
+                  @keypress="preventNonPhoneChars"
+                  :placeholder="t('TelegramPlaceholder')"
+                  :class="[
+                    'w-full px-3 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 transition-colors h-[37px]',
+                    errors.Telegram ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                  ]" />
                 <p v-if="errors.Telegram" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.Telegram }}</p>
               </div>
             </div>
@@ -220,7 +256,11 @@
                   </label>
                   <div class="relative">
                     <select id="course" v-model="form.course" required
-                      class="w-full px-3 py-2 pr-10 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white appearance-none transition-colors">
+                      @change="validateSelectField('course', form.course, true)"
+                      :class="[
+                        'w-full px-3 py-2 pr-10 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white appearance-none transition-colors',
+                        errors.course ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                      ]">
                       <option value="">{{ t('selectCourse') }}</option>
                       <option v-for="course in courses" :key="course" :value="course">{{ course }}</option>
                     </select>
@@ -241,7 +281,11 @@
                   </label>
                   <div class="relative">
                     <select id="session" v-model="form.session" required
-                      class="w-full px-3 py-2 pr-10 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white appearance-none transition-colors">
+                      @change="validateSelectField('session', form.session, true)"
+                      :class="[
+                        'w-full px-3 py-2 pr-10 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white appearance-none transition-colors',
+                        errors.session ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                      ]">
                       <option value="">{{ t('selectSession') }}</option>
                       <option v-for="session in sessions" :key="session" :value="session">{{ session }}</option>
                     </select>
@@ -262,7 +306,11 @@
                   </label>
                   <div class="relative">
                     <select id="time" v-model="form.time" required
-                      class="w-full px-3 py-2 pr-10 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white appearance-none transition-colors">
+                      @change="validateSelectField('time', form.time, true)"
+                      :class="[
+                        'w-full px-3 py-2 pr-10 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white appearance-none transition-colors',
+                        errors.time ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                      ]">
                       <option value="">{{ t('selectTime') }}</option>
                       <option v-for="time in timeSlots" :key="time" :value="time">{{ time }}</option>
                     </select>
@@ -297,36 +345,29 @@
     <div v-if="showConfirmDialog" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
       @click.self="showConfirmDialog = false">
       <div class="bg-white dark:bg-gray-800 rounded-sm shadow-xl p-6 max-w-md w-full mx-4">
-        <div class="flex items-center gap-4 mb-4">
-          <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600 dark:text-blue-400" fill="none"
-              viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        <div class="flex-1">
+          <!-- Title with icon -->
+          <div class="flex items-center gap-2 mb-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white capitalize">{{ t('registerStudent') }}</h3>
           </div>
-          <div>
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ t('registerStudent') }}</h3>
-            <p class="text-sm text-gray-600 dark:text-gray-400">{{ t('areYouSureRegister') }}</p>
+          
+          <!-- Description -->
+          <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">{{ t('areYouSureRegister') }}</p>
+          
+          <!-- Buttons -->
+          <div class="flex gap-3 justify-end">
+            <button @click="showConfirmDialog = false"
+              class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-sm hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors font-medium">
+              {{ t('no') }}
+            </button>
+            <button @click="confirmRegistration"
+              class="px-4 py-2 bg-blue-600 text-white rounded-sm hover:bg-blue-700 transition-colors font-medium">
+              {{ t('yes') }}
+            </button>
           </div>
-        </div>
-        <div class="mb-6 space-y-2 text-sm text-gray-700 dark:text-gray-300">
-          <p><span class="font-medium">{{ t('fullNameEnglish') }}:</span> {{ form.nameEnglish }}</p>
-          <p v-if="form.nameKhmer"><span class="font-medium">{{ t('fullNameKhmer') }}:</span> {{ form.nameKhmer }}</p>
-          <p><span class="font-medium">{{ t('gender') }}:</span> {{ form.gender }}</p>
-          <p><span class="font-medium">{{ t('email') }}:</span> {{ form.email }}</p>
-          <p><span class="font-medium">{{ t('phone') }}:</span> {{ form.phone }}</p>
-          <p><span class="font-medium">{{ t('course') }}:</span> {{ form.course }}</p>
-        </div>
-        <div class="flex gap-3 justify-end">
-          <button @click="showConfirmDialog = false"
-            class="px-3 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-sm hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors font-medium">
-            {{ t('cancel') }}
-          </button>
-          <button @click="confirmRegistration"
-            class="px-3 py-2 bg-blue-600 text-white rounded-sm hover:bg-blue-700 transition-colors font-medium">
-            {{ t('yes') }}, {{ t('register') }}
-          </button>
         </div>
       </div>
     </div>
@@ -335,17 +376,16 @@
     <Transition name="toast">
       <div v-if="showSuccessMessage"
         class="fixed top-4 right-4 bg-green-500 text-white rounded-sm shadow-lg p-4 flex items-center gap-3 z-50 min-w-[300px]">
-        <div
-          class="w-8 h-8 bg-white dark:bg-gray-700 bg-opacity-20 rounded-full flex items-center justify-center flex-shrink-0">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div class="w-8 h-8 bg-green-400 rounded-full flex items-center justify-center flex-shrink-0">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
           </svg>
         </div>
         <div class="flex-1">
-          <p class="font-semibold">{{ successMessageTitle }}</p>
-          <p class="text-sm text-green-50">{{ successMessageText }}</p>
+          <p class="font-semibold text-white">{{ successMessageTitle }}</p>
+          <p class="text-sm text-white">{{ successMessageText }}</p>
         </div>
-        <button @click="showSuccessMessage = false" class="text-white hover:text-green-100 transition-colors">
+        <button @click="showSuccessMessage = false" class="text-white hover:text-green-100 transition-colors flex-shrink-0">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
           </svg>
@@ -384,6 +424,7 @@ import { useI18n } from '../composables/useI18n'
 import { useToast } from '../composables/useToast'
 import { useLoading } from '../composables/useLoading'
 import { useErrorHandler } from '../composables/useErrorHandler'
+import { useFormValidation } from '../composables/useFormValidation'
 import { addHistory } from '../utils/history'
 
 // Inject sidebar collapse state
@@ -413,13 +454,26 @@ const form = reactive({
 
 const fileInput = ref(null)
 
-// Form validation errors
-const errors = reactive({
+// Form validation
+const {
+  errors,
+  validateNameField,
+  validateKhmerNameField,
+  validateEmailField,
+  validatePhoneField,
+  validateSelectField,
+  validateDateField,
+  preventNonNameChars,
+  preventNonPhoneChars,
+  isFormValid
+} = useFormValidation({
   nameEnglish: '',
+  nameKhmer: '',
   gender: '',
   dob: '',
   email: '',
   phone: '',
+  Telegram: '',
   province: '',
   course: '',
   session: '',
@@ -460,28 +514,32 @@ const years = computed(() => {
 
 // Validate form
 const validateForm = () => {
-  // Clear previous errors
-  Object.keys(errors).forEach(key => errors[key] = '')
-  let hasErrors = false
+  let isValid = true
 
   // Validate Full Name (English)
-  if (!form.nameEnglish.trim()) {
-    errors.nameEnglish = t('fullNameEnglishRequired')
-    hasErrors = true
+  if (!validateNameField('nameEnglish', form.nameEnglish, true)) {
+    isValid = false
+  }
+
+  // Validate Khmer Name (optional)
+  if (form.nameKhmer) {
+    if (!validateKhmerNameField('nameKhmer', form.nameKhmer, false)) {
+      isValid = false
+    }
   }
 
   // Validate Gender
-  if (!form.gender) {
-    errors.gender = t('genderRequired')
-    hasErrors = true
+  if (!validateSelectField('gender', form.gender, true)) {
+    isValid = false
   }
 
   // Validate Date of Birth
-  if (!form.dobDay || !form.dobMonth || !form.dobYear) {
+  const dobString = formatDateOfBirth()
+  if (!dobString) {
     errors.dob = t('dobRequired')
-    hasErrors = true
+    isValid = false
   } else {
-    // Validate date is valid
+    // Validate date is valid and not in future
     const day = parseInt(form.dobDay)
     const month = parseInt(form.dobMonth)
     const year = parseInt(form.dobYear)
@@ -489,68 +547,56 @@ const validateForm = () => {
 
     if (date.getDate() !== day || date.getMonth() !== month - 1 || date.getFullYear() !== year) {
       errors.dob = t('invalidDate')
-      hasErrors = true
-    }
-
-    // Validate age (must be at least 5 years old)
-    const today = new Date()
-    const age = today.getFullYear() - year
-    if (age < 5 || (age === 5 && (today.getMonth() < month - 1 || (today.getMonth() === month - 1 && today.getDate() < day)))) {
-      errors.dob = t('ageMustBeAtLeast5')
-      hasErrors = true
+      isValid = false
+    } else {
+      // Validate age (must be at least 5 years old)
+      const today = new Date()
+      const age = today.getFullYear() - year
+      if (age < 5 || (age === 5 && (today.getMonth() < month - 1 || (today.getMonth() === month - 1 && today.getDate() < day)))) {
+        errors.dob = t('ageMustBeAtLeast5')
+        isValid = false
+      } else {
+        errors.dob = ''
+      }
     }
   }
 
   // Validate Email
-  if (!form.email.trim()) {
-    errors.email = t('emailRequired')
-    hasErrors = true
-  } else {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailRegex.test(form.email)) {
-      errors.email = t('invalidEmail')
-      hasErrors = true
-    }
+  if (!validateEmailField('email', form.email, true)) {
+    isValid = false
   }
 
   // Validate Phone
-  if (!form.phone.trim()) {
-    errors.phone = t('phoneRequired')
-    hasErrors = true
-  } else {
-    // Remove spaces and special characters for validation
-    const phoneNumber = form.phone.replace(/[\s\-\(\)\+]/g, '')
-    if (!/^\d{8,12}$/.test(phoneNumber)) {
-      errors.phone = t('invalidPhone')
-      hasErrors = true
-    }
+  if (!validatePhoneField('phone', form.phone, true)) {
+    isValid = false
+  }
+
+  // Validate Telegram (phone format)
+  if (!validatePhoneField('Telegram', form.Telegram, true)) {
+    isValid = false
   }
 
   // Validate Province
-  if (!form.province) {
-    errors.province = t('provinceRequired')
-    hasErrors = true
+  if (!validateSelectField('province', form.province, true)) {
+    isValid = false
   }
 
   // Validate Course
-  if (!form.course) {
-    errors.course = t('courseRequired')
-    hasErrors = true
+  if (!validateSelectField('course', form.course, true)) {
+    isValid = false
   }
 
   // Validate Session
-  if (!form.session) {
-    errors.session = t('sessionRequired')
-    hasErrors = true
+  if (!validateSelectField('session', form.session, true)) {
+    isValid = false
   }
 
   // Validate Time
-  if (!form.time) {
-    errors.time = t('timeRequired')
-    hasErrors = true
+  if (!validateSelectField('time', form.time, true)) {
+    isValid = false
   }
 
-  return !hasErrors
+  return isValid
 }
 
 // Format date from day, month, year
@@ -564,7 +610,7 @@ const formatDateOfBirth = () => {
 
 // Get student name (prefer English, fallback to Khmer)
 const getStudentName = () => {
-  return form.nameEnglish.trim() || form.nameKhmer.trim() || 'Unknown'
+  return form.nameEnglish.trim() || form.nameKhmer.trim() || t('unknown')
 }
 
 // Handle form submit

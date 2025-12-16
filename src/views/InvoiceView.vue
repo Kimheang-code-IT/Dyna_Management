@@ -13,7 +13,7 @@
 
         <!-- Right: Invoice Title -->
         <div>
-          <h2 class="text-3xl font-bold text-gray-800 dark:text-white">{{ t('invoice') }}</h2>
+          <h2 class="text-3xl font-bold text-gray-800 dark:text-white capitalize">{{ t('invoice') }}</h2>
         </div>
       </div>
 
@@ -304,14 +304,14 @@ const grandTotal = computed(() => {
 })
 
 const printInvoice = () => {
-  // Log sale completion when invoice is printed
+  // Log invoice print
   const itemsCount = cartItems.value.reduce((sum, item) => sum + item.quantity, 0)
   const productsList = cartItems.value.map(item => `${item.name} (x${item.quantity})`).join(', ')
-  addHistory('add', {
+  addHistory('print', {
     type: 'pos',
-    itemName: invoiceNumber.value,
+    itemName: `Invoice ${invoiceNumber.value}`,
     itemId: invoiceNumber.value,
-    description: `Sale completed - Invoice: ${invoiceNumber.value}, Items: ${itemsCount}, Total: $${grandTotal.value.toFixed(2)}, Products: ${productsList}`,
+    description: `Invoice printed - Invoice: ${invoiceNumber.value}, Items: ${itemsCount}, Total: $${grandTotal.value.toFixed(2)}`,
     user: 'Admin'
   })
   window.print()

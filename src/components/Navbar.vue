@@ -286,6 +286,7 @@ import { ref, inject, onMounted, onUnmounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { addHistory } from '../utils/history'
 import { useDarkMode } from '../composables/useDarkMode'
+import { textContains } from '../utils/search'
 import categoriesData from '../data/categories.json'
 import productsData from '../data/products.json'
 import usersData from '../data/users.json'
@@ -518,14 +519,14 @@ const handleSearch = () => {
     return
   }
 
-  const query = searchQuery.value.toLowerCase().trim()
+  const query = searchQuery.value.trim()
   const results = []
 
   // Search Pages/Routes
   pageRoutes.forEach(page => {
     if (
-      page.name.toLowerCase().includes(query) ||
-      page.keywords.some(keyword => keyword.toLowerCase().includes(query))
+      textContains(page.name, query) ||
+      page.keywords.some(keyword => textContains(keyword, query))
     ) {
       results.push({
         type: 'Page',
@@ -540,8 +541,8 @@ const handleSearch = () => {
   // Search Categories
   categoriesData.forEach(category => {
     if (
-      category.name.toLowerCase().includes(query) ||
-      (category.description && category.description.toLowerCase().includes(query))
+      textContains(category.name, query) ||
+      textContains(category.description || '', query)
     ) {
       results.push({
         type: 'Category',
@@ -556,9 +557,9 @@ const handleSearch = () => {
   // Search Products
   productsData.forEach(product => {
     if (
-      product.name.toLowerCase().includes(query) ||
-      product.sku.toLowerCase().includes(query) ||
-      product.category.toLowerCase().includes(query)
+      textContains(product.name, query) ||
+      textContains(product.sku, query) ||
+      textContains(product.category, query)
     ) {
       results.push({
         type: 'Product',
@@ -573,8 +574,8 @@ const handleSearch = () => {
   // Search Users
   usersData.forEach(user => {
     if (
-      user.name.toLowerCase().includes(query) ||
-      (user.email && user.email.toLowerCase().includes(query))
+      textContains(user.name, query) ||
+      textContains(user.email || '', query)
     ) {
       results.push({
         type: 'User',
@@ -589,8 +590,8 @@ const handleSearch = () => {
   // Search Sales
   salesData.forEach(sale => {
     if (
-      sale.id.toLowerCase().includes(query) ||
-      sale.topProducts.some(p => p.toLowerCase().includes(query))
+      textContains(sale.id, query) ||
+      sale.topProducts.some(p => textContains(p, query))
     ) {
       results.push({
         type: 'Sale',
@@ -614,10 +615,10 @@ const handleSearch = () => {
   if (studentsData && Array.isArray(studentsData)) {
     studentsData.forEach(student => {
       if (
-        (student.name && student.name.toLowerCase().includes(query)) ||
-        (student.contact && student.contact.toLowerCase().includes(query)) ||
-        (student.province && student.province.toLowerCase().includes(query)) ||
-        (student.course && student.course.toLowerCase().includes(query))
+        textContains(student.name || '', query) ||
+        textContains(student.contact || '', query) ||
+        textContains(student.province || '', query) ||
+        textContains(student.course || '', query)
       ) {
         results.push({
           type: 'Student',
@@ -642,11 +643,11 @@ const handleSearch = () => {
   if (employeesData && Array.isArray(employeesData)) {
     employeesData.forEach(employee => {
       if (
-        (employee.name && employee.name.toLowerCase().includes(query)) ||
-        (employee.email && employee.email.toLowerCase().includes(query)) ||
-        (employee.role && employee.role.toLowerCase().includes(query)) ||
-        (employee.department && employee.department.toLowerCase().includes(query)) ||
-        (employee.phone && employee.phone.toLowerCase().includes(query))
+        textContains(employee.name || '', query) ||
+        textContains(employee.email || '', query) ||
+        textContains(employee.role || '', query) ||
+        textContains(employee.department || '', query) ||
+        textContains(employee.phone || '', query)
       ) {
         results.push({
           type: 'Employee',
@@ -671,9 +672,9 @@ const handleSearch = () => {
   if (incomesData && Array.isArray(incomesData)) {
     incomesData.forEach(income => {
       if (
-        (income.name && income.name.toLowerCase().includes(query)) ||
-        (income.description && income.description.toLowerCase().includes(query)) ||
-        (income.category && income.category.toLowerCase().includes(query))
+        textContains(income.name || '', query) ||
+        textContains(income.description || '', query) ||
+        textContains(income.category || '', query)
       ) {
         results.push({
           type: 'Income',
@@ -698,9 +699,9 @@ const handleSearch = () => {
   if (expensesData && Array.isArray(expensesData)) {
     expensesData.forEach(expense => {
       if (
-        (expense.expenseName && expense.expenseName.toLowerCase().includes(query)) ||
-        (expense.description && expense.description.toLowerCase().includes(query)) ||
-        (expense.supplier && expense.supplier.toLowerCase().includes(query))
+        textContains(expense.expenseName || '', query) ||
+        textContains(expense.description || '', query) ||
+        textContains(expense.supplier || '', query)
       ) {
         results.push({
           type: 'Expense',
@@ -725,9 +726,9 @@ const handleSearch = () => {
   if (investmentsData && Array.isArray(investmentsData)) {
     investmentsData.forEach(investment => {
       if (
-        (investment.expenseName && investment.expenseName.toLowerCase().includes(query)) ||
-        (investment.description && investment.description.toLowerCase().includes(query)) ||
-        (investment.supplier && investment.supplier.toLowerCase().includes(query))
+        textContains(investment.expenseName || '', query) ||
+        textContains(investment.description || '', query) ||
+        textContains(investment.supplier || '', query)
       ) {
         results.push({
           type: 'Investment',

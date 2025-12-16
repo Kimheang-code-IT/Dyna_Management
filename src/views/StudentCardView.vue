@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full flex flex-col overflow-hidden dark:bg-gray-900">
+  <div class="h-full flex flex-col overflow-hidden dark:bg-gray-900 capitalize">
     <div class="flex flex-1 overflow-hidden gap-2">
       <!-- Left Sidebar: Student List -->
       <div class="w-64 flex-shrink-0 flex flex-col">
@@ -7,19 +7,18 @@
           <!-- Sidebar Header -->
           <div class="px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
             <div class="flex items-center justify-between mb-2">
-              <h3 class="text-sm font-semibold text-gray-900 dark:text-white">{{ t('studentCards') || 'Student Cards' }}
+              <h3 class="text-sm font-semibold text-gray-900 dark:text-white">{{ t('studentCards') }}
               </h3>
               <label class="flex items-center gap-2 cursor-pointer text-xs text-gray-700 dark:text-gray-300">
                 <input type="checkbox" :checked="selectAllChecked" @change="toggleSelectAll"
                   class="w-4 h-4 rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-blue-500 focus:ring-2 bg-white dark:bg-gray-700" />
-                <span>{{ t('selectAll') || 'Select All' }}</span>
+                <span>{{ t('selectAll') }}</span>
               </label>
             </div>
             <div class="flex items-center justify-between">
-              <p class="text-xs text-gray-500 dark:text-gray-400">{{ filteredStudents.length }} {{ t('total') || 'total'
-              }}</p>
+              <p class="text-xs text-gray-500 dark:text-gray-400">{{ filteredStudents.length }} {{ t('total') }}</p>
               <p class="text-[11px] text-gray-500 dark:text-gray-400">
-                {{ selectedForDownload.size }} {{ t('selected') || 'selected' }}
+                {{ selectedForDownload.size }} {{ t('selected') }}
               </p>
             </div>
           </div>
@@ -34,7 +33,7 @@
                     d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </div>
-              <input v-model="searchQuery" type="text" :placeholder="t('search') || 'Search students...'"
+              <input v-model="searchQuery" type="text" :placeholder="t('searchStudents')"
                 class="w-full pl-10 pr-10 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400" />
               <button v-if="searchQuery" @click="searchQuery = ''"
                 class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
@@ -50,7 +49,7 @@
           <!-- Scrollable Student List -->
           <div class="flex-1 overflow-y-auto">
             <div v-if="filteredStudents.length === 0" class="p-4 text-center text-sm text-gray-500 dark:text-gray-400">
-              {{ searchQuery ? (t('noResults') || 'No results found') : (t('noStudents') || 'No students found') }}
+              {{ searchQuery ? t('noResultsFound') : t('noStudents') }}
             </div>
             <div v-else class="p-2 space-y-2">
               <button v-for="student in filteredStudents" :key="student.id" @click="selectStudent(student.id)" :class="[
@@ -76,8 +75,8 @@
 
                   <!-- Student Info -->
                   <div class="flex-1 min-w-0">
-                    <div class="font-medium text-sm text-gray-900 dark:text-white truncate akbalthom-khmer">
-                      {{ student.nameKhmer || student.nameEnglish || student.name || 'Unknown' }}
+                    <div class="font-medium text-sm text-gray-900 dark:text-white truncate">
+                      {{ student.nameKhmer || student.nameEnglish || student.name || t('unknown') }}
                     </div>
                     <div class="text-xs text-gray-500 dark:text-gray-400 truncate">
                       {{ student.id }}
@@ -96,8 +95,7 @@
         <div class="bg-white dark:bg-gray-800 rounded-sm shadow flex-shrink-0">
           <button @click="showEditForm = !showEditForm"
             class="w-full px-6 pt-3 pb-2 flex items-center justify-between text-left  dark:hover:bg-gray-700 transition-colors">
-            <h2 class="text-md font-semibold text-gray-900 dark:text-white">{{ t('editCard') ||
-              'Edit Card Information' }}</h2>
+            <h2 class="text-md font-semibold text-gray-900 dark:text-white">{{ t('editCard') }}</h2>
             <svg xmlns="http://www.w3.org/2000/svg"
               class="h-5 w-5 text-gray-500 dark:text-gray-400 transition-transform"
               :class="{ 'rotate-180': showEditForm }" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -105,25 +103,37 @@
             </svg>
           </button>
 
-          <div v-show="showEditForm" class="px-6 pb-4">
-            <div class="flex justify-around items-center  ">
-              <div>
+          <div v-show="showEditForm" class="px-6 pb-4 space-y-4">
+            <!-- Student Information -->
+            <div class="flex justify-around items-center gap-4">
+              <div class="flex-1">
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                  {{ t('studentNameKhmer') || 'Student Name (Khmer)' }} <span class="text-red-500">*</span>
+                  {{ t('studentNameKhmer') }} <span class="text-red-500">*</span>
                 </label>
                 <input v-model="cardData.nameKhmer" type="text"
-                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white akbalthom-khmer"
-                  :placeholder="t('enterNameKhmer') || 'Enter name in Khmer'" />
+                  @input="validateKhmerNameField('nameKhmer', cardData.nameKhmer, false)"
+                  :placeholder="t('enterNameKhmer')" :class="[
+                    'w-full px-3 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white',
+                    errors.nameKhmer ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                  ]" />
+                <p v-if="errors.nameKhmer" class="mt-1 text-xs text-red-600 dark:text-red-400">{{ errors.nameKhmer }}
+                </p>
               </div>
-              <div>
+              <div class="flex-1">
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                  {{ t('studentNameEnglish') || 'Student Name (English)' }} <span class="text-red-500">*</span>
+                  {{ t('studentNameEnglish') }} <span class="text-red-500">*</span>
                 </label>
                 <input v-model="cardData.nameEnglish" type="text"
-                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                  :placeholder="t('enterNameEnglish') || 'Enter name in English'" />
+                  @input="validateNameField('nameEnglish', cardData.nameEnglish, false)"
+                  :placeholder="t('enterNameEnglish')" :class="[
+                    'w-full px-3 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white',
+                    errors.nameEnglish ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                  ]" />
+                <p v-if="errors.nameEnglish" class="mt-1 text-xs text-red-600 dark:text-red-400">{{ errors.nameEnglish
+                }}</p>
               </div>
             </div>
+
           </div>
         </div>
 
@@ -134,30 +144,33 @@
             <button @click="showBack = false"
               :class="['px-3 py-1 text-xs font-semibold rounded-sm border transition-colors',
                 showBack ? 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 border-gray-300 dark:border-gray-600' : 'bg-blue-600 text-white border-blue-700']">
-              {{ t('front') || 'Front' }}
+              {{ t('front') }}
             </button>
             <button @click="showBack = true"
               :class="['px-3 py-1 text-xs font-semibold rounded-sm border transition-colors',
                 showBack ? 'bg-blue-600 text-white border-blue-700' : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 border-gray-300 dark:border-gray-600']">
-              {{ t('back') || 'Back' }}
+              {{ t('back') }}
             </button>
           </div>
 
-          <div class=" overflow-hidden relative mx-auto" style="width: 100%;max-width:600px;height: 900px;  " :style="{
-            backgroundImage: `url(${showBack ? cardBackImage : cardFrontImage})`,
-            backgroundSize: 'contain',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat',
-
-          }">
+          <div class="card-wrapper overflow-hidden relative mx-auto" style="width: 100%;max-width:600px;height: 900px;"
+            :style="{
+              backgroundImage: `url(${showBack ? cardBackImage : cardFrontImage})`,
+              backgroundSize: 'contain',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+            }">
             <!-- Card Content -->
-            <div v-if="!showBack" class="absolute inset-0 flex" style="z-index: 2;">
-              <!-- Left Side: Photo -->
-              <div class="w-1/3 flex items-center justify-center p-4">
-                <div
-                  class="w-full aspect-[3/4] rounded-lg overflow-hidden bg-gray-200 border-4 border-white shadow-lg flex items-center justify-center">
+            <div v-if="!showBack" class="absolute inset-0 flex flex-col" style="z-index: 2;">
+              <!-- Centered Photo -->
+              <div class="absolute left-1/2 transform -translate-x-1/2 flex items-center justify-center" :style="{
+                top: cardPosition.photoTop,
+                width: cardPosition.photoWidth
+              }">
+                <div class="w-full aspect-[3/4] overflow-hidden bg-gray-200 flex items-center justify-center"
+                  :style="{ border: `2px solid ${cardPosition.photoBorderColor}` }">
                   <img v-if="cardData.profileImage" :src="cardData.profileImage"
-                    :alt="cardData.nameEnglish || cardData.nameKhmer" class="w-full h-full object-contain bg-white" />
+                    :alt="cardData.nameEnglish || cardData.nameKhmer" class="w-full h-full object-cover" />
                   <div v-else class="w-full h-full flex items-center justify-center bg-blue-100">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-blue-400" fill="none"
                       viewBox="0 0 24 24" stroke="currentColor">
@@ -167,32 +180,35 @@
                   </div>
                 </div>
               </div>
+              <!-- Signature Line -->
 
-              <!-- Right Side: Information -->
-              <div class="flex-1 flex flex-col justify-center p-6">
 
-                <!-- Student Name Khmer -->
-                <div class="mb-2">
-
-                  <div class="text-lg font-semibold text-gray-900 akbalthom-khmer">
-                    {{ cardData.nameKhmer || t('studentNameKhmer') || 'ឈ្មោះសិស្ស' }}
-                  </div>
+              <!-- Student Name (Centered, Large) -->
+              <div class="absolute left-1/2 transform -translate-x-1/2 text-center" :style="{
+                top: cardPosition.nameTop,
+                width: '90%'
+              }">
+                <div class="text-2xl font-bold text-gray-900 uppercase tracking-wide">
+                  {{ cardData.nameEnglish || t('studentNameEnglish') }}
                 </div>
+              </div>
 
-                <!-- Student Name English -->
-                <div class="mb-2">
-
-                  <div class="text-base font-semibold text-gray-900">
-                    {{ cardData.nameEnglish || t('studentNameEnglish') || 'Student Name' }}
-                  </div>
+              <!-- Footer: ID and Position -->
+              <div class="absolute left-0 right-0 text-center" :style="{
+                top: cardPosition.footerTop || '85%',
+                bottom: '0',
+                padding: '1rem 0.5rem',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: '0.25rem'
+              }">
+                <div class="text-[11px] font-medium text-white">
+                  ID {{ cardData.studentId || t('notAvailable') }}
                 </div>
-
-                <!-- Student ID -->
-                <div class="mb-2">
-
-                  <div class="text-sm font-medium text-gray-800">
-                    {{ cardData.studentId || 'N/A' }}
-                  </div>
+                <div class="text-base font-semibold text-white uppercase tracking-wide">
+                  {{ cardData.course || 'STUDENT' }}
                 </div>
               </div>
             </div>
@@ -204,7 +220,7 @@
       <div class="w-40 flex-shrink-0 flex flex-col">
         <div class="bg-white dark:bg-gray-800 rounded-sm shadow h-full flex flex-col">
           <div class="p-4 flex flex-col gap-3 flex-1">
-            <button @click="handlePrintSelected"
+            <button @click="showPrintConfirmDialog = true"
               :disabled="isGenerating || (!selectedForDownload.size && !selectedStudentId)"
               class="w-full px-3 py-2 text-sm rounded-sm font-semibold flex items-center justify-center gap-2 transition-colors"
               :class="(!selectedForDownload.size && !selectedStudentId) || isGenerating
@@ -215,9 +231,9 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
               </svg>
-              {{ t('print') || 'Print' }}
+              {{ t('print') }}
             </button>
-            <button @click="handleDownload"
+            <button @click="showDownloadConfirmDialog = true"
               :disabled="isGenerating || (!selectedForDownload.size && !selectedStudentId)"
               class="w-full px-3 py-2 text-sm rounded-sm font-semibold flex items-center justify-center gap-2 transition-colors"
               :class="isGenerating || (!selectedForDownload.size && !selectedStudentId)
@@ -235,8 +251,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
               </svg>
-              <span>{{ selectedForDownload.size > 0 ? (t('downloadSelected') || 'Download Selected') : (t('download') ||
-                'Download') }}</span>
+              <span>{{ selectedForDownload.size > 0 ? t('downloadSelected') : t('download') }}</span>
             </button>
             <button @click="goBack"
               class="w-full px-4 py-3 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-sm hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors font-medium flex items-center justify-center gap-2">
@@ -244,9 +259,76 @@
                 stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
               </svg>
-              {{ t('back') || 'Back' }}
+              {{ t('back') }}
             </button>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Download Confirmation Dialog -->
+  <div v-if="showDownloadConfirmDialog"
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+    @click.self="showDownloadConfirmDialog = false">
+    <div class="bg-white dark:bg-gray-800 rounded-sm shadow-xl p-6 max-w-md w-full mx-4">
+      <div class="flex-1">
+        <!-- Title with icon -->
+        <div class="flex items-center gap-2 mb-3">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600 dark:text-green-400" fill="none"
+            viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+          </svg>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white capitalize">{{ t('confirmDownloadCard') }}</h3>
+        </div>
+
+        <!-- Description -->
+        <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">{{ t('confirmDownloadCardMessage') }}</p>
+
+        <!-- Buttons -->
+        <div class="flex gap-3 justify-end">
+          <button @click="showDownloadConfirmDialog = false"
+            class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-sm hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors font-medium">
+            {{ t('cancel') }}
+          </button>
+          <button @click="confirmDownload"
+            class="px-4 py-2 bg-green-600 text-white rounded-sm hover:bg-green-700 transition-colors font-medium">
+            {{ t('download') }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Print Confirmation Dialog -->
+  <div v-if="showPrintConfirmDialog" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+    @click.self="showPrintConfirmDialog = false">
+    <div class="bg-white dark:bg-gray-800 rounded-sm shadow-xl p-6 max-w-md w-full mx-4">
+      <div class="flex-1">
+        <!-- Title with icon -->
+        <div class="flex items-center gap-2 mb-3">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600 dark:text-blue-400" fill="none"
+            viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+          </svg>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white capitalize">{{ t('confirmPrintCard') }}</h3>
+        </div>
+
+        <!-- Description -->
+        <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">{{ t('confirmPrintCardMessage') }}</p>
+
+        <!-- Buttons -->
+        <div class="flex gap-3 justify-end">
+          <button @click="showPrintConfirmDialog = false"
+            class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-sm hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors font-medium">
+            {{ t('cancel') }}
+          </button>
+          <button @click="confirmPrint"
+            class="px-4 py-2 bg-blue-600 text-white rounded-sm hover:bg-blue-700 transition-colors font-medium">
+            {{ t('print') }}
+          </button>
         </div>
       </div>
     </div>
@@ -259,7 +341,9 @@ import { ref, reactive, onMounted, computed, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from '../composables/useI18n'
 import { useToast } from '../composables/useToast'
+import { useFormValidation } from '../composables/useFormValidation'
 import { addHistory } from '../utils/history'
+import { textContains } from '../utils/search'
 import html2canvas from 'html2canvas'
 import cardFrontImage from '../assets/Card infront.png'
 import cardBackImage from '../assets/Card inBack.png'
@@ -269,6 +353,16 @@ const router = useRouter()
 const { t } = useI18n()
 const { success, error } = useToast()
 
+// Form validation
+const {
+  errors,
+  validateNameField,
+  validateKhmerNameField
+} = useFormValidation({
+  nameKhmer: '',
+  nameEnglish: ''
+})
+
 // Edit form visibility
 const showEditForm = ref(true)
 
@@ -276,6 +370,10 @@ const showEditForm = ref(true)
 const isLoading = ref(true)
 const isGenerating = ref(false)
 const showBack = ref(false)
+
+// Confirmation dialogs
+const showDownloadConfirmDialog = ref(false)
+const showPrintConfirmDialog = ref(false)
 
 // Card data
 const cardData = reactive({
@@ -288,6 +386,17 @@ const cardData = reactive({
   profileImage: ''
 })
 
+// Card positioning settings (easy to adjust)
+const cardPosition = reactive({
+  photoWidth: '15%',           // Photo width (e.g., '35%', '40%', '45%')
+  photoTop: '28%',             // Photo top position (e.g., '20%', '25%', '30%')
+  photoBorderColor: '#1e3a8a', // Photo border color (dark blue)
+  signatureTop: '60%',         // Signature line top position
+  signatureWidth: '50%',       // Signature line width
+  nameTop: '70%',              // Name top position
+  footerTop: '85%',            // Footer section top position
+})
+
 // Sidebar state
 const students = ref([])
 const enrollments = ref([])
@@ -297,12 +406,11 @@ const selectedForDownload = ref(new Set())
 
 const filteredStudents = computed(() => {
   if (!searchQuery.value) return students.value
-  const q = searchQuery.value.toLowerCase()
   return students.value.filter((s) =>
-    (s.nameKhmer || '').toLowerCase().includes(q) ||
-    (s.nameEnglish || '').toLowerCase().includes(q) ||
-    (s.name || '').toLowerCase().includes(q) ||
-    (s.id || '').toLowerCase().includes(q)
+    textContains(s.nameKhmer || '', searchQuery.value) ||
+    textContains(s.nameEnglish || '', searchQuery.value) ||
+    textContains(s.name || '', searchQuery.value) ||
+    textContains(s.id || '', searchQuery.value)
   )
 })
 
@@ -325,7 +433,7 @@ const loadStudent = async () => {
     const studentId = route.params.id
 
     if (!studentId) {
-      error(t('studentNotFound') || 'Student ID not found.')
+      error(t('studentNotFound'))
       router.back()
       return
     }
@@ -338,7 +446,7 @@ const loadStudent = async () => {
     const student = studentsData.find(s => s.id === studentId)
 
     if (!student) {
-      error(t('studentNotFound') || 'Student not found.')
+      error(t('studentNotFound'))
       router.back()
       return
     }
@@ -397,7 +505,7 @@ const loadStudent = async () => {
         const today = new Date()
         cardData.issueDate = today.toISOString().split('T')[0]
       } else {
-        error(t('studentNotFound') || 'Student not found.')
+        error(t('studentNotFound'))
         router.back()
       }
 
@@ -406,7 +514,7 @@ const loadStudent = async () => {
       }
     } catch (e) {
       console.error('Error loading from localStorage:', e)
-      error(t('errorLoadingStudent') || 'Error loading student data.')
+      error(t('errorLoadingStudent'))
       router.back()
     }
   } finally {
@@ -416,7 +524,7 @@ const loadStudent = async () => {
 
 // Format date
 const formatDate = (dateString) => {
-  if (!dateString) return t('notSet') || 'Not Set'
+  if (!dateString) return t('notSet')
   try {
     const date = new Date(dateString)
     return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
@@ -425,51 +533,90 @@ const formatDate = (dateString) => {
   }
 }
 
-// Handle print
-const handlePrint = () => {
-  window.print()
+// Generate combined front and back card image
+const generateCombinedCard = async (student = null) => {
+  if (student) {
+    populateCardFromStudent(student)
+    await nextTick()
+  }
+
+  const cardElement = document.getElementById('card-container')
+  if (!cardElement) {
+    throw new Error('Card element not found')
+  }
+
+  const cardWrapper = cardElement.querySelector('.card-wrapper')
+  if (!cardWrapper) {
+    throw new Error('Card wrapper not found')
+  }
+
+  // Capture front
+  const originalShowBack = showBack.value
+  showBack.value = false
+  await nextTick()
+  const frontCanvas = await html2canvas(cardWrapper, {
+    backgroundColor: '#ffffff',
+    scale: 2,
+    logging: false
+  })
+
+  // Capture back
+  showBack.value = true
+  await nextTick()
+  const backCanvas = await html2canvas(cardWrapper, {
+    backgroundColor: '#ffffff',
+    scale: 2,
+    logging: false
+  })
+
+  // Restore original state
+  showBack.value = originalShowBack
+
+  // Create combined canvas (side by side)
+  const combinedCanvas = document.createElement('canvas')
+  const cardWidth = frontCanvas.width
+  const cardHeight = frontCanvas.height
+  combinedCanvas.width = cardWidth * 2 // Two cards side by side
+  combinedCanvas.height = cardHeight
+  const ctx = combinedCanvas.getContext('2d')
+
+  // Draw front on left
+  ctx.drawImage(frontCanvas, 0, 0)
+  // Draw back on right
+  ctx.drawImage(backCanvas, cardWidth, 0)
+
+  return new Promise((resolve, reject) => {
+    combinedCanvas.toBlob((blob) => {
+      if (!blob) return reject(new Error('No blob'))
+      resolve({ blob, student })
+    }, 'image/png')
+  })
 }
 
-// Handle download
-const handleDownload = async () => {
+// Confirm download
+const confirmDownload = async () => {
+  showDownloadConfirmDialog.value = false
   try {
     isGenerating.value = true
 
     if (!cardData.nameKhmer && !cardData.nameEnglish && selectedForDownload.value.size === 0) {
-      error(t('noCardData') || 'No card data available to download.')
+      error(t('noCardData'))
       return
     }
 
     const cardElement = document.getElementById('card-container')
     if (!cardElement) {
-      error(t('cardElementNotFound') || 'Card element not found.')
+      error(t('cardElementNotFound'))
       return
     }
 
-    const generateBlobFor = async (student) => {
-      if (student) {
-        populateCardFromStudent(student)
-        await nextTick()
-      }
-      const canvas = await html2canvas(cardElement.querySelector('.card-wrapper'), {
-        backgroundColor: '#ffffff',
-        scale: 2,
-        logging: false
-      })
-      return new Promise((resolve, reject) => {
-        canvas.toBlob((blob) => {
-          if (!blob) return reject(new Error('No blob'))
-          resolve({ blob, student })
-        }, 'image/png')
-      })
-    }
-
     if (selectedForDownload.value.size > 0) {
+      // Multiple students
       const originalStudentId = selectedStudentId.value
       const tasks = []
       for (const id of selectedForDownload.value) {
         const st = students.value.find((s) => s.id === id)
-        if (st) tasks.push(generateBlobFor(st))
+        if (st) tasks.push(generateCombinedCard(st))
       }
       const results = await Promise.all(tasks)
       results.forEach(({ blob, student }) => {
@@ -488,16 +635,17 @@ const handleDownload = async () => {
         const original = students.value.find((s) => s.id === originalStudentId)
         if (original) populateCardFromStudent(original)
       }
-      addHistory('update', {
+      addHistory('downloadInvoice', {
         type: 'report',
-        itemName: `${selectedForDownload.value.size} Student Card(s)`,
+        itemName: `Bulk Student Cards - ${selectedForDownload.value.size} Card(s)`,
         itemId: null,
         description: `Bulk student cards downloaded - ${selectedForDownload.value.size} card(s) generated`,
         user: 'Admin'
       })
-      success(t('cardDownloaded') || 'Cards downloaded successfully!')
+      success(t('cardDownloaded'))
     } else {
-      const { blob } = await generateBlobFor(null)
+      // Single student - download front and back combined
+      const { blob } = await generateCombinedCard(null)
       const url = URL.createObjectURL(blob)
       const link = document.createElement('a')
       const fileNameStudentName = (cardData.nameEnglish || cardData.nameKhmer || 'StudentCard').replace(/[^a-zA-Z0-9]/g, '_')
@@ -509,21 +657,120 @@ const handleDownload = async () => {
       document.body.removeChild(link)
       URL.revokeObjectURL(url)
       const studentName = cardData.nameEnglish || cardData.nameKhmer || 'Student'
-      addHistory('update', {
+      addHistory('downloadInvoice', {
         type: 'report',
-        itemName: studentName,
+        itemName: `Student Card - ${studentName}`,
         itemId: route.params.id || null,
-        description: `Student card downloaded - Student: ${studentName}`,
+        description: `Student card downloaded (front and back) - Student: ${studentName}`,
         user: 'Admin'
       })
-      success(t('cardDownloaded') || 'Card downloaded successfully!')
+      success(t('cardDownloaded'))
     }
   } catch (err) {
     console.error('Error generating card:', err)
-    error(t('errorGeneratingCard') || 'Error generating card. Please try again.')
+    error(t('errorGeneratingCard'))
   } finally {
     isGenerating.value = false
   }
+}
+
+// Handle download (shows confirmation dialog)
+const handleDownload = () => {
+  if (isGenerating.value || (!selectedForDownload.value.size && !selectedStudentId.value)) {
+    return
+  }
+  showDownloadConfirmDialog.value = true
+}
+
+// Confirm print
+const confirmPrint = async () => {
+  showPrintConfirmDialog.value = false
+  try {
+    isGenerating.value = true
+
+    if (!cardData.nameKhmer && !cardData.nameEnglish && selectedForDownload.value.size === 0) {
+      error(t('noCardData'))
+      return
+    }
+
+    const cardElement = document.getElementById('card-container')
+    if (!cardElement) {
+      error(t('cardElementNotFound'))
+      return
+    }
+
+    if (selectedForDownload.value.size > 0) {
+      // Multiple students
+      const originalStudentId = selectedStudentId.value
+      const images = []
+      for (const id of selectedForDownload.value) {
+        const st = students.value.find((s) => s.id === id)
+        if (!st) continue
+        const { blob } = await generateCombinedCard(st)
+        const url = URL.createObjectURL(blob)
+        images.push(url)
+      }
+      if (originalStudentId) {
+        const original = students.value.find((s) => s.id === originalStudentId)
+        if (original) populateCardFromStudent(original)
+      }
+      if (!images.length) return
+      const w = window.open('', '_blank')
+      if (!w) return
+      w.document.write('<html><head><title>Print Cards</title><style>@media print { body { margin: 0; padding: 0; } img { width: 100%; max-width: 100%; page-break-after: always; } }</style></head><body style="margin:0;padding:16px;display:flex;flex-direction:column;gap:16px;">')
+      images.forEach(url => {
+        w.document.write(`<img src="${url}" style="width:100%;max-width:100%;">`)
+      })
+      w.document.write('</body></html>')
+      w.document.close()
+      setTimeout(() => {
+        w.print()
+        images.forEach(url => URL.revokeObjectURL(url))
+      }, 500)
+      addHistory('print', {
+        type: 'report',
+        itemName: `Bulk Student Cards - ${selectedForDownload.value.size} Card(s)`,
+        itemId: null,
+        description: `Bulk student cards printed - ${selectedForDownload.value.size} card(s)`,
+        user: 'Admin'
+      })
+    } else {
+      // Single student - print front and back combined
+      const { blob } = await generateCombinedCard(null)
+      const url = URL.createObjectURL(blob)
+      const w = window.open('', '_blank')
+      if (!w) return
+      w.document.write('<html><head><title>Print Card</title><style>@media print { body { margin: 0; padding: 0; } img { width: 100%; max-width: 100%; } }</style></head><body style="margin:0;padding:16px;display:flex;justify-content:center;align-items:center;">')
+      w.document.write(`<img src="${url}" style="width:100%;max-width:100%;">`)
+      w.document.write('</body></html>')
+      w.document.close()
+      setTimeout(() => {
+        w.print()
+        URL.revokeObjectURL(url)
+      }, 500)
+      const studentName = cardData.nameEnglish || cardData.nameKhmer || 'Student'
+      addHistory('print', {
+        type: 'report',
+        itemName: `Student Card - ${studentName}`,
+        itemId: route.params.id || null,
+        description: `Student card printed (front and back) - Student: ${studentName}`,
+        user: 'Admin'
+      })
+    }
+  } catch (err) {
+    console.error('Error printing card:', err)
+    error(t('errorGeneratingCard'))
+  } finally {
+    isGenerating.value = false
+  }
+}
+
+// Handle print (shows confirmation dialog)
+const handlePrint = () => {
+  if (isGenerating.value || (!selectedForDownload.value.size && !selectedStudentId.value)) {
+    return
+  }
+  showPrintConfirmDialog.value = true
 }
 
 // Go back
@@ -560,7 +807,7 @@ const selectStudent = (studentId) => {
   populateCardFromStudent(student)
 
   // update route without navigation
-  router.replace({ params: { id: studentId } })
+  router.replace({ name: 'StudentCard', params: { id: studentId } })
 }
 
 // Selection toggles
@@ -580,80 +827,16 @@ const toggleSelectAll = () => {
   }
 }
 
-const handlePrintSelected = async () => {
-  if (!selectedForDownload.value.size) {
-    const studentName = cardData.nameEnglish || cardData.nameKhmer || 'Student'
-    addHistory('update', {
-      type: 'report',
-      itemName: studentName,
-      itemId: route.params.id || null,
-      description: `Student card printed - Student: ${studentName}`,
-      user: 'Admin'
-    })
-    handlePrint()
+// Handle print selected (shows confirmation dialog)
+const handlePrintSelected = () => {
+  if (isGenerating.value || (!selectedForDownload.value.size && !selectedStudentId.value)) {
     return
   }
-  const originalStudentId = selectedStudentId.value
-  const cardElement = document.getElementById('card-container')
-  if (!cardElement) {
-    error(t('cardElementNotFound') || 'Card element not found.')
-    return
-  }
-  const images = []
-  for (const id of selectedForDownload.value) {
-    const st = students.value.find((s) => s.id === id)
-    if (!st) continue
-    populateCardFromStudent(st)
-    await nextTick()
-    const canvas = await html2canvas(cardElement.querySelector('.card-wrapper'), {
-      backgroundColor: '#ffffff',
-      scale: 2,
-      logging: false
-    })
-    images.push(canvas.toDataURL('image/png'))
-  }
-  if (originalStudentId) {
-    const original = students.value.find((s) => s.id === originalStudentId)
-    if (original) populateCardFromStudent(original)
-  }
-  if (!images.length) return
-  const w = window.open('', '_blank')
-  if (!w) return
-  w.document.write('<html><head><title>Print Cards</title></head><body style="margin:0;padding:16px;display:flex;flex-direction:column;gap:16px;">')
-  images.forEach(src => {
-    w.document.write(`<img src="${src}" style="width:100%;max-width:800px;page-break-after:always;">`)
-  })
-  w.document.write('</body></html>')
-  w.document.close()
-  w.focus()
-  addHistory('update', {
-    type: 'report',
-    itemName: `${selectedForDownload.value.size} Student Card(s)`,
-    itemId: null,
-    description: `Bulk student cards printed - ${selectedForDownload.value.size} card(s)`,
-    user: 'Admin'
-  })
-  w.print()
+  showPrintConfirmDialog.value = true
 }
 </script>
 
 <style scoped>
-/* AKbalthom KhmerGothic Font */
-@font-face {
-  font-family: 'AKbalthom KhmerGothic';
-  src: url('../assets/fonts/AKbalthom%20KhmerGothic.ttf') format('truetype');
-  font-weight: 100;
-  font-style: normal;
-  font-display: swap;
-}
-
-.akbalthom-khmer {
-  font-family: 'AKbalthom KhmerGothic', 'Khmer', 'Khmer OS', sans-serif;
-  font-weight: 400;
-  font-style: normal;
-}
-
-
 @media print {
   @page {
     size: A4 landscape;

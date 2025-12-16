@@ -37,7 +37,7 @@
       </h2>
 
       <!-- Main Title -->
-      <h3 class="text-4xl md:text-5xl font-bold text-gray-800 dark:text-white mb-4">
+      <h3 class="text-4xl md:text-5xl font-bold text-gray-800 dark:text-white mb-4 capitalize">
         Brother Dyna {{ errorTitle }}
       </h3>
 

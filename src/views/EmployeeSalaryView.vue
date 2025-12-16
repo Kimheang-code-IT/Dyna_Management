@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="['mx-auto transition-all duration-300 w-full', isSidebarCollapsed ? 'max-w-full px-3' : 'max-w-7xl px-3 lg:px-0']">
+    :class="['mx-auto transition-all duration-300 w-full capitalize', isSidebarCollapsed ? 'max-w-full px-3' : 'max-w-7xl px-3 lg:px-0']">
     <!-- Summary Cards -->
     <div class="flex flex-nowrap sm:flex-wrap gap-1 sm:gap-1.5 md:gap-2 lg:gap-3 mb-2 sm:mb-3">
       <!-- Total Employees Card -->
@@ -109,7 +109,7 @@
       <div class="lg:col-span-2 bg-white dark:bg-gray-800 rounded-sm shadow">
         <div class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-700">
           <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 sm:gap-0 mb-2">
-            <h2 class="text-base sm:text-lg font-bold text-gray-900 dark:text-white">{{ t('payrollList') }}</h2>
+            <h2 class="text-base sm:text-lg font-bold text-gray-900 dark:text-white capitalize">{{ t('payrollList') }}</h2>
             <div class="flex items-center gap-2">
               <label class="text-xs font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap">{{ t('month')
                 }}:</label>
@@ -154,7 +154,7 @@
         </div>
 
         <!-- Payroll Table -->
-        <div class="max-h-[500px] overflow-y-auto border border-gray-200 dark:border-gray-700 rounded-sm">
+        <div class="max-h-[600px] overflow-y-auto border border-gray-200 dark:border-gray-700 rounded-sm">
           <table class="w-full">
             <thead class="bg-gray-50 dark:bg-gray-700 sticky top-0 z-10">
               <tr>
@@ -205,7 +205,7 @@
                     </div>
                     <div>
                       <div class="text-sm font-medium text-gray-900 dark:text-white">
-                        <div v-if="payroll.employee && payroll.employee.nameKhmer" class="akbalthom-khmer text-xs">{{
+                        <div v-if="payroll.employee && payroll.employee.nameKhmer" class="text-xs">{{
                           payroll.employee.nameKhmer }}</div>
                         <div v-if="payroll.employee && payroll.employee.nameEnglish" class="text-xs">{{
                           payroll.employee.nameEnglish }}</div>
@@ -250,7 +250,7 @@
       <!-- Right Section: Payment Detail -->
       <div class="lg:col-span-1 bg-white dark:bg-gray-800 rounded-sm shadow">
         <div class="px-1 py-3 sm:p-4 border-b border-gray-200 dark:border-gray-700">
-          <h2 class="text-base sm:text-lg font-bold text-gray-900 dark:text-white">{{ t('paymentDetail') }}</h2>
+          <h2 class="text-base sm:text-lg font-bold text-gray-900 dark:text-white capitalize">{{ t('paymentDetail') }}</h2>
         </div>
 
         <div v-if="selectedPayroll" class="p-2 sm:p-4 space-y-4 sm:space-y-1">
@@ -268,8 +268,8 @@
                     selectedPayroll.employee.name || '').charAt(0).toUpperCase() }}</span>
               </div>
               <div>
-                <h3 class="text-base font-semibold text-gray-900 dark:text-white">
-                  <div v-if="selectedPayroll.employee && selectedPayroll.employee.nameKhmer" class="akbalthom-khmer">{{
+                <h3 class="text-base font-semibold text-gray-900 dark:text-white capitalize">
+                  <div v-if="selectedPayroll.employee && selectedPayroll.employee.nameKhmer">{{
                     selectedPayroll.employee.nameKhmer }}</div>
                   <div v-if="selectedPayroll.employee && selectedPayroll.employee.nameEnglish">{{
                     selectedPayroll.employee.nameEnglish }}</div>
@@ -404,7 +404,7 @@
             </svg>
           </div>
           <div class="flex-1">
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ t('payAllSelected') || 'Pay All SelectedEmployees' }}</h3>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white capitalize">{{ t('payAllSelected') || 'Pay All SelectedEmployees' }}</h3>
             <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
               {{ t('confirmPayAll') || `Are you sure you want to pay ${selectedForPayment.size} employee(s)? Total
               amount: $${totalSelectedAmount.toFixed(2)}` }}
@@ -430,6 +430,50 @@
         </div>
       </div>
     </div>
+
+    <!-- Success Message Toast -->
+    <Transition name="toast">
+      <div v-if="showSuccessMessage"
+        class="fixed top-4 right-4 bg-green-500 text-white rounded-sm shadow-lg p-4 flex items-center gap-3 z-50 min-w-[300px]">
+        <div class="w-8 h-8 bg-green-400 rounded-full flex items-center justify-center flex-shrink-0">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        <div class="flex-1">
+          <p class="font-semibold text-white">{{ successMessageTitle }}</p>
+          <p class="text-sm text-white">{{ successMessageText }}</p>
+        </div>
+        <button @click="showSuccessMessage = false"
+          class="text-white hover:text-green-100 transition-colors flex-shrink-0">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </Transition>
+
+    <!-- Error Message Toast -->
+    <Transition name="toast">
+      <div v-if="showErrorMessage"
+        class="fixed top-4 right-4 bg-red-500 text-white rounded-sm shadow-lg p-4 flex items-center gap-3 z-50 min-w-[300px]">
+        <div class="w-8 h-8 bg-red-400 rounded-full flex items-center justify-center flex-shrink-0">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </div>
+        <div class="flex-1">
+          <p class="font-semibold text-white">{{ errorMessageTitle }}</p>
+          <p class="text-sm text-white">{{ errorMessageText }}</p>
+        </div>
+        <button @click="showErrorMessage = false" class="text-white hover:text-red-100 transition-colors flex-shrink-0">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </Transition>
   </div>
 </template>
 
@@ -626,7 +670,12 @@ const paymentForm = reactive({
 })
 
 // Success/Error message state
-// Toast state removed - now using global ToastContainer
+const showSuccessMessage = ref(false)
+const successMessageTitle = ref('')
+const successMessageText = ref('')
+const showErrorMessage = ref(false)
+const errorMessageTitle = ref('')
+const errorMessageText = ref('')
 
 // Computed properties
 const filteredPayroll = computed(() => {
@@ -759,7 +808,12 @@ const processPayment = () => {
   if (!selectedPayroll.value) return
 
   if (!paymentForm.paymentMethod) {
-    error(t('pleaseSelectPaymentMethod') || 'Please select a payment method')
+    showErrorMessage.value = true
+    errorMessageTitle.value = t('error') || 'Error'
+    errorMessageText.value = t('pleaseSelectPaymentMethod') || 'Please select a payment method'
+    setTimeout(() => {
+      showErrorMessage.value = false
+    }, 3000)
     return
   }
 
@@ -793,18 +847,33 @@ const processPayment = () => {
         description: `Employee salary paid - ${employeeName}, Amount: $${paymentForm.totalPayout.toFixed(2)}`,
         user: 'Admin'
       })
-      success(`${t('paymentProcessed')}: $${paymentForm.totalPayout.toFixed(2)} ${t('hasBeenPaidTo')} ${employeeName}`)
+      showSuccessMessage.value = true
+      successMessageTitle.value = t('paymentProcessed') || 'Payment Processed'
+      successMessageText.value = `$${paymentForm.totalPayout.toFixed(2)} ${t('hasBeenPaidTo') || 'has been paid to'} ${employeeName}`
+      setTimeout(() => {
+        showSuccessMessage.value = false
+      }, 3000)
     }
   } catch (err) {
     console.error('Error processing payment:', err)
-    error(t('paymentFailed') || 'Payment processing failed. Please try again.')
+    showErrorMessage.value = true
+    errorMessageTitle.value = t('error') || 'Error'
+    errorMessageText.value = t('paymentFailed') || 'Payment processing failed. Please try again.'
+    setTimeout(() => {
+      showErrorMessage.value = false
+    }, 3000)
   }
 }
 
 // Confirm pay all
 const confirmPayAll = async () => {
   if (selectedForPayment.value.size === 0) {
-    error(t('noEmployeesSelected') || 'No employees selected for payment.')
+    showErrorMessage.value = true
+    errorMessageTitle.value = t('error') || 'Error'
+    errorMessageText.value = t('noEmployeesSelected') || 'No employees selected for payment.'
+    setTimeout(() => {
+      showErrorMessage.value = false
+    }, 3000)
     showPayAllDialog.value = false
     return
   }
@@ -848,13 +917,28 @@ const confirmPayAll = async () => {
         description: `Bulk salary payment processed - ${successCount} employee(s) paid. Total: $${totalAmount.toFixed(2)}`,
         user: 'Admin'
       })
-      success(`${t('paymentsProcessed') || 'Payments Processed'}: ${successCount} ${t('employee')}(s) paid. Total: $${totalAmount.toFixed(2)}`)
+      showSuccessMessage.value = true
+      successMessageTitle.value = t('paymentsProcessed') || 'Payments Processed'
+      successMessageText.value = `${successCount} ${t('employee')}(s) paid. Total: $${totalAmount.toFixed(2)}`
+      setTimeout(() => {
+        showSuccessMessage.value = false
+      }, 3000)
     } else {
-      error(t('noPaymentsProcessed') || 'No payments were processed.')
+      showErrorMessage.value = true
+      errorMessageTitle.value = t('error') || 'Error'
+      errorMessageText.value = t('noPaymentsProcessed') || 'No payments were processed.'
+      setTimeout(() => {
+        showErrorMessage.value = false
+      }, 3000)
     }
   } catch (err) {
     console.error('Error processing payments:', err)
-    error(t('paymentFailed') || 'Payment processing failed. Please try again.')
+    showErrorMessage.value = true
+    errorMessageTitle.value = t('error') || 'Error'
+    errorMessageText.value = t('paymentFailed') || 'Payment processing failed. Please try again.'
+    setTimeout(() => {
+      showErrorMessage.value = false
+    }, 3000)
   } finally {
     isProcessingPayAll.value = false
   }
@@ -907,18 +991,4 @@ onMounted(() => {
   transform: translateX(100%);
 }
 
-/* AKbalthom KhmerGothic Font */
-@font-face {
-  font-family: 'AKbalthom KhmerGothic';
-  src: url('../assets/fonts/AKbalthom%20KhmerGothic.ttf') format('truetype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-.akbalthom-khmer {
-  font-family: 'AKbalthom KhmerGothic', 'Khmer', 'Khmer OS', sans-serif;
-  font-weight: 400;
-  font-style: normal;
-}
 </style>

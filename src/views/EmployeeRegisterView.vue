@@ -1,5 +1,5 @@
 <template>
-  <div :class="['mx-auto transition-all duration-300 w-full', isSidebarCollapsed ? 'max-w-full px-3' : 'max-w-7xl px-3 lg:px-0']">
+  <div :class="['mx-auto transition-all duration-300 w-full capitalize', isSidebarCollapsed ? 'max-w-full px-3' : 'max-w-7xl px-3 lg:px-0']">
     <div class="bg-white dark:bg-gray-800 rounded-sm shadow-lg">
       <!-- Header -->
       <div class="bg-gradient-to-r from-blue-600 to-blue-700 dark:from-blue-800 dark:to-blue-900 px-3 py-2 border-b border-blue-500 dark:border-blue-700">
@@ -9,7 +9,7 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
             </svg>
           </div>
-          <h1 class="text-xl font-bold text-white">{{ t('registerEmployee') }}</h1>
+          <h1 class="text-xl font-bold text-white capitalize">{{ t('registerEmployee') }}</h1>
         </div>
         <p class="text-blue-100 dark:text-blue-200 text-sm mt-2">{{ t('fillFormToRegisterNewEmployee') }}</p>
       </div>
@@ -29,9 +29,14 @@
                 v-model="formData.nameKhmer"
                 type="text"
                 required
+                @input="validateKhmerNameField('nameKhmer', formData.nameKhmer, true)"
                 :placeholder="t('fullNameKhmerPlaceholder')"
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 transition-colors h-[37px] akbalthom-khmer"
+                :class="[
+                  'w-full px-3 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 transition-colors h-[37px]',
+                  errors.nameKhmer ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                ]"
               />
+              <p v-if="errors.nameKhmer" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.nameKhmer }}</p>
             </div>
             
             <!-- Full Name English -->
@@ -43,9 +48,15 @@
                 v-model="formData.nameEnglish"
                 type="text"
                 required
+                @input="validateNameField('nameEnglish', formData.nameEnglish, true)"
+                @keypress="preventNonNameChars"
                 :placeholder="t('fullNameEnglishPlaceholder')"
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 transition-colors h-[37px]"
+                :class="[
+                  'w-full px-3 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 transition-colors h-[37px]',
+                  errors.nameEnglish ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                ]"
               />
+              <p v-if="errors.nameEnglish" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.nameEnglish }}</p>
             </div>
             
             <!-- Gender -->
@@ -56,8 +67,12 @@
             <div class="relative">
               <select
                 v-model="formData.gender"
-                  required
-                class="w-full px-3 py-2 pr-10 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white appearance-none transition-colors h-[37px]"
+                required
+                @change="validateSelectField('gender', formData.gender, true)"
+                :class="[
+                  'w-full px-3 py-2 pr-10 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white appearance-none transition-colors h-[37px]',
+                  errors.gender ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                ]"
               >
                 <option value="">{{ t('selectGender') }}</option>
                 <option value="Male">{{ t('male') }}</option>
@@ -69,6 +84,7 @@
                 </svg>
               </div>
             </div>
+            <p v-if="errors.gender" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.gender }}</p>
           </div>
             
             <!-- Phone -->
@@ -80,9 +96,15 @@
                 v-model="formData.phone"
                 type="tel"
                 required
+                @input="validatePhoneField('phone', formData.phone, true)"
+                @keypress="preventNonPhoneChars"
                 :placeholder="t('phonePlaceholder')"
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 transition-colors h-[37px]"
+                :class="[
+                  'w-full px-3 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 transition-colors h-[37px]',
+                  errors.phone ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                ]"
               />
+              <p v-if="errors.phone" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.phone }}</p>
             </div>
           </div>
           
@@ -151,7 +173,11 @@
               <select
                 v-model="formData.province"
                 required
-                class="w-full px-3 py-2 pr-10 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white appearance-none transition-colors h-[37px]"
+                @change="validateSelectField('province', formData.province, true)"
+                :class="[
+                  'w-full px-3 py-2 pr-10 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white appearance-none transition-colors h-[37px]',
+                  errors.province ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                ]"
               >
                 <option value="">{{ t('selectProvince') }}</option>
                 <option value="Phnom Penh">Phnom Penh</option>
@@ -172,6 +198,7 @@
                 </svg>
               </div>
             </div>
+            <p v-if="errors.province" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.province }}</p>
           </div>
           
           <!-- Date of Birth -->
@@ -183,8 +210,13 @@
               v-model="formData.dob"
               type="date"
               required
-              class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white transition-colors h-[37px]"
+              @change="validateDateField('dob', formData.dob, { required: true, notFuture: true })"
+              :class="[
+                'w-full px-3 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white transition-colors h-[37px]',
+                errors.dob ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+              ]"
             />
+            <p v-if="errors.dob" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.dob }}</p>
           </div>
           
           <!-- Role -->
@@ -196,7 +228,11 @@
               <select
                 v-model="formData.role"
                 required
-                class="w-full px-3 py-2 pr-10 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white appearance-none transition-colors h-[37px]"
+                @change="validateSelectField('role', formData.role, true)"
+                :class="[
+                  'w-full px-3 py-2 pr-10 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white appearance-none transition-colors h-[37px]',
+                  errors.role ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                ]"
               >
                 <option value="">{{ t('selectRole') }}</option>
                 <option value="Manager">{{ t('manager') }}</option>
@@ -210,6 +246,7 @@
                 </svg>
               </div>
             </div>
+            <p v-if="errors.role" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.role }}</p>
           </div>
           
           <!-- Contract Type -->
@@ -221,7 +258,11 @@
               <select
                 v-model="formData.contract"
                 required
-                class="w-full px-3 py-2 pr-10 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white appearance-none transition-colors h-[37px]"
+                @change="validateSelectField('contract', formData.contract, true)"
+                :class="[
+                  'w-full px-3 py-2 pr-10 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white appearance-none transition-colors h-[37px]',
+                  errors.contract ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                ]"
               >
                 <option value="">{{ t('selectContract') }}</option>
                 <option value="Full-time">{{ t('fullTime') }}</option>
@@ -233,6 +274,7 @@
                 </svg>
               </div>
             </div>
+            <p v-if="errors.contract" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.contract }}</p>
           </div>
           
           <!-- Email -->
@@ -244,9 +286,14 @@
               v-model="formData.email"
               type="email"
               required
+              @input="validateEmailField('email', formData.email, true)"
               :placeholder="t('emailPlaceholder')"
-              class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 transition-colors h-[37px]"
+              :class="[
+                'w-full px-3 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 transition-colors h-[37px]',
+                errors.email ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+              ]"
             />
+            <p v-if="errors.email" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.email }}</p>
           </div>
           
           <!-- Telegram -->
@@ -283,7 +330,11 @@
               <select
                 v-model="formData.status"
                 required
-                class="w-full px-3 py-2 pr-10 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white appearance-none transition-colors h-[37px]"
+                @change="validateSelectField('status', formData.status, true)"
+                :class="[
+                  'w-full px-3 py-2 pr-10 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white appearance-none transition-colors h-[37px]',
+                  errors.status ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                ]"
               >
                 <option value="">{{ t('selectStatus') }}</option>
                 <option value="Active">{{ t('active') }}</option>
@@ -295,6 +346,7 @@
                 </svg>
               </div>
             </div>
+            <p v-if="errors.status" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.status }}</p>
           </div>
           </div>
           
@@ -325,6 +377,7 @@ import { useI18n } from '../composables/useI18n'
 import { useToast } from '../composables/useToast'
 import { useLoading } from '../composables/useLoading'
 import { useErrorHandler } from '../composables/useErrorHandler'
+import { useFormValidation } from '../composables/useFormValidation'
 import { addHistory } from '../utils/history'
 
 // Inject sidebar collapse state
@@ -367,6 +420,30 @@ const formData = ref({
   registered: new Date().toISOString().split('T')[0],
   status: 'Active',
   profileImage: ''
+})
+
+// Form validation
+const {
+  errors,
+  validateNameField,
+  validateKhmerNameField,
+  validateEmailField,
+  validatePhoneField,
+  validateSelectField,
+  validateDateField,
+  preventNonNameChars,
+  preventNonPhoneChars
+} = useFormValidation({
+  nameKhmer: '',
+  nameEnglish: '',
+  gender: '',
+  province: '',
+  dob: '',
+  role: '',
+  contract: '',
+  phone: '',
+  email: '',
+  status: ''
 })
 
 // Toast state removed - now using global ToastContainer
@@ -438,28 +515,67 @@ const clearForm = () => {
   resetForm()
 }
 
+// Validate form
+const validateForm = () => {
+  let isValid = true
+
+  // Validate Khmer Name
+  if (!validateKhmerNameField('nameKhmer', formData.value.nameKhmer, true)) {
+    isValid = false
+  }
+
+  // Validate English Name
+  if (!validateNameField('nameEnglish', formData.value.nameEnglish, true)) {
+    isValid = false
+  }
+
+  // Validate Gender
+  if (!validateSelectField('gender', formData.value.gender, true)) {
+    isValid = false
+  }
+
+  // Validate Province
+  if (!validateSelectField('province', formData.value.province, true)) {
+    isValid = false
+  }
+
+  // Validate Date of Birth
+  if (!validateDateField('dob', formData.value.dob, { required: true, notFuture: true })) {
+    isValid = false
+  }
+
+  // Validate Role
+  if (!validateSelectField('role', formData.value.role, true)) {
+    isValid = false
+  }
+
+  // Validate Contract
+  if (!validateSelectField('contract', formData.value.contract, true)) {
+    isValid = false
+  }
+
+  // Validate Phone
+  if (!validatePhoneField('phone', formData.value.phone, true)) {
+    isValid = false
+  }
+
+  // Validate Email
+  if (!validateEmailField('email', formData.value.email, true)) {
+    isValid = false
+  }
+
+  // Validate Status
+  if (!validateSelectField('status', formData.value.status, true)) {
+    isValid = false
+  }
+
+  return isValid
+}
+
 // Handle form submit
 const handleSubmit = async () => {
-  // Validate required fields
-  if (!formData.value.nameKhmer || !formData.value.nameEnglish || !formData.value.gender || 
-      !formData.value.province || !formData.value.dob || !formData.value.role || 
-      !formData.value.contract || !formData.value.phone || !formData.value.email || 
-      !formData.value.status) {
-    error(`${t('error')}: ${t('pleaseFillRequiredFields')}`)
-    return
-  }
-  
-  // Validate email format
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-  if (!emailRegex.test(formData.value.email)) {
-    error(`${t('error')}: ${t('invalidEmailFormat')}`)
-    return
-  }
-  
-  // Validate phone format (basic validation)
-  const phoneRegex = /^[+]?[(]?[0-9]{1,4}[)]?[-\s.]?[(]?[0-9]{1,4}[)]?[-\s.]?[0-9]{1,9}$/
-  if (!phoneRegex.test(formData.value.phone)) {
-    error(`${t('error')}: ${t('invalidPhoneFormat')}`)
+  if (!validateForm()) {
+    error(`${t('error')}: ${t('pleaseFixErrors') || 'Please fix the errors in the form'}`)
     return
   }
   
@@ -540,19 +656,5 @@ onMounted(() => {
   transform: translateX(100%);
 }
 
-/* AKbalthom KhmerGothic Font */
-@font-face {
-  font-family: 'AKbalthom KhmerGothic';
-  src: url('../assets/fonts/AKbalthom%20KhmerGothic.ttf') format('truetype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-.akbalthom-khmer {
-  font-family: 'AKbalthom KhmerGothic', 'Khmer', 'Khmer OS', sans-serif;
-  font-weight: 400;
-  font-style: normal;
-}
 </style>
 

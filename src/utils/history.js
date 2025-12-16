@@ -1,6 +1,8 @@
 // History logging utility
 // Stores all system activities in localStorage
 
+import { textContains } from './search'
+
 const HISTORY_KEY = 'system_history'
 const MAX_HISTORY_ITEMS = 1000 // Keep last 1000 items
 
@@ -91,11 +93,10 @@ export const filterHistory = (filters = {}) => {
     if (filters.action && entry.action !== filters.action) return false
     if (filters.type && entry.type !== filters.type) return false
     if (filters.search) {
-      const searchLower = filters.search.toLowerCase()
       return (
-        entry.itemName.toLowerCase().includes(searchLower) ||
-        entry.description.toLowerCase().includes(searchLower) ||
-        entry.action.toLowerCase().includes(searchLower)
+        textContains(entry.itemName || '', filters.search) ||
+        textContains(entry.description || '', filters.search) ||
+        textContains(entry.action || '', filters.search)
       )
     }
     return true

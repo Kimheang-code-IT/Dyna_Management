@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="['mx-auto transition-all duration-300 w-full', isSidebarCollapsed ? 'max-w-full px-3' : 'max-w-7xl px-3 lg:px-0']">
+    :class="['mx-auto transition-all duration-300 w-full capitalize', isSidebarCollapsed ? 'max-w-full px-3' : 'max-w-7xl px-3 lg:px-0']">
     <!-- Summary Cards -->
     <div class="flex flex-nowrap sm:flex-wrap gap-1 sm:gap-1.5 md:gap-2 lg:gap-3 mb-2 sm:mb-3">
       <!-- Total Graduated Students Card -->
@@ -165,7 +165,7 @@
     </div>
 
     <!-- Scrollable table container with sticky header -->
-    <div class="max-h-[500px] overflow-y-auto border border-gray-200 dark:border-gray-700 rounded-sm">
+    <div class="max-h-[600px] overflow-y-auto border border-gray-200 dark:border-gray-700 rounded-sm">
       <table class="w-full">
         <!-- Sticky Header -->
         <thead class="bg-gray-50 dark:bg-gray-700 sticky top-0 z-10">
@@ -262,10 +262,11 @@
               student.student.province || 'N/A' }}</td>
             <!-- Total Course Column -->
             <td class="px-3 py-3 whitespace-nowrap text-xs text-gray-700 dark:text-gray-300 text-center">
-              <span
-                class="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-[10px] font-medium">
+              <button
+                @click="handleView(student)"
+                class="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-[10px] font-medium hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors cursor-pointer">
                 {{ student.courses.length }} {{ t('courses') }}
-              </span>
+              </button>
             </td>
             <!-- Status Column -->
             <td class="px-3 py-3 whitespace-nowrap text-xs text-center">
@@ -346,7 +347,7 @@
                     d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                 </svg>
               </div>
-              <h2 class="text-xl font-bold text-black dark:text-white">{{ t('studentCourses') }}</h2>
+              <h2 class="text-xl font-bold text-black dark:text-white capitalize">{{ t('studentCourses') }}</h2>
             </div>
             <button @click="showViewDrawer = false"
               class="text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-sm p-2 transition-colors">
@@ -431,7 +432,7 @@
                       <td class="px-3 py-2 text-xs text-gray-700 dark:text-gray-300">{{ index + 1 }}</td>
                       <td class="px-3 py-2 text-xs text-gray-900 dark:text-white">{{ course }}</td>
                       <td class="px-3 py-2 text-center">
-                        <button @click="deleteCourse(selectedStudent, index)"
+                        <button @click="handleDeleteCourse(selectedStudent, index)"
                           class="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 transition-colors"
                           :title="t('delete')">
                           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
@@ -486,7 +487,7 @@
             </svg>
           </div>
           <div>
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ t('delete') }} {{ t('student') }}</h3>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white capitalize">{{ t('delete') }} {{ t('student') }}</h3>
             <p class="text-sm text-gray-600 dark:text-gray-400">{{ t('areYouSureDeleteGraduated') || 'Are you sure you want to delete this graduated student record ? ' }}</p>
           </div>
         </div>
@@ -523,7 +524,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
               </svg>
             </div>
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ t('add') }}</h3>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white capitalize">{{ t('add') }}</h3>
           </div>
           <button @click="showAddCourseDialog = false"
             class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
@@ -539,8 +540,21 @@
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               {{ t('courseName') }} <span class="text-red-500">*</span>
             </label>
-            <input v-model="newCourseName" type="text" required :placeholder="t('courseNamePlaceholder')"
-              class="w-full px-3 py-2  border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white h-[37px]" />
+            <div class="relative">
+              <select v-model="newCourseName" required
+                :class="[
+                  'w-full px-3 py-2 pr-10 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white appearance-none transition-colors h-[37px]',
+                  'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                ]">
+                <option value="">{{ t('selectCourse') || 'Select Course' }}</option>
+                <option v-for="course in courses" :key="course" :value="course">{{ course }}</option>
+              </select>
+              <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                <svg class="h-5 w-5 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -557,6 +571,95 @@
       </div>
     </div>
 
+    <!-- Delete Course Confirmation Dialog -->
+    <div v-if="showDeleteCourseDialog" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[60]"
+      @click.self="showDeleteCourseDialog = false">
+      <div class="bg-white dark:bg-gray-800 rounded-sm shadow-xl p-6 max-w-md w-full mx-4">
+        <div class="flex items-center gap-4 mb-4">
+          <div
+            class="w-10 h-10 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-red-100 dark:bg-red-900/30 rounded-full flex-shrink-0 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5 sm:h-4 sm:w-4 md:h-5 md:w-5 lg:h-6 lg:w-6 text-red-600 dark:text-red-400" fill="none"
+              viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+            </svg>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white capitalize">{{ t('delete') }} {{ t('courseName') }}</h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400">{{ t('areYouSureDeleteCourse') || 'Are you sure you want to delete this course?' }}</p>
+          </div>
+        </div>
+        <div v-if="courseToDelete" class="mb-6 space-y-2 text-sm text-gray-700 dark:text-gray-300">
+          <p><span class="font-medium">{{ t('courseName') }}:</span> {{ courseToDelete }}</p>
+        </div>
+        <div class="flex gap-3 justify-end">
+          <button @click="showDeleteCourseDialog = false"
+            class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-sm hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors font-medium">
+            {{ t('cancel') }}
+          </button>
+          <button @click="confirmDeleteCourse"
+            class="px-4 py-2 bg-red-600 text-white rounded-sm hover:bg-red-700 transition-colors font-medium">
+            {{ t('yes') }}, {{ t('delete') }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Course Confirmation Dialog -->
+    <div v-if="showAddCourseConfirmDialog" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[70]"
+      @click.self="showAddCourseConfirmDialog = false">
+      <div class="bg-white dark:bg-gray-800 rounded-sm shadow-xl p-6 max-w-md w-full mx-4">
+        <div class="flex items-center gap-4 mb-4">
+          <div
+            class="w-10 h-10 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-blue-100 dark:bg-blue-900/30 rounded-full flex-shrink-0 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5 sm:h-4 sm:w-4 md:h-5 md:w-5 lg:h-6 lg:w-6 text-blue-600 dark:text-blue-400" fill="none"
+              viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white capitalize">{{ t('add') }} {{ t('courseName') }}</h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400">{{ t('areYouSureAddCourse') || 'Are you sure you want to add this course?' }}</p>
+          </div>
+        </div>
+        <div v-if="newCourseName" class="mb-6 space-y-2 text-sm text-gray-700 dark:text-gray-300">
+          <p><span class="font-medium">{{ t('courseName') }}:</span> {{ newCourseName }}</p>
+        </div>
+        <div class="flex gap-3 justify-end">
+          <button @click="showAddCourseConfirmDialog = false"
+            class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-sm hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors font-medium">
+            {{ t('cancel') }}
+          </button>
+          <button @click="handleAddCourseConfirm"
+            class="px-4 py-2 bg-blue-600 text-white rounded-sm hover:bg-blue-700 transition-colors font-medium">
+            {{ t('yes') }}, {{ t('add') }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Success Message Toast -->
+    <Transition name="toast">
+      <div v-if="showSuccessMessage"
+        class="fixed top-4 right-4 bg-green-500 text-white rounded-sm shadow-lg p-4 flex items-center gap-3 z-50 min-w-[300px]">
+        <div class="w-8 h-8 bg-green-400 rounded-full flex items-center justify-center flex-shrink-0">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        <div class="flex-1">
+          <p class="font-semibold text-white">{{ successMessageTitle }}</p>
+          <p class="text-sm text-white">{{ successMessageText }}</p>
+        </div>
+        <button @click="showSuccessMessage = false" class="text-white hover:text-green-100 transition-colors flex-shrink-0">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </Transition>
   </div>
 </template>
 
@@ -568,6 +671,7 @@ import { useToast } from '../composables/useToast'
 import { useLoading } from '../composables/useLoading'
 import { useErrorHandler } from '../composables/useErrorHandler'
 import { addHistory } from '../utils/history'
+import { textContains } from '../utils/search'
 
 // Inject sidebar collapse state
 const isSidebarCollapsed = inject('isSidebarCollapsed', ref(false))
@@ -646,8 +750,22 @@ const newCourseName = ref('')
 const showDeleteDialog = ref(false)
 const studentToDelete = ref(null)
 
+// Delete course dialog state
+const showDeleteCourseDialog = ref(false)
+const courseToDelete = ref(null)
+const courseToDeleteIndex = ref(-1)
+
+// Add course confirmation dialog state
+const showAddCourseConfirmDialog = ref(false)
+
 // Action menu state
 const activeActionMenu = ref(null)
+const showSuccessMessage = ref(false)
+const successMessageTitle = ref('')
+const successMessageText = ref('')
+
+// Courses list (same as StudentRegisterView)
+const courses = ['Web Development', 'Graphic Design', 'Mobile App', 'Digital Marketing', 'Data Science', 'UI/UX Design', 'Python Programming', 'Java Programming']
 
 // Success/Error message state
 // Toast state removed - now using global ToastContainer
@@ -657,13 +775,12 @@ const filteredGraduatedStudents = computed(() => {
   let filtered = graduatedStudents.value
 
   if (searchQuery.value) {
-    const query = searchQuery.value.toLowerCase()
     filtered = filtered.filter(gs =>
-      gs.student.name.toLowerCase().includes(query) ||
-      gs.student.id.toLowerCase().includes(query) ||
-      (gs.student.contact && gs.student.contact.toLowerCase().includes(query)) ||
-      (gs.student.course && gs.student.course.toLowerCase().includes(query)) ||
-      (gs.student.province && gs.student.province.toLowerCase().includes(query))
+      textContains(gs.student.name || '', searchQuery.value) ||
+      textContains(gs.student.id || '', searchQuery.value) ||
+      textContains(gs.student.contact || '', searchQuery.value) ||
+      textContains(gs.student.course || '', searchQuery.value) ||
+      textContains(gs.student.province || '', searchQuery.value)
     )
   }
 
@@ -804,7 +921,12 @@ const confirmDelete = async () => {
         })
         showDeleteDialog.value = false
         studentToDelete.value = null
-        success(`${t('graduatedStudentDeleted') || 'Graduated Student Deleted'}: "${studentName}" ${t('graduatedStudentDeletedSuccess') || 'has been successfully deleted!'}`)
+        showSuccessMessage.value = true
+        successMessageTitle.value = t('graduatedStudentDeleted') || 'Graduated Student Deleted'
+        successMessageText.value = `"${studentName}" ${t('graduatedStudentDeletedSuccess') || 'has been successfully deleted!'}`
+        setTimeout(() => {
+          showSuccessMessage.value = false
+        }, 3000)
       }
     }, 'Deleting graduated student...')
   } catch (err) {
@@ -825,23 +947,29 @@ const openAddCourseDialog = () => {
   showAddCourseDialog.value = true
 }
 
-const confirmAddCourse = async () => {
+const confirmAddCourse = () => {
   if (!newCourseName.value || !newCourseName.value.trim()) {
-    error(`${t('validationError')}: ${t('pleaseEnterCourseName')}`)
+    error(`${t('validationError')}: ${t('pleaseSelectCourse') || t('pleaseEnterCourseName') || 'Please select a course'}`)
     return
   }
 
+  // Check if course already exists
+  if (selectedStudent.value && selectedStudent.value.courses.includes(newCourseName.value.trim())) {
+    error(`${t('error')}: ${t('courseAlreadyExists')}`)
+    return
+  }
+
+  // Show confirmation dialog
+  showAddCourseConfirmDialog.value = true
+}
+
+// Actually add the course after confirmation
+const handleAddCourseConfirm = async () => {
   try {
     await withLoading(async () => {
       if (selectedStudent.value) {
         const index = graduatedStudents.value.findIndex(gs => gs.id === selectedStudent.value.id)
         if (index !== -1) {
-          // Check if course already exists
-          if (graduatedStudents.value[index].courses.includes(newCourseName.value.trim())) {
-            error(`${t('error')}: ${t('courseAlreadyExists')}`)
-            return
-          }
-
           graduatedStudents.value[index].courses.push(newCourseName.value.trim())
           saveGraduatedStudents()
           const studentName = selectedStudent.value.student.name
@@ -855,7 +983,13 @@ const confirmAddCourse = async () => {
           // Update the selected student reference
           selectedStudent.value = { ...graduatedStudents.value[index] }
           showAddCourseDialog.value = false
-          success(`${t('courseAdded')}: "${newCourseName.value.trim()}" ${t('courseAddedSuccess')}`)
+          showAddCourseConfirmDialog.value = false
+          showSuccessMessage.value = true
+          successMessageTitle.value = t('courseAdded')
+          successMessageText.value = `"${newCourseName.value.trim()}" ${t('courseAddedSuccess')}`
+          setTimeout(() => {
+            showSuccessMessage.value = false
+          }, 3000)
         }
       }
     }, 'Adding course...')
@@ -864,18 +998,35 @@ const confirmAddCourse = async () => {
   }
 }
 
-// Delete course
-const deleteCourse = async (student, courseIndex) => {
+// Handle delete course
+const handleDeleteCourse = (student, courseIndex) => {
+  courseToDelete.value = student.courses[courseIndex]
+  courseToDeleteIndex.value = courseIndex
+  showDeleteCourseDialog.value = true
+}
+
+// Confirm delete course
+const confirmDeleteCourse = async () => {
+  if (!courseToDelete.value || courseToDeleteIndex.value === -1 || !selectedStudent.value) return
+
   try {
     await withLoading(async () => {
-      const index = graduatedStudents.value.findIndex(gs => gs.id === student.id)
+      const index = graduatedStudents.value.findIndex(gs => gs.id === selectedStudent.value.id)
       if (index !== -1) {
-        const courseName = graduatedStudents.value[index].courses[courseIndex]
-        graduatedStudents.value[index].courses.splice(courseIndex, 1)
+        const courseName = graduatedStudents.value[index].courses[courseToDeleteIndex.value]
+        graduatedStudents.value[index].courses.splice(courseToDeleteIndex.value, 1)
         saveGraduatedStudents()
         // Update the selected student reference
         selectedStudent.value = { ...graduatedStudents.value[index] }
-        success(`${t('courseDeleted')}: "${courseName}" ${t('courseDeletedSuccess')}`)
+        showDeleteCourseDialog.value = false
+        courseToDelete.value = null
+        courseToDeleteIndex.value = -1
+        showSuccessMessage.value = true
+        successMessageTitle.value = t('courseDeleted')
+        successMessageText.value = `"${courseName}" ${t('courseDeletedSuccess')}`
+        setTimeout(() => {
+          showSuccessMessage.value = false
+        }, 3000)
       }
     }, 'Deleting course...')
   } catch (err) {

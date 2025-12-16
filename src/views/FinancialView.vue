@@ -1,12 +1,12 @@
 <template>
-  <div :class="['mx-auto transition-all duration-300 w-full', isSidebarCollapsed ? 'max-w-full px-3' : 'max-w-7xl px-3 lg:px-0']">
+  <div :class="['mx-auto transition-all duration-300 w-full capitalize', isSidebarCollapsed ? 'max-w-full px-3' : 'max-w-7xl px-3 lg:px-0']">
     <!-- Summary Cards -->
     <div class="flex flex-nowrap sm:flex-wrap gap-1 sm:gap-1.5 md:gap-2 lg:gap-3 mb-2 sm:mb-3">
       <!-- Total Income Card -->
       <div class="bg-white dark:bg-gray-800 rounded-sm shadow p-3">
         <div class="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left justify-center sm:justify-between">
           <div class="order-2 sm:order-1">
-            <h3 class="text-gray-600 dark:text-gray-400 text-[10px] sm:text-xs md:text-sm font-medium mb-0.5 sm:mb-1 md:mb-2">{{ t('totalIncome') }}</h3>
+            <h3 class="text-gray-600 dark:text-gray-400 text-[10px] sm:text-xs md:text-sm font-medium mb-0.5 sm:mb-1 md:mb-2 capitalize">{{ t('totalIncome') }}</h3>
             <p class="text-base sm:text-base md:text-xl lg:text-2xl xl:text-3xl font-bold leading-tight sm:leading-normal text-gray-800 dark:text-white">${{ totalIncome.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}</p>
             <p class="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 mt-1">{{ t('fromFinanceIncome') }}</p>
           </div>
@@ -22,7 +22,7 @@
       <div class="bg-white dark:bg-gray-800 rounded-sm shadow p-0.5 sm:p-1.5 md:p-2 lg:p-3 flex-1 min-w-0 min-h-[60px] sm:min-h-[70px] md:min-h-[80px]">
         <div class="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left justify-center sm:justify-between">
           <div class="order-2 sm:order-1">
-            <h3 class="text-gray-600 dark:text-gray-400 text-[10px] sm:text-xs md:text-sm font-medium mb-0.5 sm:mb-1 md:mb-2">{{ t('totalExpenses') }}</h3>
+            <h3 class="text-gray-600 dark:text-gray-400 text-[10px] sm:text-xs md:text-sm font-medium mb-0.5 sm:mb-1 md:mb-2 capitalize">{{ t('totalExpenses') }}</h3>
             <p class="text-base sm:text-base md:text-xl lg:text-2xl xl:text-3xl font-bold leading-tight sm:leading-normal text-gray-800 dark:text-white">${{ totalExpenses.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}</p>
             <p class="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 mt-1">{{ t('fromFinanceExpense') }}</p>
           </div>
@@ -38,7 +38,7 @@
       <div class="bg-white dark:bg-gray-800 rounded-sm shadow p-0.5 sm:p-1.5 md:p-2 lg:p-3 flex-1 min-w-0 min-h-[60px] sm:min-h-[70px] md:min-h-[80px]">
         <div class="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left justify-center sm:justify-between">
           <div class="order-2 sm:order-1">
-            <h3 class="text-gray-600 dark:text-gray-400 text-[10px] sm:text-xs md:text-sm font-medium mb-0.5 sm:mb-1 md:mb-2">{{ t('totalInvestments') }}</h3>
+            <h3 class="text-gray-600 dark:text-gray-400 text-[10px] sm:text-xs md:text-sm font-medium mb-0.5 sm:mb-1 md:mb-2 capitalize">{{ t('totalInvestments') }}</h3>
             <p class="text-base sm:text-base md:text-xl lg:text-2xl xl:text-3xl font-bold leading-tight sm:leading-normal text-gray-800 dark:text-white">${{ totalInvestments.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}</p>
             <p class="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 mt-1">{{ t('fromFinanceInvestment') }}</p>
           </div>
@@ -54,7 +54,7 @@
       <div class="bg-white dark:bg-gray-800 rounded-sm shadow p-0.5 sm:p-1.5 md:p-2 lg:p-3 flex-1 min-w-0 min-h-[60px] sm:min-h-[70px] md:min-h-[80px]">
         <div class="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left justify-center sm:justify-between">
           <div class="order-2 sm:order-1">
-            <h3 class="text-gray-600 dark:text-gray-400 text-[10px] sm:text-xs md:text-sm font-medium mb-0.5 sm:mb-1 md:mb-2">{{ t('netBalance') }}</h3>
+            <h3 class="text-gray-600 dark:text-gray-400 text-[10px] sm:text-xs md:text-sm font-medium mb-0.5 sm:mb-1 md:mb-2 capitalize">{{ t('netBalance') }}</h3>
             <p :class="['text-base sm:text-base md:text-xl lg:text-2xl xl:text-3xl font-bold leading-tight sm:leading-normal', netBalance >= 0 ? 'text-gray-800 dark:text-white' : 'text-red-600 dark:text-red-400']">
               ${{ netBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}
             </p>
@@ -72,7 +72,7 @@
     <!-- Finance Summary Chart -->
     <div class="bg-white dark:bg-gray-800 rounded-sm shadow p-3">
       <div class="mb-4">
-        <h3 class="text-lg font-semibold text-gray-800 dark:text-white">{{ t('financeSummary') }}</h3>
+        <h3 class="text-lg font-semibold text-gray-800 dark:text-white capitalize">{{ t('financeSummary') }}</h3>
         <p class="text-sm text-gray-500 dark:text-gray-400">{{ t('overviewOfIncomeExpenseAndInvestmentTotals') }}</p>
       </div>
       <div class="h-[400px]">

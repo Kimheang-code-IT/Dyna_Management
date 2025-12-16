@@ -7,7 +7,7 @@
           <!-- Sidebar Header -->
           <div class="px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
             <div class="flex items-center justify-between mb-2">
-              <h3 class="text-sm font-semibold text-gray-900 dark:text-white">{{ t('certificates') || 'Certificates' }}
+              <h3 class="text-sm font-semibold text-gray-900 dark:text-white capitalize">{{ t('certificates') || 'Certificates' }}
               </h3>
             </div>
             <div class="flex items-center justify-between">
@@ -98,7 +98,7 @@
         <div class="bg-white dark:bg-gray-800 rounded-sm shadow flex-shrink-0">
           <button @click="showEditForm = !showEditForm"
             class="w-full px-6 pt-3 pb-2 flex items-center justify-between text-left hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-            <h2 class="text-md font-semibold text-gray-900 dark:text-white">{{ t('editCertificate') ||
+            <h2 class="text-md font-semibold text-gray-900 dark:text-white capitalize">{{ t('editCertificate') ||
               'EditCertificate Information' }}</h2>
             <svg xmlns="http://www.w3.org/2000/svg"
               class="h-5 w-5 text-gray-500 dark:text-gray-400 transition-transform"
@@ -151,7 +151,7 @@
               <div class="absolute inset-0" style="z-index: 2;">
                 <!-- Student Name Khmer (Left side) -->
                 <div class="absolute" style="top: 42%; left: 14%; width: 35%;">
-                  <div class="text-center px-2 akbalthom-khmer"
+                  <div class="text-center px-2"
                     style="font-size: 22px; font-weight: light; color: #b58618; line-height: 1.3; word-wrap: break-word; text-shadow: 0 1px 3px rgba(255, 255, 255, 0.9);">
                     {{ certificateData.nameKhmer || t('studentNameKhmer') || 'ឈ្មោះសិស្ស' }}
                   </div>
@@ -159,7 +159,7 @@
 
                 <!-- Student Name English (Right side) -->
                 <div class="absolute " style="top: 42.5%; right: 9.5%; width: 35%;">
-                  <div class="text-center px-2 akbalthom-khmer"
+                  <div class="text-center px-2"
                     style="font-size: 19px; font-weight: bold; color: #b58618; font-family: 'Arial', 'Times New Roman', serif; line-height: 1.3; word-wrap: break-word; text-shadow: 0 1px 3px rgba(255, 255, 255, 0.9);">
                     {{ certificateData.nameEnglish || t('studentNameEnglish') || 'Name Student' }}
                   </div>
@@ -167,7 +167,7 @@
 
                 <!-- Completion Date (Bottom left) -->
                 <div class="absolute" style="bottom: 24%; left: 48%;">
-                  <div class="px-2 akbalthom-khmer"
+                  <div class="px-2"
                     style="font-size: 12px; color: #1d1c1a; text-shadow: 0 1px 3px rgba(255, 255, 255, 0.9);">
                     {{ formatDateKhmer(certificateData.date) }}
                   </div>
@@ -236,6 +236,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from '../composables/useI18n'
 import { useToast } from '../composables/useToast'
 import { addHistory } from '../utils/history'
+import { textContains } from '../utils/search'
 import certificateImage from '../assets/Certificate.png'
 
 const route = useRoute()
@@ -261,17 +262,16 @@ const filteredGraduatedStudents = computed(() => {
     return graduatedStudentsList.value
   }
 
-  const query = searchQuery.value.toLowerCase()
   return graduatedStudentsList.value.filter(item => {
     const student = item.student
     if (!student) return false
 
     return (
-      (student.nameKhmer && student.nameKhmer.toLowerCase().includes(query)) ||
-      (student.nameEnglish && student.nameEnglish.toLowerCase().includes(query)) ||
-      (student.name && student.name.toLowerCase().includes(query)) ||
-      (student.id && student.id.toLowerCase().includes(query)) ||
-      (item.studentId && item.studentId.toLowerCase().includes(query))
+      textContains(student.nameKhmer || '', searchQuery.value) ||
+      textContains(student.nameEnglish || '', searchQuery.value) ||
+      textContains(student.name || '', searchQuery.value) ||
+      textContains(student.id || '', searchQuery.value) ||
+      textContains(item.studentId || '', searchQuery.value)
     )
   })
 })
@@ -447,9 +447,9 @@ const formatDateKhmer = (dateString) => {
 // Handle print
 const handlePrint = () => {
   const studentName = certificateData.nameEnglish || certificateData.nameKhmer || 'Student'
-  addHistory('update', {
+  addHistory('print', {
     type: 'report',
-    itemName: studentName,
+    itemName: `Certificate - ${studentName}`,
     itemId: route.params.id || null,
     description: `Certificate printed - Student: ${studentName}`,
     user: 'Admin'
@@ -505,9 +505,9 @@ const handleDownload = async () => {
         }
       )
 
-      addHistory('update', {
+      addHistory('downloadInvoice', {
         type: 'report',
-        itemName: `${selectedGraduatedStudents.length} Certificate(s)`,
+        itemName: `Bulk Certificates - ${selectedGraduatedStudents.length} Certificate(s)`,
         itemId: null,
         description: `Bulk certificates downloaded - ${selectedGraduatedStudents.length} certificate(s) generated`,
         user: 'Admin'
@@ -546,9 +546,9 @@ const handleDownload = async () => {
       URL.revokeObjectURL(url)
 
       const studentName = certificateData.nameEnglish || certificateData.nameKhmer || 'Student'
-      addHistory('update', {
+      addHistory('downloadInvoice', {
         type: 'report',
-        itemName: studentName,
+        itemName: `Certificate - ${studentName}`,
         itemId: route.params.id || null,
         description: `Certificate downloaded - Student: ${studentName}`,
         user: 'Admin'
@@ -570,23 +570,6 @@ const goBack = () => {
 </script>
 
 <style scoped>
-/* AKbalthom KhmerGothic Font */
-@font-face {
-  font-family: 'AKbalthom KhmerGothic';
-  src: url('../assets/fonts/AKbalthom%20KhmerGothic.ttf') format('truetype');
-  font-weight: 100;
-  font-style: normal;
-  font-color: #00413d;
-  font-display: swap;
-}
-
-
-.akbalthom-khmer {
-  font-family: 'AKbalthom KhmerGothic', 'Khmer', 'Khmer OS', sans-serif;
-  font-weight: 400;
-  font-style: normal;
-}
-
 .certificate-wrapper {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }

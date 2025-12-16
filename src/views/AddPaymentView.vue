@@ -13,7 +13,8 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
             </svg>
           </div>
-          <h2 class="text-xl font-bold text-gray-900 dark:text-white">{{ t('add') }} {{ t('payment') || 'Payment' }}
+          <h2 class="text-xl font-bold text-gray-900 dark:text-white capitalize">{{ t('add') }} {{ t('payment') ||
+            'Payment' }}
           </h2>
           <div class="flex flex-wrap gap-2 mb-4">
             <button @click="goBack"
@@ -56,8 +57,11 @@
             <div class="flex flex-col sm:flex-row gap-2 sm:items-center">
               <input v-model="searchStudentQuery" type="text" :placeholder="t('search') || 'Search student...'"
                 class="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 h-[37px]" />
-              <select id="studentId" v-model="paymentForm.studentId" required @change="onStudentChange"
-                class="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white h-[37px]">
+              <select id="studentId" v-model="paymentForm.studentId" required
+                @change="validateSelectField('studentId', paymentForm.studentId, true); onStudentChange()" :class="[
+                  'flex-1 px-3 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white h-[37px]',
+                  errors.studentId ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                ]">
                 <option value="">{{ t('selectStudent') || 'Select Student' }}</option>
                 <option v-for="student in filteredStudentsForSelect" :key="student.id" :value="student.id">
                   {{ student.nameEnglish || student.name }} ({{ student.id }})
@@ -76,15 +80,16 @@
                   </div>
                   <span
                     class="text-[10px] px-2 py-1 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200">
-                    {{ student.course || 'N/A' }}
+                    {{ student.course || t('notAvailable') }}
                   </span>
                 </div>
                 <div class="text-xs text-gray-600 dark:text-gray-300 mt-1">
-                  {{ student.session || 'N/A' }}
+                  {{ student.session || t('notAvailable') }}
                   <span v-if="student.time"> • {{ student.time }}</span>
                 </div>
                 <div class="text-[11px] text-gray-500 dark:text-gray-400">
-                  {{ student.province || 'N/A' }} <span v-if="student.contact">• {{ student.contact }}</span>
+                  {{ student.province || t('notAvailable') }} <span v-if="student.contact">• {{ student.contact
+                  }}</span>
                 </div>
               </button>
             </div>
@@ -96,9 +101,12 @@
             <label for="classId" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               {{ t('className') }} <span class="text-red-500">*</span>
             </label>
-            <select id="classId" v-model="paymentForm.classId" required @change="onClassChange"
-              :disabled="!paymentForm.studentId"
-              class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white h-[37px] disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed">
+            <select id="classId" v-model="paymentForm.classId" required
+              @change="validateSelectField('classId', paymentForm.classId, true); onClassChange()"
+              :disabled="!paymentForm.studentId" :class="[
+                'w-full px-3 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white h-[37px] disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed',
+                errors.classId ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+              ]">
               <option value="">{{ paymentForm.studentId ? (t('selectClass') || 'Select Class') :
                 (t('selectStudentFirst') || 'Select Student First') }}</option>
               <option v-for="classItem in filteredClasses" :key="classItem.id" :value="classItem.id">
@@ -117,8 +125,11 @@
                 {{ t('amountDue') }} <span class="text-red-500">*</span>
               </label>
               <input id="amountDue" v-model.number="paymentForm.amountDue" type="number" step="0.01" min="0" required
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 h-[37px]"
-                :placeholder="t('amountDue')" />
+                @input="validateNumberField('amountDue', paymentForm.amountDue, { required: true, min: 0.01, allowDecimals: true })"
+                @keypress="preventNonNumeric($event, true)" :placeholder="t('amountDue')" :class="[
+                  'w-full px-3 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 h-[37px]',
+                  errors.amountDue ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                ]" />
               <p v-if="errors.amountDue" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.amountDue }}</p>
             </div>
 
@@ -128,7 +139,10 @@
                 {{ t('method') || 'Method' }} <span class="text-red-500">*</span>
               </label>
               <select id="method" v-model="paymentForm.method" required
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white h-[37px]">
+                @change="validateSelectField('method', paymentForm.method, true)" :class="[
+                  'w-full px-3 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white h-[37px]',
+                  errors.method ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                ]">
                 <option value="">{{ t('selectMethod') || 'Select Method' }}</option>
                 <option value="Bank">{{ t('bank') || 'Bank' }}</option>
                 <option value="Physical">{{ t('physical') || 'Physical' }}</option>
@@ -145,7 +159,11 @@
                 {{ t('startDate') || 'Start Date' }} <span class="text-red-500">*</span>
               </label>
               <input id="startDate" v-model="paymentForm.startDate" type="date" required
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white h-[37px]" />
+                @change="validateDateField('startDate', paymentForm.startDate, { required: true }); if (paymentForm.endDate) validateDateRangeFields('startDate', 'endDate', paymentForm.startDate, paymentForm.endDate)"
+                :class="[
+                  'w-full px-3 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white h-[37px]',
+                  errors.startDate ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                ]" />
               <p v-if="errors.startDate" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.startDate }}</p>
             </div>
 
@@ -155,7 +173,11 @@
                 {{ t('endDate') || 'End Date' }} <span class="text-red-500">*</span>
               </label>
               <input id="endDate" v-model="paymentForm.endDate" type="date" required
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white h-[37px]" />
+                @change="validateDateField('endDate', paymentForm.endDate, { required: true }); validateDateRangeFields('startDate', 'endDate', paymentForm.startDate, paymentForm.endDate)"
+                :class="[
+                  'w-full px-3 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white h-[37px]',
+                  errors.endDate ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                ]" />
               <p v-if="errors.endDate" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.endDate }}</p>
               <!-- Quick Date Buttons -->
               <div class="flex gap-2 mt-2">
@@ -181,7 +203,10 @@
               {{ t('status') }} <span class="text-red-500">*</span>
             </label>
             <select id="status" v-model="paymentForm.status" required
-              class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white h-[37px]">
+              @change="validateSelectField('status', paymentForm.status, true)" :class="[
+                'w-full px-3 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white h-[37px]',
+                errors.status ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+              ]">
               <option value="">{{ t('selectStatus') || 'Select Status' }}</option>
               <option value="Paid">{{ t('paid') }}</option>
               <option value="Pending">{{ t('pending') }}</option>
@@ -222,7 +247,7 @@
 
             <!-- Right: Invoice Title -->
             <div>
-              <h2 class="text-3xl font-bold text-gray-800 dark:text-white">{{ t('invoice') }}</h2>
+              <h2 class="text-3xl font-bold text-gray-800 dark:text-white capitalize">{{ t('invoice') }}</h2>
             </div>
           </div>
 
@@ -263,12 +288,14 @@
                 <div class="flex items-start gap-2">
                   <span class="text-sm font-medium text-gray-700 dark:text-gray-300 min-w-[80px]">{{ t('name')
                   }}:</span>
-                  <span class="text-sm text-gray-900 dark:text-white">{{ previewCustomerInfo.name || 'N/A' }}</span>
+                  <span class="text-sm text-gray-900 dark:text-white">{{ previewCustomerInfo.name || t('notAvailable')
+                  }}</span>
                 </div>
                 <div class="flex items-start gap-2">
                   <span class="text-sm font-medium text-gray-700 dark:text-gray-300 min-w-[80px]">{{ t('phone')
                   }}:</span>
-                  <span class="text-sm text-gray-900 dark:text-white">{{ previewCustomerInfo.phone || 'N/A' }}</span>
+                  <span class="text-sm text-gray-900 dark:text-white">{{ previewCustomerInfo.phone || t('notAvailable')
+                  }}</span>
                 </div>
                 <div class="flex items-start gap-2">
                   <span class="text-sm font-medium text-gray-700 dark:text-gray-300 min-w-[80px]">{{ t('registered') ||
@@ -279,7 +306,7 @@
                   <span class="text-sm font-medium text-gray-700 dark:text-gray-300 min-w-[80px]">{{ t('session') ||
                     'Session' }}:</span>
                   <span class="text-sm text-gray-900 dark:text-white flex-1">
-                    {{ previewCustomerInfo.session || 'N/A' }}<span v-if="previewCustomerInfo.time"> • {{
+                    {{ previewCustomerInfo.session || t('notAvailable') }}<span v-if="previewCustomerInfo.time"> • {{
                       previewCustomerInfo.time }}</span>
                   </span>
                 </div>
@@ -328,11 +355,11 @@
             <div>
               <div class="space-y-3">
                 <div class="flex justify-between text-sm">
-                  <span class="text-gray-600 dark:text-gray-400">Subtotal</span>
+                  <span class="text-gray-600 dark:text-gray-400">{{ t('subtotal') }}</span>
                   <span class="text-gray-900 dark:text-white">${{ previewSubtotal.toFixed(2) }}</span>
                 </div>
                 <div class="flex justify-between text-sm">
-                  <span class="text-gray-600 dark:text-gray-400">Discount</span>
+                  <span class="text-gray-600 dark:text-gray-400">{{ t('discount') }}</span>
                   <span class="text-gray-900 dark:text-white">${{ previewDiscount.toFixed(2) }}</span>
                 </div>
                 <div class="flex justify-between text-lg font-bold pt-2 border-t border-gray-300 dark:border-gray-600">
@@ -391,7 +418,9 @@ import { useI18n } from '../composables/useI18n'
 import { useToast } from '../composables/useToast'
 import { useLoading } from '../composables/useLoading'
 import { useErrorHandler } from '../composables/useErrorHandler'
+import { useFormValidation } from '../composables/useFormValidation'
 import { addHistory } from '../utils/history'
+import { textContains } from '../utils/search'
 import logoImage from '../assets/logo.png'
 import html2canvas from 'html2canvas'
 
@@ -472,14 +501,13 @@ const filteredClasses = computed(() => {
 })
 
 const filteredStudentsForSelect = computed(() => {
-  const query = searchStudentQuery.value.trim().toLowerCase()
-  if (!query) return allStudents.value
+  if (!searchStudentQuery.value || !searchStudentQuery.value.trim()) return allStudents.value
   return allStudents.value.filter((s) => {
     return (
-      (s.nameEnglish && s.nameEnglish.toLowerCase().includes(query)) ||
-      (s.name && s.name.toLowerCase().includes(query)) ||
-      (s.nameKhmer && s.nameKhmer.toLowerCase().includes(query)) ||
-      (s.id && s.id.toLowerCase().includes(query))
+      textContains(s.nameEnglish || '', searchStudentQuery.value) ||
+      textContains(s.name || '', searchStudentQuery.value) ||
+      textContains(s.nameKhmer || '', searchStudentQuery.value) ||
+      textContains(s.id || '', searchStudentQuery.value)
     )
   })
 })
@@ -501,8 +529,15 @@ const paymentForm = reactive({
   status: 'Pending'
 })
 
-// Form errors
-const errors = reactive({
+// Form validation
+const {
+  errors,
+  validateSelectField,
+  validateNumberField,
+  validateDateField,
+  validateDateRangeFields,
+  preventNonNumeric
+} = useFormValidation({
   studentId: '',
   classId: '',
   amountDue: '',
@@ -550,14 +585,14 @@ const previewInvoiceDate = computed(() => {
 
 const previewStartDate = computed(() => {
   if (!paymentForm.startDate) {
-    return 'N/A'
+    return t('notAvailable')
   }
   return formatDate(paymentForm.startDate)
 })
 
 const previewEndDate = computed(() => {
   if (!paymentForm.endDate) {
-    return 'N/A'
+    return t('notAvailable')
   }
   return formatDate(paymentForm.endDate)
 })
@@ -565,13 +600,13 @@ const previewEndDate = computed(() => {
 const previewCustomerInfo = computed(() => {
   const student = allStudents.value.find(s => s.id === paymentForm.studentId)
   if (!student) {
-    return { name: 'N/A', phone: 'N/A', address: 'N/A', session: 'N/A', time: '', registered: '' }
+    return { name: t('notAvailable'), phone: t('notAvailable'), address: t('notAvailable'), session: t('notAvailable'), time: '', registered: '' }
   }
   return {
-    name: student.nameEnglish || student.nameKhmer || student.name || 'N/A',
-    phone: student.contact || student.phone || 'N/A',
-    address: student.province || 'N/A',
-    session: student.session || 'N/A',
+    name: student.nameEnglish || student.nameKhmer || student.name || t('notAvailable'),
+    phone: student.contact || student.phone || t('notAvailable'),
+    address: student.province || t('notAvailable'),
+    session: student.session || t('notAvailable'),
     time: student.time || '',
     registered: student.registered || ''
   }
@@ -598,9 +633,9 @@ const previewGrandTotal = computed(() => {
 })
 
 const previewRegisteredDate = computed(() => {
-  if (!paymentForm.studentId) return 'N/A'
+  if (!paymentForm.studentId) return t('notAvailable')
   const student = allStudents.value.find(s => s.id === paymentForm.studentId)
-  if (!student || !student.registered) return 'N/A'
+  if (!student || !student.registered) return t('notAvailable')
   return formatDate(student.registered)
 })
 
@@ -622,56 +657,42 @@ const onClassChange = () => {
 
 // Validate payment form
 const validatePaymentForm = () => {
-  Object.keys(errors).forEach(key => errors[key] = '')
-  let hasErrors = false
+  let isValid = true
 
-  if (!paymentForm.studentId) {
-    errors.studentId = 'Student is required'
-    hasErrors = true
+  if (!validateSelectField('studentId', paymentForm.studentId, true)) {
+    isValid = false
   }
 
-  if (!paymentForm.classId) {
-    errors.classId = 'Class is required'
-    hasErrors = true
+  if (!validateSelectField('classId', paymentForm.classId, true)) {
+    isValid = false
   }
 
-  if (!paymentForm.amountDue || paymentForm.amountDue <= 0) {
-    errors.amountDue = 'Amount must be greater than 0'
-    hasErrors = true
+  if (!validateNumberField('amountDue', paymentForm.amountDue, { required: true, min: 0.01, allowDecimals: true })) {
+    isValid = false
   }
 
-  if (!paymentForm.method) {
-    errors.method = 'Method is required'
-    hasErrors = true
+  if (!validateSelectField('method', paymentForm.method, true)) {
+    isValid = false
   }
 
-  if (!paymentForm.startDate) {
-    errors.startDate = 'Start date is required'
-    hasErrors = true
+  if (!validateDateField('startDate', paymentForm.startDate, { required: true })) {
+    isValid = false
   }
 
-  if (!paymentForm.endDate) {
-    errors.endDate = 'End date is required'
-    hasErrors = true
+  if (!validateDateField('endDate', paymentForm.endDate, { required: true })) {
+    isValid = false
+  } else {
+    // Validate that end date is after start date
+    validateDateRangeFields('startDate', 'endDate', paymentForm.startDate, paymentForm.endDate)
   }
 
-  // Ensure end date is not before start date
-  if (paymentForm.startDate && paymentForm.endDate) {
-    const start = new Date(paymentForm.startDate)
-    const end = new Date(paymentForm.endDate)
-    if (end < start) {
-      errors.endDate = 'End date must be after start date'
-      hasErrors = true
-    }
+  if (!validateSelectField('status', paymentForm.status, true)) {
+    isValid = false
   }
 
-  if (!paymentForm.status) {
-    errors.status = 'Status is required'
-    hasErrors = true
-  }
-
-  return !hasErrors
+  return isValid
 }
+
 
 // Load payments from localStorage
 const loadPayments = () => {
@@ -752,7 +773,7 @@ const handleAddPayment = async () => {
 
       // Navigate back to payment list
       router.push('/student-payment')
-    }, 'Adding payment...')
+    }, t('addingPayment'))
   } catch (err) {
     handleError(err, { userMessage: 'Failed to add payment. Please try again.' })
   }
@@ -798,6 +819,15 @@ const takeScreenshot = async () => {
 }
 
 const printInvoice = () => {
+  // Add history entry for print invoice
+  const invoiceNo = paymentForm.value.invoiceNo || 'N/A'
+  addHistory('print', {
+    type: 'student',
+    itemName: `Invoice ${invoiceNo}`,
+    itemId: paymentForm.value.id || null,
+    description: `Payment invoice printed - Invoice: ${invoiceNo}, Amount: $${paymentForm.value.amountDue?.toFixed(2) || '0.00'}`,
+    user: 'Admin'
+  })
   window.print()
 }
 

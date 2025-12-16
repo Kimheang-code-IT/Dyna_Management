@@ -91,7 +91,11 @@ const translations = {
     performanceMetrics: 'Performance Metrics',
     productCategories: 'Product Categories',
     monthlyPerformance: 'Monthly Performance',
+    cambodiaProvinces: 'Cambodia Provinces',
     totalUsers: 'Total Users',
+    topCourse: 'Top Course',
+    allCourses: 'All Courses',
+    allProvinces: 'All Provinces',
     
     // Category
     categories: 'Categories',
@@ -141,6 +145,7 @@ const translations = {
     topCategory: 'Top Category',
     stockUnits: 'Stock Units',
     category: 'Category',
+    lowStock: 'Low Stock',
     added: 'ADDED',
     sold: 'SOLD',
     damaged: 'DAMAGED',
@@ -181,6 +186,17 @@ const translations = {
     searchProducts: 'Search products...',
     all: 'All',
     inStock: 'in stock',
+    viewDetails: 'View Details',
+    productDetails: 'Product Details',
+    selectStudentHint: 'Selecting a student will fill name/phone/address automatically.',
+    walkInCustomer: 'Walk-in Customer',
+    cartCleared: 'Cart Cleared',
+    cartClearedSuccess: 'All items have been removed from the cart successfully',
+    customerInfoSaved: 'Customer information saved successfully',
+    insufficientStock: 'Insufficient stock',
+    pleaseCompleteCustomerInfo: 'Please complete customer information before checkout',
+    checkoutSuccess: 'Checkout successful, stock updated',
+    searchByNamePhoneId: 'Search by name, phone, id',
     
     // Report
     reports: 'Reports',
@@ -195,7 +211,9 @@ const translations = {
     reportingRange: 'Reporting Range',
     dateRange: 'Date Range',
     allTime: 'All Time',
+    today: 'Today',
     last7Days: 'Last 7 Days',
+    last3Months: 'Last 3 Months',
     last30Days: 'Last 30 Days',
     last90Days: 'Last 90 Days',
     searchBySaleId: 'Search by sale ID or product...',
@@ -347,6 +365,11 @@ const translations = {
     total: 'TOTAL',
     termsAndConditions: 'TERMS & CONDITIONS',
     thankYouMessage: 'Thank you for your purchase! Please remit payment within 7 days. Contact us if you have any question about this invoice.',
+    invoiceElementNotFound: 'Invoice element not found',
+    screenshotFailed: 'Failed to generate screenshot',
+    screenshotSaved: 'Screenshot saved successfully',
+    screenshotError: 'Error generating screenshot. Please try again.',
+    generatingScreenshot: 'Generating screenshot...',
     
     // Login
     login: 'Login',
@@ -450,6 +473,14 @@ const translations = {
     validationError: 'Validation Error',
     pleaseFixErrors: 'Please fix the errors in the form',
     registrationFailed: 'Failed to register student. Please try again.',
+    pleaseSelectValidImage: 'Please select a valid image file',
+    imageSizeMustBeLess: 'Image size must be less than 20MB',
+    failedToReadImage: 'Failed to read image file',
+    noStudentSelected: 'No student selected for editing',
+    studentUpdatedMessage: 'Student updated',
+    failedToSaveStudent: 'Failed to save student. Please try again.',
+    unknown: 'Unknown',
+    months: 'Months',
     
     // Class Management
     class: 'Class',
@@ -459,6 +490,7 @@ const translations = {
     totalStudentsInClasses: 'Total Students in Classes',
     className: 'Class Name',
     classNamRoom: 'Room',
+    employees: 'Employees',
     room: 'Room',
     teacher: 'Teacher',
     schedule: 'Schedule',
@@ -469,6 +501,7 @@ const translations = {
     viewClass: 'View Class',
     deleteClass: 'Delete Class',
     addStudentToClass: 'Add Student to Class',
+    enterCustomerDetails: 'Enter Customer Details',
     searchStudents: 'Search students...',
     noStudentsAvailable: 'No students available',
     studentsAdded: 'Students Added',
@@ -479,6 +512,16 @@ const translations = {
     classAddedSuccess: 'has been successfully added!',
     classUpdatedSuccess: 'has been successfully updated!',
     classDeletedSuccess: 'has been successfully deleted!',
+    addingClass: 'Adding class...',
+    updatingClass: 'Updating class...',
+    deletingClass: 'Deleting class...',
+    addingStudents: 'Adding students...',
+    removingStudent: 'Removing student...',
+    addingPayment: 'Adding payment...',
+    deletingAttendance: 'Deleting attendance...',
+    addingAttendance: 'Adding attendance...',
+    notAvailable: 'N/A',
+    legend: 'Legend',
     selectStatus: 'Select Status',
     inactive: 'Inactive',
     
@@ -514,9 +557,13 @@ const translations = {
     invoiceNo: 'Invoice No',
     amountDue: 'Amount Due',
     dueDate: 'Due Date',
+    startDate: 'Start Date',
+    endDate: 'End Date',
+    paymentDate: 'Payment Date',
     paid: 'Paid',
     pending: 'Pending',
     overdue: 'Overdue',
+    totalPayout: 'Total Payout',
     confirmPayment: 'Confirm Payment',
     rejectPayment: 'Reject Payment',
     areYouSureConfirmPayment: 'Are you sure you want to confirm this payment?',
@@ -535,6 +582,9 @@ const translations = {
     selectClass: 'Select Class',
     paymentAdded: 'Payment Added',
     paymentAddedSuccess: 'has been successfully added!',
+    bank: 'Bank',
+    physical: 'Physical',
+    payment: 'Payment',
     
     // Student Book
     totalBooks: 'Total Books',
@@ -601,6 +651,23 @@ const translations = {
     pleaseSelectStudents: 'Please select at least one student to download certificates.',
     noStudentsSelected: 'No students selected for download.',
     noStudentsData: 'No student data found.',
+    studentCards: 'Student Cards',
+    selected: 'selected',
+    noStudents: 'No students found',
+    front: 'Front',
+    downloadSelected: 'Download Selected',
+    studentNotFound: 'Student not found',
+    errorLoadingStudent: 'Error loading student data',
+    notSet: 'Not Set',
+    noCardData: 'No card data available to download',
+    cardElementNotFound: 'Card element not found',
+    cardDownloaded: 'Card downloaded successfully',
+    errorGeneratingCard: 'Error generating card. Please try again.',
+    editCard: 'Edit Card Information',
+    confirmDownloadCard: 'Download Card',
+    confirmDownloadCardMessage: 'Are you sure you want to download the card (front and back)?',
+    confirmPrintCard: 'Print Card',
+    confirmPrintCardMessage: 'Are you sure you want to print the card (front and back)?',
     viewCourse: 'View Course',
     areYouSureDeleteGraduated: 'Are you sure you want to delete this graduated student record?',
     certificateGenerated: 'Certificate Generated',
@@ -614,6 +681,9 @@ const translations = {
     studentNameEnglish: 'Student Name (English)',
     enterNameKhmer: 'Enter name in Khmer',
     enterNameEnglish: 'Enter name in English',
+    enterName: 'Enter name',
+    enterPhone: 'Enter phone number',
+    enterAddress: 'Enter address (optional)',
     completionDate: 'Completion Date',
     print: 'Print',
     download: 'Download',
@@ -625,6 +695,7 @@ const translations = {
     totalRoles: 'Total Roles',
     totalContracts: 'Total Contracts',
     employee: 'Employee',
+    generateCard: 'Generate Card',
     employeeName: 'Employee Name',
     role: 'Role',
     contract: 'Contract',
@@ -659,6 +730,10 @@ const translations = {
     employeeUpdatedSuccess: 'has been successfully updated!',
     employeeDeletedSuccess: 'has been successfully deleted!',
     selectEmployee: 'Select Employee',
+    employeeCards: 'Employee Cards',
+    employeeNotFound: 'Employee not found',
+    errorLoadingEmployee: 'Error loading employee data',
+    noEmployees: 'No employees found',
     fullName: 'Full Name',
     position: 'Position',
     phone: 'Phone',
@@ -955,7 +1030,11 @@ const translations = {
     performanceMetrics: 'សូចនាករដំណើរការ',
     productCategories: 'ប្រភេទផលិតផល',
     monthlyPerformance: 'ការអនុវត្តប្រចាំខែ',
+    cambodiaProvinces: 'ខេត្តកម្ពុជា',
     totalUsers: 'អ្នកប្រើសរុប',
+    topCourse: 'វគ្គកំពូល',
+    allCourses: 'វគ្គទាំងអស់',
+    allProvinces: 'ខេត្តទាំងអស់',
     
     // Category
     categories: 'ប្រភេទ',
@@ -971,7 +1050,7 @@ const translations = {
     products: 'ផលិតផល',
     addNewCategory: 'បន្ថែមប្រភេទថ្មី',
     updateCategory: 'ធ្វើបច្ចុប្បន្នភាពប្រភេទ',
-    no: 'លេខ',
+    no: 'ល.រ',
     name: 'ឈ្មោះ',
     categoryPlaceholder: 'ឧ. កុំព្យូទ័រ, គ្រឿងបន្ថែម',
     descriptionPlaceholder: 'ការពិពណ៌នាជាជម្រើសសម្រាប់ប្រភេទនេះ',
@@ -991,6 +1070,7 @@ const translations = {
     inStock: 'នៅក្នុងស្តុក',
     totalStock: 'ស្តុកសរុប',
     stockStatus: 'ស្ថានភាពស្តុក',
+    lowStock: 'ស្តុកទាប',
     status: 'ស្ថានភាព',
     active: 'សកម្ម',
     low: 'ទាប',
@@ -1029,22 +1109,33 @@ const translations = {
     successfully: 'ដោយជោគជ័យ!',
     
     // POS
-    pos: 'ការលក់',
-    cart: 'រទេះ',
+    pos: 'ហាងលក់ទំនិញ',
+    cart: 'កន្ត្រក់',
     checkout: 'ទូទាត់',
-    emptyCart: 'រទេះរបស់អ្នកទទេ',
-    cartIsEmpty: 'រទេះទទេ',
-    cartIsEmptyAlert: 'រទេះទទេ!',
+    emptyCart: 'កន្ត្រក់របស់អ្នកទទេ',
+    cartIsEmpty: 'កន្ត្រក់ទទេ',
+    cartIsEmptyAlert: 'កន្ត្រក់ទទេ!',
     total: 'សរុប',
     quantity: 'បរិមាណ',
-    addToCart: 'បន្ថែមទៅរទេះ',
+    addToCart: 'បន្ថែមទៅកន្ត្រក់',
     addMore: 'បន្ថែមបន្ថែម',
-    inCart: 'នៅក្នុងរទេះ',
+    inCart: 'នៅក្នុងកន្ត្រក់',
     clearAll: 'សម្អាតទាំងអស់',
-    clearCartConfirm: 'តើអ្នកប្រាកដថាចង់សម្អាតរទេះទេ?',
+    clearCartConfirm: 'តើអ្នកប្រាកដថាចង់សម្អាតកន្ត្រក់ទេ?',
     searchProducts: 'ស្វែងរកផលិតផល...',
     all: 'ទាំងអស់',
     inStock: 'នៅក្នុងស្តុក',
+    viewDetails: 'មើលព័ត៌មានលម្អិត',
+    productDetails: 'ព័ត៌មានលម្អិតផលិតផល',
+    selectStudentHint: 'ការជ្រើសរើសសិស្សនឹងបំពេញឈ្មោះ/ទូរស័ព្ទ/អាសយដ្ឋានដោយស្វ័យប្រវត្តិ។',
+    walkInCustomer: 'អតិថិជនដែលមកដល់',
+    cartCleared: 'កន្ត្រក់ត្រូវបានសម្អាត',
+    cartClearedSuccess: 'ធាតុទាំងអស់ត្រូវបានយកចេញពីកន្ត្រក់ដោយជោគជ័យ',
+    customerInfoSaved: 'ព័ត៌មានអតិថិជនត្រូវបានរក្សាទុកដោយជោគជ័យ',
+    insufficientStock: 'ស្តុកមិនគ្រប់គ្រាន់',
+    pleaseCompleteCustomerInfo: 'សូមបំពេញព័ត៌មានអតិថិជនមុនពេលទូទាត់',
+    checkoutSuccess: 'ការទូទាត់ជោគជ័យ, ស្តុកត្រូវបានធ្វើបច្ចុប្បន្នភាព',
+    searchByNamePhoneId: 'ស្វែងរកតាមឈ្មោះ, ទូរស័ព្ទ, អត្តលេខ',
     
     // Report
     reports: 'របាយការណ៍',
@@ -1059,7 +1150,9 @@ const translations = {
     reportingRange: 'ជួររបាយការណ៍',
     dateRange: 'ជួរកាលបរិច្ឆេទ',
     allTime: 'ពេលវេលាទាំងអស់',
+    today: 'ថ្ងៃនេះ',
     last7Days: '៧ ថ្ងៃចុងក្រោយ',
+    last3Months: '៣ ខែចុងក្រោយ',
     last30Days: '៣០ ថ្ងៃចុងក្រោយ',
     last90Days: '៩០ ថ្ងៃចុងក្រោយ',
     searchBySaleId: 'ស្វែងរកតាមលេខការលក់ ឬផលិតផល...',
@@ -1208,6 +1301,11 @@ const translations = {
     total: 'សរុប',
     termsAndConditions: 'លក្ខខណ្ឌ និងការកំណត់',
     thankYouMessage: 'សូមអរគុណសម្រាប់ការទិញរបស់អ្នក! សូមបង់ប្រាក់ក្នុងរយៈពេល ៧ ថ្ងៃ។ សូមទាក់ទងមកយើងប្រសិនបើអ្នកមានសំណួរអំពីវិក្កយបត្រនេះ។',
+    invoiceElementNotFound: 'រកមិនឃើញធាតុវិក្កយបត្រ',
+    screenshotFailed: 'មិនអាចបង្កើតអេក្រង់បានទេ',
+    screenshotSaved: 'អេក្រង់ត្រូវបានរក្សាទុកដោយជោគជ័យ',
+    screenshotError: 'កំហុសក្នុងការបង្កើតអេក្រង់។ សូមព្យាយាមម្តងទៀត។',
+    generatingScreenshot: 'កំពុងបង្កើតអេក្រង់...',
     
     // Login
     login: 'ចូល',
@@ -1288,6 +1386,7 @@ const translations = {
     fullNameKhmerPlaceholder: 'ឈ្មោះពេញ (ខ្មែរ)',
     day: 'ថ្ងៃ',
     month: 'ខែ',
+    months: 'ខែ',
     year: 'ឆ្នាំ',
     time: 'ពេលវេលា',
     selectSession: 'ជ្រើសរើសវគ្គ',
@@ -1313,6 +1412,13 @@ const translations = {
     validationError: 'កំហុសក្នុងការផ្ទៀងផ្ទាត់',
     pleaseFixErrors: 'សូមកែកំហុសក្នុងទម្រង់',
     registrationFailed: 'មិនអាចចុះឈ្មោះសិស្សបានទេ។ សូមព្យាយាមម្តងទៀត។',
+    pleaseSelectValidImage: 'សូមជ្រើសរើសឯកសាររូបភាពត្រឹមត្រូវ',
+    imageSizeMustBeLess: 'ទំហំរូបភាពត្រូវតែតូចជាង 20MB',
+    failedToReadImage: 'មិនអាចអានឯកសាររូបភាពបានទេ',
+    noStudentSelected: 'មិនមានសិស្សត្រូវបានជ្រើសរើសសម្រាប់កែសម្រួល',
+    studentUpdatedMessage: 'សិស្សត្រូវបានធ្វើបច្ចុប្បន្នភាព',
+    failedToSaveStudent: 'មិនអាចរក្សាទុកសិស្សបានទេ។ សូមព្យាយាមម្តងទៀត។',
+    unknown: 'មិនស្គាល់',
     
     // Class Management
     class: 'ថ្នាក់',
@@ -1321,6 +1427,9 @@ const translations = {
     totalTeachers: 'គ្រូបង្រៀនសរុប',
     totalStudentsInClasses: 'សិស្សសរុបក្នុងថ្នាក់',
     className: 'ឈ្មោះថ្នាក់',
+    classNamRoom: 'បន្ទប់',
+    employees: 'បុគ្គលិក',
+    room: 'បន្ទប់',
     teacher: 'គ្រូបង្រៀន',
     schedule: 'កាលវិភាគ',
     duration: 'រយៈពេល',
@@ -1330,6 +1439,7 @@ const translations = {
     viewClass: 'មើលថ្នាក់',
     deleteClass: 'លុបថ្នាក់',
     addStudentToClass: 'បន្ថែមសិស្សទៅថ្នាក់',
+    enterCustomerDetails: 'បញ្ចូលព័ត៌មានអតិថិជន',
     searchStudents: 'ស្វែងរកសិស្ស...',
     noStudentsAvailable: 'មិនមានសិស្សដែលអាចប្រើបាន',
     studentsAdded: 'សិស្សត្រូវបានបន្ថែម',
@@ -1340,6 +1450,19 @@ const translations = {
     classAddedSuccess: 'ត្រូវបានបន្ថែមដោយជោគជ័យ!',
     classUpdatedSuccess: 'ត្រូវបានធ្វើបច្ចុប្បន្នភាពដោយជោគជ័យ!',
     classDeletedSuccess: 'ត្រូវបានលុបដោយជោគជ័យ!',
+    addingClass: 'កំពុងបន្ថែមថ្នាក់...',
+    updatingClass: 'កំពុងធ្វើបច្ចុប្បន្នភាពថ្នាក់...',
+    deletingClass: 'កំពុងលុបថ្នាក់...',
+    addingStudents: 'កំពុងបន្ថែមសិស្ស...',
+    removingStudent: 'កំពុងយកសិស្សចេញ...',
+    addingPayment: 'កំពុងបន្ថែមការទូទាត់...',
+    deletingAttendance: 'កំពុងលុបវត្តមាន...',
+    addingAttendance: 'កំពុងបន្ថែមវត្តមាន...',
+    notAvailable: 'មិនមាន',
+    legend: 'ពន្យល់',
+    deletingClass: 'កំពុងលុបថ្នាក់...',
+    addingStudents: 'កំពុងបន្ថែមសិស្ស...',
+    removingStudent: 'កំពុងយកសិស្សចេញ...',
     selectStatus: 'ជ្រើសរើសស្ថានភាព',
     inactive: 'មិនសកម្ម',
     
@@ -1375,9 +1498,13 @@ const translations = {
     invoiceNo: 'លេខវិក្កយបត្រ',
     amountDue: 'ចំនួនទឹកប្រាក់ដែលត្រូវបង់',
     dueDate: 'កាលបរិច្ឆេទផុតកំណត់',
+    startDate: 'ថ្ងៃចាប់ផ្តើម',
+    endDate: 'ថ្ងៃបញ្ចប់',
+    paymentDate: 'កាលបរិច្ឆេទបង់ប្រាក់',
     paid: 'បានបង់',
     pending: 'កំពុងរង់ចាំ',
     overdue: 'ហួសកំណត់',
+    totalPayout: 'ការបង់ប្រាក់សរុប',
     confirmPayment: 'បញ្ជាក់ការបង់ប្រាក់',
     rejectPayment: 'បដិសេធការបង់ប្រាក់',
     areYouSureConfirmPayment: 'តើអ្នកប្រាកដថាចង់បញ្ជាក់ការបង់ប្រាក់នេះទេ?',
@@ -1396,6 +1523,9 @@ const translations = {
     selectClass: 'ជ្រើសរើសថ្នាក់',
     paymentAdded: 'ការទូទាត់ត្រូវបានបន្ថែម',
     paymentAddedSuccess: 'ត្រូវបានបន្ថែមដោយជោគជ័យ!',
+    bank: 'ធនាគារ',
+    physical: 'សាច់ប្រាក់',
+    payment: 'ការទូទាត់',
     
     // Student Book
     totalBooks: 'សៀវភៅសរុប',
@@ -1462,6 +1592,23 @@ const translations = {
     pleaseSelectStudents: 'សូមជ្រើសសិស្សយ៉ាងហោចណាស់ម្នាក់ដើម្បីទាញយកវិញ្ញាបនបត្រ។',
     noStudentsSelected: 'មិនមានសិស្សត្រូវបានជ្រើសសម្រាប់ទាញយក។',
     noStudentsData: 'រកមិនឃើញទិន្នន័យសិស្ស។',
+    studentCards: 'កាតសិស្ស',
+    selected: 'បានជ្រើស',
+    noStudents: 'រកមិនឃើញសិស្ស',
+    front: 'ខាងមុខ',
+    downloadSelected: 'ទាញយកដែលបានជ្រើស',
+    studentNotFound: 'រកមិនឃើញសិស្ស',
+    errorLoadingStudent: 'កំហុសក្នុងការផ្ទុកទិន្នន័យសិស្ស',
+    notSet: 'មិនបានកំណត់',
+    noCardData: 'មិនមានទិន្នន័យកាតសម្រាប់ទាញយក',
+    cardElementNotFound: 'រកមិនឃើញធាតុកាត',
+    cardDownloaded: 'កាតត្រូវបានទាញយកដោយជោគជ័យ',
+    errorGeneratingCard: 'កំហុសក្នុងការបង្កើតកាត។ សូមព្យាយាមម្តងទៀត។',
+    editCard: 'កែសម្រួលព័ត៌មានកាត',
+    confirmDownloadCard: 'ទាញយកកាត',
+    confirmDownloadCardMessage: 'តើអ្នកប្រាកដថាចង់ទាញយកកាត (ខាងមុខនិងខាងក្រោយ) ទេ?',
+    confirmPrintCard: 'បោះពុម្ពកាត',
+    confirmPrintCardMessage: 'តើអ្នកប្រាកដថាចង់បោះពុម្ពកាត (ខាងមុខនិងខាងក្រោយ) ទេ?',
     viewCourse: 'មើលមុខវិជ្ជា',
     areYouSureDeleteGraduated: 'តើអ្នកប្រាកដថាចង់លុបកំណត់ត្រាសិស្សបញ្ចប់ការសិក្សានេះទេ?',
     certificateGenerated: 'វិញ្ញាបនបត្រត្រូវបានបង្កើត',
@@ -1475,6 +1622,9 @@ const translations = {
     studentNameEnglish: 'ឈ្មោះសិស្ស (អង់គ្លេស)',
     enterNameKhmer: 'បញ្ចូលឈ្មោះជាភាសាខ្មែរ',
     enterNameEnglish: 'បញ្ចូលឈ្មោះជាភាសាអង់គ្លេស',
+    enterName: 'បញ្ចូលឈ្មោះ',
+    enterPhone: 'បញ្ចូលលេខទូរស័ព្ទ',
+    enterAddress: 'បញ្ចូលអាសយដ្ឋាន (ជម្រើស)',
     completionDate: 'កាលបរិច្ឆេទបញ្ចប់',
     print: 'បោះពុម្ព',
     download: 'ទាញយក',
@@ -1486,6 +1636,7 @@ const translations = {
     totalRoles: 'តួនាទីសរុប',
     totalContracts: 'កិច្ចសន្យាសរុប',
     employee: 'បុគ្គលិក',
+    generateCard: 'បង្កើតកាត',
     employeeName: 'ឈ្មោះបុគ្គលិក',
     role: 'តួនាទី',
     contract: 'កិច្ចសន្យា',
@@ -1512,6 +1663,10 @@ const translations = {
     employeeUpdatedSuccess: 'ត្រូវបានធ្វើបច្ចុប្បន្នភាពដោយជោគជ័យ!',
     employeeDeletedSuccess: 'ត្រូវបានលុបដោយជោគជ័យ!',
     selectEmployee: 'ជ្រើសបុគ្គលិក',
+    employeeCards: 'កាតបុគ្គលិក',
+    employeeNotFound: 'រកមិនឃើញបុគ្គលិក',
+    errorLoadingEmployee: 'កំហុសក្នុងការផ្ទុកទិន្នន័យបុគ្គលិក',
+    noEmployees: 'រកមិនឃើញបុគ្គលិក',
     fullName: 'ឈ្មោះពេញ',
     position: 'តួនាទី',
     phone: 'ទូរស័ព្ទ',
@@ -1727,31 +1882,50 @@ const translations = {
   }
 }
 
-// Get current language from localStorage or default to 'en'
-const getCurrentLanguage = () => {
-  return localStorage.getItem('app_language') || 'en'
-}
+// Track current language in memory for fast lookups and live updates
+let currentLang = localStorage.getItem('app_language') || 'en'
 
-// Set current language
+// Get current language
+const getCurrentLanguage = () => currentLang
+
+// Set current language (persist + notify)
 const setCurrentLanguage = (lang) => {
-  localStorage.setItem('app_language', lang)
+  currentLang = lang || 'en'
+  localStorage.setItem('app_language', currentLang)
+  // Notify listeners (App.vue also dispatches languagechange)
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new Event('languagechange'))
+  }
 }
 
-// Get translation
+// Listen for external languagechange events (e.g., from App.vue) to keep in sync
+if (typeof window !== 'undefined') {
+  window.addEventListener('languagechange', () => {
+    currentLang = localStorage.getItem('app_language') || currentLang || 'en'
+  })
+}
+
+// Get translation (falls back to English if missing)
 const t = (key, lang = null) => {
-  const currentLang = lang || getCurrentLanguage()
+  const langToUse = lang || getCurrentLanguage()
   const keys = key.split('.')
-  let value = translations[currentLang]
+  // Prefer selected language, fall back to English
+  const sources = [translations[langToUse], translations.en]
   
-  for (const k of keys) {
-    if (value && typeof value === 'object' && k in value) {
-      value = value[k]
-    } else {
-      return key // Return key if translation not found
+  for (const source of sources) {
+    let value = source
+    for (const k of keys) {
+      if (value && typeof value === 'object' && k in value) {
+        value = value[k]
+      } else {
+        value = null
+        break
+      }
     }
+    if (value !== null && value !== undefined) return value
   }
   
-  return value || key
+  return key // Return key if translation not found
 }
 
 export { translations, getCurrentLanguage, setCurrentLanguage, t }

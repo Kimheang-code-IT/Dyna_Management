@@ -88,7 +88,7 @@
             </span>
           </div>
         </div>
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-white mt-4">{{ t('forgotPassword') }}</h1>
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white mt-4 capitalize">{{ t('forgotPassword') }}</h1>
         <p class="text-gray-600 dark:text-gray-400 mt-2">{{ t('forgotPasswordDescription') }}</p>
       </div>
       
@@ -118,9 +118,14 @@
             v-model="email"
             type="email"
             required
-            class="w-full px-3 py-2  border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 h-[37px]"
+            @input="validateEmailField('email', email, true)"
             :placeholder="t('enterEmailAddress')"
+            :class="[
+              'w-full px-3 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 h-[37px]',
+              errors.email ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+            ]"
           />
+          <p v-if="errors.email" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.email }}</p>
         </div>
         
         <button
@@ -155,9 +160,6 @@
         </button>
       </div>
       
-      <div v-if="error" class="mt-4 p-3 bg-red-50 dark:bg-red-900 border border-red-200 dark:border-red-800 rounded-sm">
-        <p class="text-sm text-red-600 dark:text-red-400">{{ error }}</p>
-      </div>
     </div>
   </div>
 </template>
@@ -166,17 +168,33 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from '../composables/useI18n'
+import { useFormValidation } from '../composables/useFormValidation'
 
 const router = useRouter()
 const { t } = useI18n()
 
 const email = ref('')
 const emailSent = ref(false)
-const error = ref('')
 const isLoading = ref(false)
 
+// Form validation
+const {
+  errors,
+  validateEmailField
+} = useFormValidation({
+  email: ''
+})
+
+// Validate form
+const validateForm = () => {
+  return validateEmailField('email', email.value, true)
+}
+
 const handleSendResetEmail = async () => {
-  error.value = ''
+  if (!validateForm()) {
+    return
+  }
+  
   isLoading.value = true
   
   try {
@@ -199,7 +217,7 @@ const handleSendResetEmail = async () => {
     console.log(`Password reset email requested for: ${email.value}`)
     
   } catch (err) {
-    error.value = t('resetEmailError') || 'Failed to send reset email. Please try again.'
+    console.error('Error sending reset email:', err)
   } finally {
     isLoading.value = false
   }

@@ -179,7 +179,7 @@
     </div>
 
     <!-- Scrollable table container with sticky header -->
-    <div class="max-h-[500px] overflow-y-auto border border-gray-200 dark:border-gray-700 rounded-sm">
+    <div class="max-h-[600px] overflow-y-auto border border-gray-200 dark:border-gray-700 rounded-sm">
       <table class="w-full">
         <!-- Sticky Header -->
         <thead class="bg-gray-50 dark:bg-gray-700 sticky top-0 z-10">
@@ -273,7 +273,7 @@
             </td>
 
             <!-- Students -->
-            <td class="px-3 py-3 whitespace-nowrap text-xs text-gray-700 dark:text-gray-300 text-center">
+            <td @click="handleView(classItem)" class="px-3 py-3 whitespace-nowrap text-xs text-gray-700 dark:text-gray-300 text-center cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 hover:underline transition-colors">
               {{ classItem.students?.length || 0 }} {{ t('students') }}
             </td>
 
@@ -372,7 +372,7 @@
                     d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                 </svg>
               </div>
-              <h2 class="text-xl font-bold text-black dark:text-white">
+              <h2 class="text-xl font-bold text-black dark:text-white capitalize">
                 {{ isViewMode ? t('viewClass') : editingClass ? t('editClass') : t('add') }}
               </h2>
             </div>
@@ -543,8 +543,12 @@
                 {{ t('className') }} <span class="text-red-500">*</span>
               </label>
               <input id="className" v-model="form.className" type="text" required :disabled="isViewMode"
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed h-[37px]"
-                :placeholder="t('className')" />
+                @input="!isViewMode && validateTextField('className', form.className, { required: true, minLength: 2, maxLength: 100 })"
+                :placeholder="t('className')"
+                :class="[
+                  'w-full px-3 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed h-[37px]',
+                  errors.className ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                ]" />
               <p v-if="errors.className" class="mt-1 text-sm text-red-600 dark:text-red-400">
                 {{ errors.className }}
               </p>
@@ -556,8 +560,12 @@
                 {{ t('room') }}
               </label>
               <input id="roomName" v-model="form.roomName" type="text" :disabled="isViewMode"
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed h-[37px]"
-                :placeholder="t('room')" />
+                @input="!isViewMode && validateTextField('roomName', form.roomName, { required: false, minLength: 1, maxLength: 100 })"
+                :placeholder="t('room')"
+                :class="[
+                  'w-full px-3 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed h-[37px]',
+                  errors.roomName ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                ]" />
               <p v-if="errors.roomName" class="mt-1 text-sm text-red-600 dark:text-red-400">
                 {{ errors.roomName }}
               </p>
@@ -569,8 +577,12 @@
                 {{ t('description') }}
               </label>
               <textarea id="description" v-model="form.description" rows="3" :disabled="isViewMode"
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed resize-none"
-                :placeholder="t('description')"></textarea>
+                @input="!isViewMode && validateTextField('description', form.description, { required: false, minLength: 0, maxLength: 500 })"
+                :placeholder="t('description')"
+                :class="[
+                  'w-full px-3 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed resize-none',
+                  errors.description ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                ]"></textarea>
               <p v-if="errors.description" class="mt-1 text-sm text-red-600 dark:text-red-400">
                 {{ errors.description }}
               </p>
@@ -582,8 +594,12 @@
                 {{ t('teacher') }} <span class="text-red-500">*</span>
               </label>
               <input id="teacher" v-model="form.teacher" type="text" required :disabled="isViewMode"
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed h-[37px]"
-                :placeholder="t('teacher')" />
+                @input="!isViewMode && validateTextField('teacher', form.teacher, { required: true, minLength: 2, maxLength: 100 })"
+                :placeholder="t('teacher')"
+                :class="[
+                  'w-full px-3 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed h-[37px]',
+                  errors.teacher ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                ]" />
               <p v-if="errors.teacher" class="mt-1 text-sm text-red-600 dark:text-red-400">
                 {{ errors.teacher }}
               </p>
@@ -595,8 +611,12 @@
                 {{ t('schedule') }} <span class="text-red-500">*</span>
               </label>
               <input id="schedule" v-model="form.schedule" type="text" required :disabled="isViewMode"
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed h-[37px]"
-                :placeholder="t('schedule')" />
+                @input="!isViewMode && validateTextField('schedule', form.schedule, { required: true, minLength: 2, maxLength: 200 })"
+                :placeholder="t('schedule')"
+                :class="[
+                  'w-full px-3 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed h-[37px]',
+                  errors.schedule ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                ]" />
               <p v-if="errors.schedule" class="mt-1 text-sm text-red-600 dark:text-red-400">
                 {{ errors.schedule }}
               </p>
@@ -608,8 +628,12 @@
                 {{ t('duration') }} <span class="text-red-500">*</span>
               </label>
               <input id="duration" v-model="form.duration" type="text" required :disabled="isViewMode"
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed h-[37px]"
-                :placeholder="t('durationPlaceholder')" />
+                @input="!isViewMode && validateTextField('duration', form.duration, { required: true, minLength: 1, maxLength: 50 })"
+                :placeholder="t('durationPlaceholder')"
+                :class="[
+                  'w-full px-3 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed h-[37px]',
+                  errors.duration ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                ]" />
               <p v-if="errors.duration" class="mt-1 text-sm text-red-600 dark:text-red-400">
                 {{ errors.duration }}
               </p>
@@ -621,7 +645,11 @@
                 {{ t('status') }} <span class="text-red-500">*</span>
               </label>
               <select id="status" v-model="form.status" required :disabled="isViewMode"
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed">
+                @change="!isViewMode && validateSelectField('status', form.status, true)"
+                :class="[
+                  'w-full px-3 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed',
+                  errors.status ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                ]">
                 <option value="">{{ t('selectStatus') }}</option>
                 <option value="Active">{{ t('active') }}</option>
                 <option value="Inactive">{{ t('inactive') }}</option>
@@ -673,7 +701,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
               </svg>
             </div>
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white capitalize">
               {{ t('addStudentToClass') }}: {{ selectedClassForStudent?.className }}
             </h3>
           </div>
@@ -741,37 +769,33 @@
     <div v-if="showEditConfirmDialog" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
       @click.self="showEditConfirmDialog = false">
       <div class="bg-white dark:bg-gray-800 rounded-sm shadow-xl p-6 max-w-md w-full mx-4">
-        <div class="flex items-center gap-4 mb-4">
-          <div
-            class="w-10 h-10 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-green-100 dark:bg-green-900/30 rounded-full flex-shrink-0 flex items-center justify-center order-1 sm:order-2 mb-2 sm:mb-0">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24"
-              stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        <div class="flex-1">
+          <!-- Title with icon -->
+          <div class="flex items-center gap-2 mb-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-          </div>
-          <div>
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white capitalize">
               {{ t('update') }} {{ t('class') }}
             </h3>
-            <p class="text-sm text-gray-600 dark:text-gray-400">
-              {{ t('areYouSure') }} {{ t('update') }} {{ t('class') }}?
-            </p>
           </div>
-        </div>
-        <p class="text-sm text-gray-700 dark:text-gray-300 mb-6">
-          {{ t('class') }}:
-          <span class="font-semibold">{{ form.className }}</span>
-        </p>
-        <div class="flex gap-3 justify-end">
-          <button @click="showEditConfirmDialog = false"
-            class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-sm hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors font-medium">
-            {{ t('cancel') }}
-          </button>
-          <button @click="confirmEdit"
-            class="px-4 py-2 bg-green-600 text-white rounded-sm hover:bg-green-700 transition-colors font-medium">
-            {{ t('yes') }}, {{ t('update') }}
-          </button>
+          
+          <!-- Description -->
+          <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">
+            {{ t('areYouSure') }} {{ t('update') }} {{ t('class') }}?
+          </p>
+          
+          <!-- Buttons -->
+          <div class="flex gap-3 justify-end">
+            <button @click="showEditConfirmDialog = false"
+              class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-sm hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors font-medium">
+              {{ t('no') }}
+            </button>
+            <button @click="confirmEdit"
+              class="px-4 py-2 bg-blue-600 text-white rounded-sm hover:bg-blue-700 transition-colors font-medium">
+              {{ t('yes') }}
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -780,38 +804,33 @@
     <div v-if="showDeleteDialog" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
       @click.self="showDeleteDialog = false">
       <div class="bg-white dark:bg-gray-800 rounded-sm shadow-xl p-6 max-w-md w-full mx-4">
-        <div class="flex items-center gap-4 mb-4">
-          <div
-            class="w-10 h-10 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-red-100 dark:bg-red-900/30 rounded-full flex-shrink-0 flex items-center justify-center order-1 sm:order-2 mb-2 sm:mb-0">
-            <svg xmlns="http://www.w3.org/2000/svg"
-              class="h-5 w-5 sm:h-4 sm:w-4 md:h-5 md:w-5 lg:h-6 lg:w-6 text-red-600 dark:text-red-400" fill="none"
-              viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        <div class="flex-1">
+          <!-- Title with icon -->
+          <div class="flex items-center gap-2 mb-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-red-600 dark:text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
-          </div>
-          <div>
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white capitalize">
               {{ t('deleteClass') }}
             </h3>
-            <p class="text-sm text-gray-600 dark:text-gray-400">
-              {{ t('areYouSure') }} {{ t('delete') }} {{ t('class') }}?
-            </p>
           </div>
-        </div>
-        <p class="text-sm text-gray-700 dark:text-gray-300 mb-6">
-          {{ t('class') }}:
-          <span class="font-semibold">{{ classToDelete?.className }}</span>
-        </p>
-        <div class="flex gap-3 justify-end">
-          <button @click="showDeleteDialog = false"
-            class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-sm hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors font-medium">
-            {{ t('no') }}
-          </button>
-          <button @click="confirmDelete"
-            class="px-4 py-2 bg-red-600 text-white rounded-sm hover:bg-red-700 transition-colors font-medium">
-            {{ t('yes') }}, {{ t('delete') }}
-          </button>
+          
+          <!-- Description -->
+          <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">
+            {{ t('areYouSure') }} {{ t('delete') }} {{ t('class') }}?
+          </p>
+          
+          <!-- Buttons -->
+          <div class="flex gap-3 justify-end">
+            <button @click="showDeleteDialog = false"
+              class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-sm hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors font-medium">
+              {{ t('no') }}
+            </button>
+            <button @click="confirmDelete"
+              class="px-4 py-2 bg-red-600 text-white rounded-sm hover:bg-red-700 transition-colors font-medium">
+              {{ t('yes') }}
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -821,38 +840,33 @@
       class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
       @click.self="showDeleteStudentDialog = false">
       <div class="bg-white dark:bg-gray-800 rounded-sm shadow-xl p-6 max-w-md w-full mx-4">
-        <div class="flex items-center gap-4 mb-4">
-          <div
-            class="w-10 h-10 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-red-100 dark:bg-red-900/30 rounded-full flex-shrink-0 flex items-center justify-center order-1 sm:order-2 mb-2 sm:mb-0">
-            <svg xmlns="http://www.w3.org/2000/svg"
-              class="h-5 w-5 sm:h-4 sm:w-4 md:h-5 md:w-5 lg:h-6 lg:w-6 text-red-600 dark:text-red-400" fill="none"
-              viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        <div class="flex-1">
+          <!-- Title with icon -->
+          <div class="flex items-center gap-2 mb-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-red-600 dark:text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
-          </div>
-          <div>
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white capitalize">
               {{ t('deleteStudent') }} from {{ t('class') }}
             </h3>
-            <p class="text-sm text-gray-600 dark:text-gray-400">
-              {{ t('areYouSure') }} {{ t('delete') }} {{ t('student') }}?
-            </p>
           </div>
-        </div>
-        <p class="text-sm text-gray-700 dark:text-gray-300 mb-6">
-          {{ t('student') }}:
-          <span class="font-semibold">{{ studentToDeleteFromClass?.name }}</span>
-        </p>
-        <div class="flex gap-3 justify-end">
-          <button @click="showDeleteStudentDialog = false"
-            class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-sm hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors font-medium">
-            {{ t('cancel') }}
-          </button>
-          <button @click="confirmDeleteStudentFromClass"
-            class="px-4 py-2 bg-red-600 text-white rounded-sm hover:bg-red-700 transition-colors font-medium">
-            {{ t('yes') }}, {{ t('delete') }}
-          </button>
+          
+          <!-- Description -->
+          <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">
+            {{ t('areYouSure') }} {{ t('delete') }} {{ t('student') }}?
+          </p>
+          
+          <!-- Buttons -->
+          <div class="flex gap-3 justify-end">
+            <button @click="showDeleteStudentDialog = false"
+              class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-sm hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors font-medium">
+              {{ t('no') }}
+            </button>
+            <button @click="confirmDeleteStudentFromClass"
+              class="px-4 py-2 bg-red-600 text-white rounded-sm hover:bg-red-700 transition-colors font-medium">
+              {{ t('yes') }}
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -862,60 +876,58 @@
       class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
       @click.self="showAddStudentConfirmDialog = false">
       <div class="bg-white dark:bg-gray-800 rounded-sm shadow-xl p-6 max-w-md w-full mx-4">
-        <div class="flex items-center gap-4 mb-4">
-          <div
-            class="w-10 h-10 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-blue-100 dark:bg-blue-900/30 rounded-full flex-shrink-0 flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg"
-              class="h-5 w-5 sm:h-4 sm:w-4 md:h-5 md:w-5 lg:h-6 lg:w-6 text-blue-600 dark:text-blue-400" fill="none"
-              viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+        <div class="flex-1">
+          <!-- Title with icon -->
+          <div class="flex items-center gap-2 mb-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-          </div>
-          <div>
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white capitalize">
               {{ t('addStudentToClass') }}
             </h3>
-            <p class="text-sm text-gray-600 dark:text-gray-400">
-              {{ t('areYouSure') }} {{ t('add') }} {{ selectedStudentIds.length }} {{ selectedStudentIds.length === 1 ?
-                t('student') : t('students') }} {{ t('to') }} {{ t('class') }}?
-            </p>
           </div>
-        </div>
-        <p class="text-sm text-gray-700 dark:text-gray-300 mb-3">
-          {{ t('class') }}:
-          <span class="font-semibold">{{ selectedClassForStudent?.className }}</span>
-        </p>
-        <!-- Students List -->
-        <div
-          class="mb-6 max-h-[200px] overflow-y-auto border border-gray-200 dark:border-gray-700 rounded-sm p-3 bg-gray-50 dark:bg-gray-700/50">
-          <div class="text-xs font-medium text-gray-600 dark:text-gray-400 mb-2">
-            {{ t('students') }} {{ t('to') }} {{ t('add') }}:
+          
+          <!-- Description -->
+          <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">
+            {{ t('areYouSure') }} {{ t('add') }} {{ selectedStudentIds.length }} {{ selectedStudentIds.length === 1 ?
+              t('student') : t('students') }} {{ t('to') }} {{ t('class') }}?
+          </p>
+          
+          <!-- Buttons -->
+          <div class="flex gap-3 justify-end">
+            <button @click="showAddStudentConfirmDialog = false"
+              class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-sm hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors font-medium">
+              {{ t('no') }}
+            </button>
+            <button @click="actuallyAddStudents"
+              class="px-4 py-2 bg-blue-600 text-white rounded-sm hover:bg-blue-700 transition-colors font-medium">
+              {{ t('yes') }}
+            </button>
           </div>
-          <div class="space-y-1">
-            <div v-for="studentId in selectedStudentIds" :key="studentId"
-              class="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-500 flex-shrink-0" fill="none"
-                viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <span class="font-medium">{{allStudents.find(s => s.id === studentId)?.name || studentId}}</span>
-              <span class="text-xs text-gray-500 dark:text-gray-400">({{ studentId }})</span>
-            </div>
-          </div>
-        </div>
-        <div class="flex gap-3 justify-end">
-          <button @click="showAddStudentConfirmDialog = false"
-            class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-sm hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors font-medium">
-            {{ t('cancel') }}
-          </button>
-          <button @click="actuallyAddStudents"
-            class="px-4 py-2 bg-blue-600 text-white rounded-sm hover:bg-blue-700 transition-colors font-medium">
-            {{ t('yes') }}, {{ t('add') }}
-          </button>
         </div>
       </div>
     </div>
+
+    <!-- Success Message Toast -->
+    <Transition name="toast">
+      <div v-if="showSuccessMessage"
+        class="fixed top-4 right-4 bg-green-500 text-white rounded-sm shadow-lg p-4 flex items-center gap-3 z-50 min-w-[300px]">
+        <div class="w-8 h-8 bg-green-400 rounded-full flex items-center justify-center flex-shrink-0">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        <div class="flex-1">
+          <p class="font-semibold text-white">{{ successMessageTitle }}</p>
+          <p class="text-sm text-white">{{ successMessageText }}</p>
+        </div>
+        <button @click="showSuccessMessage = false" class="text-white hover:text-green-100 transition-colors flex-shrink-0">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </Transition>
   </div>
 </template>
 
@@ -925,7 +937,9 @@ import { useI18n } from '../composables/useI18n'
 import { useToast } from '../composables/useToast'
 import { useLoading } from '../composables/useLoading'
 import { useErrorHandler } from '../composables/useErrorHandler'
+import { useFormValidation } from '../composables/useFormValidation'
 import { addHistory } from '../utils/history'
+import { textContains } from '../utils/search'
 
 // Inject sidebar collapse state
 const isSidebarCollapsed = inject('isSidebarCollapsed', ref(false))
@@ -947,6 +961,9 @@ const activeActionMenu = ref(null)
 // Drawer state
 const showDrawer = ref(false)
 const editingClass = ref(null)
+const showSuccessMessage = ref(false)
+const successMessageTitle = ref('')
+const successMessageText = ref('')
 const isViewMode = ref(false)
 
 // Add Student Dialog state
@@ -973,8 +990,12 @@ const form = reactive({
   status: 'Active'
 })
 
-// Form validation errors
-const errors = reactive({
+// Form validation
+const {
+  errors,
+  validateTextField,
+  validateSelectField
+} = useFormValidation({
   className: '',
   roomName: '',
   description: '',
@@ -1070,15 +1091,11 @@ const availableStudents = computed(() => {
 // Filter available students by search query
 const filteredAvailableStudents = computed(() => {
   if (!studentSearchQuery.value) return availableStudents.value
-  const query = studentSearchQuery.value.toLowerCase()
   return availableStudents.value.filter((student) => {
-    const name = (student.name || '').toLowerCase()
-    const id = (student.id || '').toLowerCase()
-    const course = (student.course || '').toLowerCase()
     return (
-      name.includes(query) ||
-      id.includes(query) ||
-      course.includes(query)
+      textContains(student.name || '', studentSearchQuery.value) ||
+      textContains(student.id || '', studentSearchQuery.value) ||
+      textContains(student.course || '', studentSearchQuery.value)
     )
   })
 })
@@ -1259,37 +1276,41 @@ const resetForm = () => {
 
 // Form validation
 const validateForm = () => {
-  Object.keys(errors).forEach((key) => {
-    errors[key] = ''
-  })
-  let hasErrors = false
+  let isValid = true
 
-  if (!form.className.trim()) {
-    errors.className = 'Class name is required'
-    hasErrors = true
+  if (!validateTextField('className', form.className, { required: true, minLength: 2, maxLength: 100 })) {
+    isValid = false
   }
 
-  if (!form.teacher.trim()) {
-    errors.teacher = 'Teacher is required'
-    hasErrors = true
+  if (form.roomName) {
+    if (!validateTextField('roomName', form.roomName, { required: false, minLength: 1, maxLength: 100 })) {
+      isValid = false
+    }
   }
 
-  if (!form.schedule.trim()) {
-    errors.schedule = 'Schedule is required'
-    hasErrors = true
+  if (form.description) {
+    if (!validateTextField('description', form.description, { required: false, minLength: 0, maxLength: 500 })) {
+      isValid = false
+    }
   }
 
-  if (!form.duration.trim()) {
-    errors.duration = 'Duration is required'
-    hasErrors = true
+  if (!validateTextField('teacher', form.teacher, { required: true, minLength: 2, maxLength: 100 })) {
+    isValid = false
   }
 
-  if (!form.status) {
-    errors.status = 'Status is required'
-    hasErrors = true
+  if (!validateTextField('schedule', form.schedule, { required: true, minLength: 2, maxLength: 200 })) {
+    isValid = false
   }
 
-  return !hasErrors
+  if (!validateTextField('duration', form.duration, { required: true, minLength: 1, maxLength: 50 })) {
+    isValid = false
+  }
+
+  if (!validateSelectField('status', form.status, true)) {
+    isValid = false
+  }
+
+  return isValid
 }
 
 // Handle form submit
@@ -1336,8 +1357,13 @@ const confirmAdd = async () => {
         user: 'Admin'
       })
       closeDrawer()
-      success(`${t('classAdded')}: "${form.className}" ${t('classAddedSuccess')}`)
-    }, 'Adding class...')
+      showSuccessMessage.value = true
+      successMessageTitle.value = t('classAdded')
+      successMessageText.value = `"${form.className}" ${t('classAddedSuccess')}`
+      setTimeout(() => {
+        showSuccessMessage.value = false
+      }, 3000)
+    }, t('addingClass'))
   } catch (err) {
     handleError(err, { userMessage: 'Failed to add class. Please try again.' })
   }
@@ -1369,9 +1395,14 @@ const confirmEdit = async () => {
         })
         showEditConfirmDialog.value = false
         closeDrawer()
-        success(`${t('classUpdated')}: "${form.className}" ${t('classUpdatedSuccess')}`)
+        showSuccessMessage.value = true
+        successMessageTitle.value = t('classUpdated')
+        successMessageText.value = `"${form.className}" ${t('classUpdatedSuccess')}`
+        setTimeout(() => {
+          showSuccessMessage.value = false
+        }, 3000)
       }
-    }, 'Updating class...')
+    }, t('updatingClass'))
   } catch (err) {
     showEditConfirmDialog.value = false
     handleError(err, { userMessage: 'Failed to update class. Please try again.' })
@@ -1398,10 +1429,15 @@ const confirmDelete = async () => {
           })
           showDeleteDialog.value = false
           classToDelete.value = null
-          success(`${t('classDeleted')}: "${className}" ${t('classDeletedSuccess')}`)
+          showSuccessMessage.value = true
+          successMessageTitle.value = t('classDeleted')
+          successMessageText.value = `"${className}" ${t('classDeletedSuccess')}`
+          setTimeout(() => {
+            showSuccessMessage.value = false
+          }, 3000)
         }
       }
-    }, 'Deleting class...')
+    }, t('deletingClass'))
   } catch (err) {
     showDeleteDialog.value = false
     handleError(err, { userMessage: 'Failed to delete class. Please try again.' })
@@ -1460,13 +1496,15 @@ const actuallyAddStudents = async () => {
             }
           }
 
-          success(
-            `${t('studentsAdded')}: ${newStudents.length} ${newStudents.length === 1 ? t('student') : t('students')
-            } ${t('studentsAddedSuccess')}`
-          )
+          showSuccessMessage.value = true
+          successMessageTitle.value = t('studentsAdded')
+          successMessageText.value = `${newStudents.length} ${newStudents.length === 1 ? t('student') : t('students')} ${t('studentsAddedSuccess')}`
+          setTimeout(() => {
+            showSuccessMessage.value = false
+          }, 3000)
         }
       }
-    }, 'Adding students...')
+    }, t('addingStudents'))
   } catch (err) {
     showAddStudentConfirmDialog.value = false
     handleError(err, { userMessage: 'Failed to add students. Please try again.' })
@@ -1519,7 +1557,7 @@ const confirmDeleteStudentFromClass = async () => {
           )
         }
       }
-    }, 'Removing student...')
+    }, t('removingStudent'))
   } catch (err) {
     showDeleteStudentDialog.value = false
     handleError(err, { userMessage: 'Failed to remove student. Please try again.' })

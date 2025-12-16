@@ -1,12 +1,12 @@
 <template>
-  <div :class="['mx-auto transition-all duration-300 w-full', isSidebarCollapsed ? 'max-w-full px-3' : 'max-w-7xl px-3 lg:px-0']">
+  <div :class="['mx-auto transition-all duration-300 w-full capitalize', isSidebarCollapsed ? 'max-w-full px-3' : 'max-w-7xl px-3 lg:px-0']">
     <!-- Summary Cards -->
     <div class="flex flex-nowrap sm:flex-wrap gap-1 sm:gap-1.5 md:gap-2 lg:gap-3 mb-2 sm:mb-3">
       <!-- Total Investments Card -->
       <div class="bg-white dark:bg-gray-800 rounded-sm shadow p-0.5 sm:p-1.5 md:p-2 lg:p-3 flex-1 min-w-0 min-h-[60px] sm:min-h-[70px] md:min-h-[80px]">
         <div class="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left justify-center sm:justify-between">
           <div class="order-2 sm:order-1">
-            <h3 class="text-gray-600 dark:text-gray-400 text-[10px] sm:text-xs md:text-sm font-medium mb-0.5 sm:mb-1 md:mb-2">{{ t('totalInvestments') }}</h3>
+            <h3 class="text-gray-600 dark:text-gray-400 text-[10px] sm:text-xs md:text-sm font-medium mb-0.5 sm:mb-1 md:mb-2 capitalize">{{ t('totalInvestments') }}</h3>
             <p class="text-base sm:text-base md:text-xl lg:text-2xl xl:text-3xl font-bold leading-tight sm:leading-normal text-gray-800 dark:text-white">${{ totalInvestments.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}</p>
           </div>
           <div class="w-10 h-10 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-blue-100 dark:bg-blue-900/30 rounded-full flex-shrink-0 flex items-center justify-center order-1 sm:order-2 mb-2 sm:mb-0">
@@ -21,7 +21,7 @@
       <div class="bg-white dark:bg-gray-800 rounded-sm shadow p-0.5 sm:p-1.5 md:p-2 lg:p-3 flex-1 min-w-0 min-h-[60px] sm:min-h-[70px] md:min-h-[80px]">
         <div class="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left justify-center sm:justify-between">
           <div class="order-2 sm:order-1">
-            <h3 class="text-gray-600 dark:text-gray-400 text-[10px] sm:text-xs md:text-sm font-medium mb-0.5 sm:mb-1 md:mb-2">{{ t('activeInvestments') }}</h3>
+            <h3 class="text-gray-600 dark:text-gray-400 text-[10px] sm:text-xs md:text-sm font-medium mb-0.5 sm:mb-1 md:mb-2 capitalize">{{ t('activeInvestments') }}</h3>
             <p class="text-base sm:text-base md:text-xl lg:text-2xl xl:text-3xl font-bold leading-tight sm:leading-normal text-gray-800 dark:text-white">{{ activeInvestments }}</p>
           </div>
           <div class="w-10 h-10 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-green-100 dark:bg-green-900/30 rounded-full flex-shrink-0 flex items-center justify-center order-1 sm:order-2 mb-2 sm:mb-0">
@@ -36,7 +36,7 @@
       <div class="bg-white dark:bg-gray-800 rounded-sm shadow p-0.5 sm:p-1.5 md:p-2 lg:p-3 flex-1 min-w-0 min-h-[60px] sm:min-h-[70px] md:min-h-[80px]">
         <div class="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left justify-center sm:justify-between">
           <div class="order-2 sm:order-1">
-            <h3 class="text-gray-600 dark:text-gray-400 text-[10px] sm:text-xs md:text-sm font-medium mb-0.5 sm:mb-1 md:mb-2">{{ t('totalSuppliers') }}</h3>
+            <h3 class="text-gray-600 dark:text-gray-400 text-[10px] sm:text-xs md:text-sm font-medium mb-0.5 sm:mb-1 md:mb-2 capitalize">{{ t('totalSuppliers') }}</h3>
             <p class="text-base sm:text-base md:text-xl lg:text-2xl xl:text-3xl font-bold leading-tight sm:leading-normal text-gray-800 dark:text-white">{{ totalSuppliers }}</p>
           </div>
           <div class="w-10 h-10 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-purple-100 dark:bg-purple-900/30 rounded-full flex-shrink-0 flex items-center justify-center order-1 sm:order-2 mb-2 sm:mb-0">
@@ -51,7 +51,7 @@
       <div class="bg-white dark:bg-gray-800 rounded-sm shadow p-0.5 sm:p-1.5 md:p-2 lg:p-3 flex-1 min-w-0 min-h-[60px] sm:min-h-[70px] md:min-h-[80px]">
         <div class="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left justify-center sm:justify-between">
           <div class="order-2 sm:order-1">
-            <h3 class="text-gray-600 dark:text-gray-400 text-[10px] sm:text-xs md:text-sm font-medium mb-0.5 sm:mb-1 md:mb-2">{{ t('averageInvestment') }}</h3>
+            <h3 class="text-gray-600 dark:text-gray-400 text-[10px] sm:text-xs md:text-sm font-medium mb-0.5 sm:mb-1 md:mb-2 capitalize">{{ t('averageInvestment') }}</h3>
             <p class="text-base sm:text-base md:text-xl lg:text-2xl xl:text-3xl font-bold leading-tight sm:leading-normal text-gray-800 dark:text-white">${{ averageInvestment.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}</p>
           </div>
           <div class="w-10 h-10 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-orange-100 dark:bg-orange-900/30 rounded-full flex-shrink-0 flex items-center justify-center order-1 sm:order-2 mb-2 sm:mb-0">
@@ -145,7 +145,7 @@
     </div>
     
     <!-- Scrollable table container with sticky header -->
-    <div class="max-h-[500px] overflow-y-auto border border-gray-200 dark:border-gray-700 rounded-sm">
+    <div class="max-h-[600px] overflow-y-auto border border-gray-200 dark:border-gray-700 rounded-sm">
       <table class="w-full">
         <!-- Sticky Header -->
         <thead class="bg-gray-50 dark:bg-gray-700 sticky top-0 z-10">
@@ -266,7 +266,7 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h2 class="text-xl font-bold text-black dark:text-white">
+              <h2 class="text-xl font-bold text-black dark:text-white capitalize">
                 {{ isViewMode ? t('viewInvestment') : editingInvestment ? t('editInvestment') : t('add') }}
               </h2>
             </div>
@@ -292,9 +292,14 @@
                 type="text"
                 required
                 :disabled="isViewMode"
-                class="w-full px-3 py-2  border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed h-[37px]"
+                @input="!isViewMode && validateTextField('expenseName', form.expenseName, { required: true, minLength: 2, maxLength: 200 })"
                 :placeholder="t('expenseName')"
+                :class="[
+                  'w-full px-3 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed h-[37px]',
+                  errors.expenseName ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                ]"
               />
+              <p v-if="errors.expenseName" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.expenseName }}</p>
             </div>
             
             <!-- Description -->
@@ -308,9 +313,14 @@
                 rows="3"
                 required
                 :disabled="isViewMode"
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed resize-y"
+                @input="!isViewMode && validateTextField('description', form.description, { required: true, minLength: 5, maxLength: 1000 })"
                 :placeholder="t('description')"
+                :class="[
+                  'w-full px-3 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed resize-y',
+                  errors.description ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                ]"
               ></textarea>
+              <p v-if="errors.description" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.description }}</p>
             </div>
             
             <!-- Amount -->
@@ -326,9 +336,15 @@
                 min="0"
                 required
                 :disabled="isViewMode"
-                class="w-full px-3 py-2  border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed h-[37px]"
+                @input="!isViewMode && validateNumberField('amount', form.amount, { required: true, min: 0, allowDecimals: true })"
+                @keypress="!isViewMode && preventNonNumeric($event, true)"
                 :placeholder="t('amount')"
+                :class="[
+                  'w-full px-3 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed h-[37px]',
+                  errors.amount ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                ]"
               />
+              <p v-if="errors.amount" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.amount }}</p>
             </div>
             
             <!-- Saler -->
@@ -342,9 +358,14 @@
                 type="text"
                 required
                 :disabled="isViewMode"
-                class="w-full px-3 py-2  border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed h-[37px]"
+                @input="!isViewMode && validateTextField('saler', form.saler, { required: true, minLength: 2, maxLength: 100 })"
                 :placeholder="t('saler')"
+                :class="[
+                  'w-full px-3 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed h-[37px]',
+                  errors.saler ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                ]"
               />
+              <p v-if="errors.saler" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.saler }}</p>
             </div>
             
             <!-- Created Date -->
@@ -358,8 +379,13 @@
                 type="date"
                 required
                 :disabled="isViewMode"
-                class="w-full px-3 py-2  border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed h-[37px]"
+                @change="!isViewMode && validateDateField('created', form.created, { required: true })"
+                :class="[
+                  'w-full px-3 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed h-[37px]',
+                  errors.created ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                ]"
               />
+              <p v-if="errors.created" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.created }}</p>
             </div>
             
             <!-- Supplier -->
@@ -373,9 +399,14 @@
                 type="text"
                 required
                 :disabled="isViewMode"
-                class="w-full px-3 py-2  border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed h-[37px]"
+                @input="!isViewMode && validateTextField('supplier', form.supplier, { required: true, minLength: 2, maxLength: 100 })"
                 :placeholder="t('supplier')"
+                :class="[
+                  'w-full px-3 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed h-[37px]',
+                  errors.supplier ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                ]"
               />
+              <p v-if="errors.supplier" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.supplier }}</p>
             </div>
             
             <!-- Contact -->
@@ -389,9 +420,15 @@
                 type="tel"
                 required
                 :disabled="isViewMode"
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed"
+                @input="!isViewMode && validatePhoneField('contact', form.contact, true)"
+                @keypress="!isViewMode && preventNonPhoneChars($event)"
                 :placeholder="t('contact')"
+                :class="[
+                  'w-full px-3 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed h-[37px]',
+                  errors.contact ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                ]"
               />
+              <p v-if="errors.contact" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.contact }}</p>
             </div>
             
             <!-- Status -->
@@ -404,12 +441,17 @@
                 v-model="form.status"
                 required
                 :disabled="isViewMode"
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed"
+                @change="!isViewMode && validateSelectField('status', form.status, true)"
+                :class="[
+                  'w-full px-3 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed',
+                  errors.status ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                ]"
               >
                 <option value="">{{ t('selectStatus') }}</option>
                 <option value="Active">{{ t('active') }}</option>
                 <option value="Inactive">{{ t('inactive') }}</option>
               </select>
+              <p v-if="errors.status" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.status }}</p>
             </div>
             
             <!-- Action Buttons -->
@@ -443,45 +485,42 @@
     </Transition>
     
     <!-- Confirmation Dialog -->
-    <Transition name="fade">
-      <div
-        v-if="showConfirmDialog"
-        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-        @click.self="showConfirmDialog = false"
-      >
-        <div class="bg-white dark:bg-gray-800 rounded-sm shadow-xl p-6 max-w-md w-full mx-4">
-          <div class="flex items-center gap-4 mb-4">
-            <div
-              class="w-10 h-10 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-blue-100 dark:bg-blue-900/30 rounded-full flex-shrink-0 flex items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5 sm:h-4 sm:w-4 md:h-5 md:w-5 lg:h-6 lg:w-6 text-blue-600 dark:text-blue-400" fill="none"
-                viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-            <div class="flex-1">
-              <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">{{ confirmDialogTitle }}</h3>
-              <p class="text-sm text-gray-600 dark:text-gray-400">{{ confirmDialogMessage }}</p>
-            </div>
+    <div
+      v-if="showConfirmDialog"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      @click.self="showConfirmDialog = false"
+    >
+      <div class="bg-white dark:bg-gray-800 rounded-sm shadow-xl p-6 max-w-md w-full mx-4">
+        <div class="flex-1">
+          <!-- Title with icon -->
+          <div class="flex items-center gap-2 mb-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white capitalize">{{ confirmDialogTitle }}</h3>
           </div>
-          <div class="flex gap-3">
-            <button
-              @click="confirmActionFn"
-              class="flex-1 px-4 py-2 bg-blue-600 text-white rounded-sm hover:bg-blue-700 transition-colors font-medium"
-            >
-              {{ t('confirm') }}
-            </button>
+          
+          <!-- Description -->
+          <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">{{ confirmDialogMessage }}</p>
+          
+          <!-- Buttons -->
+          <div class="flex gap-3 justify-end">
             <button
               @click="showConfirmDialog = false"
-              class="flex-1 px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-sm hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors font-medium"
+              class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-sm hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors font-medium"
             >
-              {{ t('cancel') }}
+              {{ t('no') }}
+            </button>
+            <button
+              @click="confirmActionFn"
+              class="px-4 py-2 bg-blue-600 text-white rounded-sm hover:bg-blue-700 transition-colors font-medium"
+            >
+              {{ t('yes') }}
             </button>
           </div>
         </div>
       </div>
-    </Transition>
+    </div>
     
     <!-- Success Message Toast -->
     <Transition name="toast">
@@ -489,18 +528,18 @@
         v-if="showSuccessMessage"
         class="fixed top-4 right-4 bg-green-500 text-white rounded-sm shadow-lg p-4 flex items-center gap-3 z-50 min-w-[300px]"
       >
-        <div class="w-8 h-8 bg-white dark:bg-gray-700 bg-opacity-20 rounded-full flex items-center justify-center flex-shrink-0">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div class="w-8 h-8 bg-green-400 rounded-full flex items-center justify-center flex-shrink-0">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
           </svg>
         </div>
         <div class="flex-1">
-          <p class="font-semibold">{{ successMessageTitle }}</p>
-          <p class="text-sm text-green-50">{{ successMessageText }}</p>
+          <p class="font-semibold text-white">{{ successMessageTitle }}</p>
+          <p class="text-sm text-white">{{ successMessageText }}</p>
         </div>
         <button
           @click="showSuccessMessage = false"
-          class="text-white hover:text-green-100 transition-colors"
+          class="text-white hover:text-green-100 transition-colors flex-shrink-0"
         >
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -517,7 +556,9 @@ import { useI18n } from '../composables/useI18n'
 import { useToast } from '../composables/useToast'
 import { useLoading } from '../composables/useLoading'
 import { useErrorHandler } from '../composables/useErrorHandler'
+import { useFormValidation } from '../composables/useFormValidation'
 import { addHistory } from '../utils/history'
+import { textContains } from '../utils/search'
 
 // Inject sidebar collapse state
 const isSidebarCollapsed = inject('isSidebarCollapsed', ref(false))
@@ -582,6 +623,27 @@ const form = ref({
   status: 'Active'
 })
 
+// Form validation
+const {
+  errors,
+  validateTextField,
+  validateNumberField,
+  validatePhoneField,
+  validateDateField,
+  validateSelectField,
+  preventNonNumeric,
+  preventNonPhoneChars
+} = useFormValidation({
+  expenseName: '',
+  description: '',
+  amount: '',
+  saler: '',
+  created: '',
+  supplier: '',
+  contact: '',
+  status: ''
+})
+
 // Computed properties
 const totalInvestments = computed(() => {
   return investments.value.reduce((sum, inv) => sum + (inv.amount || 0), 0)
@@ -606,13 +668,12 @@ const filteredInvestments = computed(() => {
 
   // Search filter
   if (searchQuery.value) {
-    const query = searchQuery.value.toLowerCase()
     filtered = filtered.filter(inv =>
-      inv.expenseName?.toLowerCase().includes(query) ||
-      inv.description?.toLowerCase().includes(query) ||
-      inv.saler?.toLowerCase().includes(query) ||
-      inv.supplier?.toLowerCase().includes(query) ||
-      inv.contact?.toLowerCase().includes(query)
+      textContains(inv.expenseName || '', searchQuery.value) ||
+      textContains(inv.description || '', searchQuery.value) ||
+      textContains(inv.saler || '', searchQuery.value) ||
+      textContains(inv.supplier || '', searchQuery.value) ||
+      textContains(inv.contact || '', searchQuery.value)
     )
   }
 
@@ -720,8 +781,52 @@ const handleDelete = (investment) => {
   showConfirmDialog.value = true
 }
 
+// Validate form
+const validateForm = () => {
+  let isValid = true
+
+  if (!validateTextField('expenseName', form.value.expenseName, { required: true, minLength: 2, maxLength: 200 })) {
+    isValid = false
+  }
+
+  if (!validateTextField('description', form.value.description, { required: true, minLength: 5, maxLength: 1000 })) {
+    isValid = false
+  }
+
+  if (!validateNumberField('amount', form.value.amount, { required: true, min: 0, allowDecimals: true })) {
+    isValid = false
+  }
+
+  if (!validateTextField('saler', form.value.saler, { required: true, minLength: 2, maxLength: 100 })) {
+    isValid = false
+  }
+
+  if (!validateDateField('created', form.value.created, { required: true })) {
+    isValid = false
+  }
+
+  if (!validateTextField('supplier', form.value.supplier, { required: true, minLength: 2, maxLength: 100 })) {
+    isValid = false
+  }
+
+  if (!validatePhoneField('contact', form.value.contact, true)) {
+    isValid = false
+  }
+
+  if (!validateSelectField('status', form.value.status, true)) {
+    isValid = false
+  }
+
+  return isValid
+}
+
 // Handle submit
 const handleSubmit = () => {
+  if (!isViewMode.value && !validateForm()) {
+    error(t('pleaseFixErrors') || 'Please fix the errors in the form')
+    return
+  }
+
   if (editingInvestment.value) {
     // Update existing
     const index = investments.value.findIndex(inv => inv.id === editingInvestment.value.id)

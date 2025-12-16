@@ -68,7 +68,7 @@ export function useSystemError() {
    * @param {Object} options - Options for error handling
    */
   const handleSystemError = (error, options = {}) => {
-    const { redirect = true } = options
+    const { redirect = true } = options // Default to true to show SystemErrorView
 
     const type = detectErrorType(error)
     const code = error?.status || error?.response?.status || error?.code || '500'

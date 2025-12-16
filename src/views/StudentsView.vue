@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="['mx-auto transition-all duration-300 w-full', isSidebarCollapsed ? 'max-w-full px-3' : 'max-w-7xl px-3 lg:px-0']">
+    :class="['mx-auto transition-all duration-300 w-full capitalize', isSidebarCollapsed ? 'max-w-full px-3' : 'max-w-7xl px-3 lg:px-0']">
     <!-- Summary Cards -->
     <div class="flex flex-nowrap sm:flex-wrap gap-1 sm:gap-1.5 md:gap-2 lg:gap-3 mb-2 sm:mb-3">
       <!-- Total Students Card -->
@@ -136,13 +136,13 @@
             <button @click="handleGenerateCardFromToolbar" :disabled="filteredStudents.length === 0"
               class="h-[37px] px-4 rounded-sm text-sm font-semibold flex items-center gap-2 transition-colors"
               :class="filteredStudents.length === 0 ? 'bg-gray-300 text-gray-600 cursor-not-allowed' : 'bg-blue-600 text-white hover:bg-blue-700'"
-              :title="t('generateCard') || 'Generate Card'">
+              :title="t('generateCard')">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
               </svg>
-              {{ t('generateCard') || 'Generate Card' }}
+              {{ t('generateCard') }}
             </button>
             <div class="relative w-full sm:w-auto">
               <select v-model="selectedCourse"
@@ -180,7 +180,7 @@
               <input v-model="filterDateFrom" type="date"
                 class="px-3 py-2 text-xs border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white h-[37px] w-[115px]" />
               <span class="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 self-center sm:self-auto">{{ t('to')
-              }}</span>
+                }}</span>
               <input v-model="filterDateTo" type="date"
                 class="px-3 py-2 text-xs border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white h-[37px] w-[115px]" />
               <button v-if="filterDateFrom || filterDateTo" @click="clearDateFilter"
@@ -197,7 +197,7 @@
       </div>
 
       <!-- Scrollable table container with sticky header -->
-      <div class="max-h-[500px] overflow-y-auto border border-gray-200 dark:border-gray-700 rounded-sm">
+      <div class="max-h-[600px] overflow-y-auto border border-gray-200 dark:border-gray-700 rounded-sm">
         <table class="w-full">
           <!-- Sticky Header -->
           <thead class="bg-gray-50 dark:bg-gray-700 sticky top-0 z-10">
@@ -292,14 +292,14 @@
                     {{ student.session || t('session') }}
                   </span>
                   <span class="text-[10px] text-gray-600 dark:text-gray-400">
-                    {{ student.time || 'N/A' }}
+                    {{ student.time || t('notAvailable') }}
                   </span>
                 </div>
               </td>
               <td class="px-4 py-3 whitespace-nowrap text-xs text-gray-700 dark:text-gray-300">{{ student.province }}
               </td>
               <td class="px-4 py-3 text-xs text-gray-700 dark:text-gray-300">
-                <div>{{ student.contact || student.phone || 'N/A' }}</div>
+                <div>{{ student.contact || student.phone || t('notAvailable') }}</div>
                 <div v-if="student.email" class="text-[10px] text-gray-500 dark:text-gray-400 mt-0.5">
                   <span class="font-medium">{{ t('email') }}:</span> {{ student.email }}
                 </div>
@@ -332,7 +332,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                           d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                       </svg>
-                      Edit
+                      {{ t('edit') }}
                     </button>
                     <button @click="handleGenerateCard(student)"
                       class="w-full text-left px-4 py-2 text-sm text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900 transition-colors flex items-center gap-2">
@@ -341,7 +341,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                           d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                       </svg>
-                      {{ t('generateCard') || 'Generate Card' }}
+                      {{ t('generateCard') }}
                     </button>
                     <button @click="handleDelete(student)"
                       class="w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900 transition-colors flex items-center gap-2">
@@ -350,7 +350,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                           d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                       </svg>
-                      Delete
+                      {{ t('delete') }}
                     </button>
                   </div>
                 </div>
@@ -364,7 +364,7 @@
     <!-- Right Side Drawer for Add/Edit Student -->
     <Transition name="drawer">
       <div v-if="showDrawer" class="fixed inset-0 bg-black bg-opacity-50 z-50" @click.self="closeDrawer">
-        <div class="absolute right-0 top-0 h-full w-full max-w-md bg-white dark:bg-gray-800 shadow-xl overflow-y-auto">
+        <div class="absolute right-0 top-0 h-full w-full max-w-xl bg-white dark:bg-gray-800 shadow-xl overflow-y-auto">
           <div
             class="sticky top-0 bg-white dark:bg-gray-800 text-black dark:text-white px-6 py-5 flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left justify-center sm:justify-between z-10 border-b border-gray-200 dark:border-gray-700">
             <div class="flex items-center gap-3">
@@ -375,7 +375,7 @@
                     d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
                 </svg>
               </div>
-              <h2 class="text-xl font-bold text-black dark:text-white">
+              <h2 class="text-xl font-bold text-black dark:text-white capitalize">
                 {{ t('editStudent') }}
               </h2>
             </div>
@@ -389,128 +389,6 @@
           </div>
 
           <form @submit.prevent="handleSubmit" class="p-6 space-y-4">
-            <!-- Full Name English -->
-            <div>
-              <label for="nameEnglish" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                {{ t('fullNameEnglish') }} <span class="text-red-500">*</span>
-              </label>
-              <input id="nameEnglish" v-model="form.nameEnglish" type="text" required
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 h-[37px]"
-                :placeholder="t('fullNameEnglishPlaceholder')" />
-              <p v-if="errors.nameEnglish" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.nameEnglish }}
-              </p>
-            </div>
-
-            <!-- Full Name Khmer -->
-            <div>
-              <label for="nameKhmer" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                {{ t('fullNameKhmer') }}
-              </label>
-              <input id="nameKhmer" v-model="form.nameKhmer" type="text"
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 h-[37px]"
-                :placeholder="t('fullNameKhmerPlaceholder')" />
-            </div>
-
-            <!-- Gender -->
-            <div>
-              <label for="gender" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                {{ t('gender') }} <span class="text-red-500">*</span>
-              </label>
-              <select id="gender" v-model="form.gender" required
-                class="w-full px-3 py-2 pr-10 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white appearance-none h-[37px]">
-                <option value="">{{ t('selectGender') }}</option>
-                <option value="Male">{{ t('male') }}</option>
-                <option value="Female">{{ t('female') }}</option>
-              </select>
-              <p v-if="errors.gender" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.gender }}</p>
-            </div>
-
-            <!-- Date of Birth -->
-            <div>
-              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                {{ t('dateOfBirth') }} <span class="text-red-500">*</span>
-              </label>
-              <div class="grid grid-cols-3 gap-2">
-                <select v-model="form.dobDay" required
-                  class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white appearance-none h-[37px]">
-                  <option value="">{{ t('day') }}</option>
-                  <option v-for="day in days" :key="day" :value="day">{{ day }}</option>
-                </select>
-                <select v-model="form.dobMonth" required
-                  class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white appearance-none h-[37px]">
-                  <option value="">{{ t('month') }}</option>
-                  <option v-for="(month, index) in months" :key="index" :value="index + 1">{{ month }}</option>
-                </select>
-                <select v-model="form.dobYear" required
-                  class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white appearance-none h-[37px]">
-                  <option value="">{{ t('year') }}</option>
-                  <option v-for="year in years" :key="year" :value="year">{{ year }}</option>
-                </select>
-              </div>
-              <p v-if="errors.dob" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.dob }}</p>
-            </div>
-
-            <!-- Email -->
-            <div>
-              <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                {{ t('email') }} <span class="text-red-500">*</span>
-              </label>
-              <input id="email" v-model="form.email" type="email" required
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 h-[37px]"
-                :placeholder="t('emailPlaceholder')" />
-              <p v-if="errors.email" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.email }}</p>
-            </div>
-
-            <!-- Phone -->
-            <div>
-              <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                {{ t('phone') }} <span class="text-red-500">*</span>
-              </label>
-              <input id="phone" v-model="form.phone" type="tel" required
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 h-[37px]"
-                :placeholder="t('phonePlaceholder')" />
-              <p v-if="errors.phone" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.phone }}</p>
-            </div>
-
-            <!-- Province -->
-            <div>
-              <label for="province" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                {{ t('province') }} <span class="text-red-500">*</span>
-              </label>
-              <select id="province" v-model="form.province" required
-                class="w-full px-3 py-2 pr-10 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white appearance-none h-[37px]">
-                <option value="">{{ t('selectProvince') }}</option>
-                <option v-for="prov in provinces" :key="prov" :value="prov">{{ prov }}</option>
-              </select>
-              <p v-if="errors.province" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.province }}</p>
-            </div>
-
-            <!-- Course -->
-            <div>
-              <label for="course" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                {{ t('course') }} <span class="text-red-500">*</span>
-              </label>
-              <select id="course" v-model="form.course" required
-                class="w-full px-3 py-2 pr-10 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white appearance-none h-[37px]">
-                <option value="">{{ t('selectCourse') }}</option>
-                <option v-for="course in courses" :key="course" :value="course">{{ course }}</option>
-              </select>
-              <p v-if="errors.course" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.course }}</p>
-            </div>
-
-            <!-- Session -->
-            <div>
-              <label for="session" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                {{ t('session') }} <span class="text-red-500">*</span>
-              </label>
-              <select id="session" v-model="form.session" required
-                class="w-full px-3 py-2 pr-10 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white appearance-none h-[37px]">
-                <option value="">{{ t('selectSession') }}</option>
-                <option v-for="session in sessions" :key="session" :value="session">{{ session }}</option>
-              </select>
-              <p v-if="errors.session" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.session }}</p>
-            </div>
-
             <!-- Profile Image -->
             <div>
               <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -557,7 +435,156 @@
                   t('maxSize') }}: 20MB)</p>
               </div>
             </div>
+            <!-- Names -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label for="nameEnglish" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  {{ t('fullNameEnglish') }} <span class="text-red-500">*</span>
+                </label>
+                <input id="nameEnglish" v-model="form.nameEnglish" type="text" required
+                  @input="validateNameField('nameEnglish', form.nameEnglish, true)" @keypress="preventNonNameChars"
+                  :placeholder="t('fullNameEnglishPlaceholder')" :class="[
+                    'w-full px-3 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 h-[37px]',
+                    errors.nameEnglish ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                  ]" />
+                <p v-if="errors.nameEnglish" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.nameEnglish
+                  }}
+                </p>
+              </div>
 
+              <div>
+                <label for="nameKhmer" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  {{ t('fullNameKhmer') }}
+                </label>
+                <input id="nameKhmer" v-model="form.nameKhmer" type="text"
+                  @input="validateKhmerNameField('nameKhmer', form.nameKhmer, false)"
+                  :placeholder="t('fullNameKhmerPlaceholder')" :class="[
+                    'w-full px-3 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 h-[37px]',
+                    errors.nameKhmer ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                  ]" />
+                <p v-if="errors.nameKhmer" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.nameKhmer }}
+                </p>
+              </div>
+            </div>
+
+            <!-- Gender -->
+            <div>
+              <label for="gender" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                {{ t('gender') }} <span class="text-red-500">*</span>
+              </label>
+              <select id="gender" v-model="form.gender" required
+                @change="validateSelectField('gender', form.gender, true)" :class="[
+                  'w-full px-3 py-2 pr-10 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white appearance-none h-[37px]',
+                  errors.gender ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                ]">
+                <option value="">{{ t('selectGender') }}</option>
+                <option value="Male">{{ t('male') }}</option>
+                <option value="Female">{{ t('female') }}</option>
+              </select>
+              <p v-if="errors.gender" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.gender }}</p>
+            </div>
+
+            <!-- Date of Birth -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                {{ t('dateOfBirth') }} <span class="text-red-500">*</span>
+              </label>
+              <div class="grid grid-cols-3 gap-2">
+                <select v-model="form.dobDay" required
+                  class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white appearance-none h-[37px]">
+                  <option value="">{{ t('day') }}</option>
+                  <option v-for="day in days" :key="day" :value="day">{{ day }}</option>
+                </select>
+                <select v-model="form.dobMonth" required
+                  class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white appearance-none h-[37px]">
+                  <option value="">{{ t('month') }}</option>
+                  <option v-for="(month, index) in months" :key="index" :value="index + 1">{{ month }}</option>
+                </select>
+                <select v-model="form.dobYear" required
+                  class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white appearance-none h-[37px]">
+                  <option value="">{{ t('year') }}</option>
+                  <option v-for="year in years" :key="year" :value="year">{{ year }}</option>
+                </select>
+              </div>
+              <p v-if="errors.dob" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.dob }}</p>
+            </div>
+
+            <!-- Email -->
+            <div>
+              <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                {{ t('email') }} <span class="text-red-500">*</span>
+              </label>
+              <input id="email" v-model="form.email" type="email" required
+                @input="validateEmailField('email', form.email, true)" :placeholder="t('emailPlaceholder')" :class="[
+                  'w-full px-3 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 h-[37px]',
+                  errors.email ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                ]" />
+              <p v-if="errors.email" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.email }}</p>
+            </div>
+
+            <!-- Phone & Province -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  {{ t('phone') }} <span class="text-red-500">*</span>
+                </label>
+                <input id="phone" v-model="form.phone" type="tel" required
+                  @input="validatePhoneField('phone', form.phone, true)" @keypress="preventNonPhoneChars"
+                  :placeholder="t('phonePlaceholder')" :class="[
+                    'w-full px-3 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 h-[37px]',
+                    errors.phone ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                  ]" />
+                <p v-if="errors.phone" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.phone }}</p>
+              </div>
+
+              <div>
+                <label for="province" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  {{ t('province') }} <span class="text-red-500">*</span>
+                </label>
+                <select id="province" v-model="form.province" required
+                  @change="validateSelectField('province', form.province, true)" :class="[
+                    'w-full px-3 py-2 pr-10 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white appearance-none h-[37px]',
+                    errors.province ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                  ]">
+                  <option value="">{{ t('selectProvince') }}</option>
+                  <option v-for="prov in provinces" :key="prov" :value="prov">{{ prov }}</option>
+                </select>
+                <p v-if="errors.province" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.province }}</p>
+              </div>
+            </div>
+
+            <!-- Course & Session -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label for="course" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  {{ t('course') }} <span class="text-red-500">*</span>
+                </label>
+                <select id="course" v-model="form.course" required
+                  @change="validateSelectField('course', form.course, true)" :class="[
+                    'w-full px-3 py-2 pr-10 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white appearance-none h-[37px]',
+                    errors.course ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                  ]">
+                  <option value="">{{ t('selectCourse') }}</option>
+                  <option v-for="course in courses" :key="course" :value="course">{{ course }}</option>
+                </select>
+                <p v-if="errors.course" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.course }}</p>
+              </div>
+
+              <div>
+                <label for="session" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  {{ t('session') }} <span class="text-red-500">*</span>
+                </label>
+                <select id="session" v-model="form.session" required
+                  @change="validateSelectField('session', form.session, true)" :class="[
+                    'w-full px-3 py-2 pr-10 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white appearance-none h-[37px]',
+                    errors.session ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                  ]">
+                  <option value="">{{ t('selectSession') }}</option>
+                  <option v-for="session in sessions" :key="session" :value="session">{{ session }}</option>
+                </select>
+                <p v-if="errors.session" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.session }}</p>
+              </div>
+            </div>
             <!-- Buttons -->
             <div class="flex gap-3 pt-4">
               <button type="submit"
@@ -574,42 +601,96 @@
       </div>
     </Transition>
 
+    <!-- Update Confirmation Dialog -->
+    <div v-if="showUpdateConfirmDialog"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      @click.self="showUpdateConfirmDialog = false">
+      <div class="bg-white dark:bg-gray-800 rounded-sm shadow-xl p-6 max-w-md w-full mx-4">
+        <div class="flex-1">
+          <!-- Title with icon -->
+          <div class="flex items-center gap-2 mb-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600 dark:text-blue-400" fill="none"
+              viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white capitalize">{{ t('update') }} {{ t('student')
+            }}</h3>
+          </div>
+
+          <!-- Description -->
+          <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">{{ t('areYouSure') }} {{ t('update') }} {{
+            t('student') }}?</p>
+
+          <!-- Buttons -->
+          <div class="flex gap-3 justify-end">
+            <button @click="showUpdateConfirmDialog = false"
+              class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-sm hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors font-medium">
+              {{ t('no') }}
+            </button>
+            <button @click="confirmSubmit"
+              class="px-4 py-2 bg-blue-600 text-white rounded-sm hover:bg-blue-700 transition-colors font-medium">
+              {{ t('yes') }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Delete Confirmation Dialog -->
     <div v-if="showDeleteDialog" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
       @click.self="showDeleteDialog = false">
       <div class="bg-white dark:bg-gray-800 rounded-sm shadow-xl p-6 max-w-md w-full mx-4">
-        <div class="flex items-center gap-4 mb-4">
-          <div
-            class="w-10 h-10 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-red-100 dark:bg-red-900/30 rounded-full flex-shrink-0 flex items-center justify-center order-1 sm:order-2 mb-2 sm:mb-0">
-            <svg xmlns="http://www.w3.org/2000/svg"
-              class="h-5 w-5 sm:h-4 sm:w-4 md:h-5 md:w-5 lg:h-6 lg:w-6 text-red-600 dark:text-red-400" fill="none"
+        <div class="flex-1">
+          <!-- Title with icon -->
+          <div class="flex items-center gap-2 mb-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-red-600 dark:text-red-400" fill="none"
               viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white capitalize">{{ t('deleteStudent') }}</h3>
           </div>
-          <div>
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ t('deleteStudent') }}</h3>
-            <p class="text-sm text-gray-600 dark:text-gray-400">{{ t('areYouSure') }} {{ t('delete') }} {{ t('student')
-            }}?</p>
+
+          <!-- Description -->
+          <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">{{ t('areYouSure') }} {{ t('delete') }} {{
+            t('student') }}?</p>
+
+          <!-- Buttons -->
+          <div class="flex gap-3 justify-end">
+            <button @click="showDeleteDialog = false"
+              class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-sm hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors font-medium">
+              {{ t('no') }}
+            </button>
+            <button @click="confirmDelete"
+              class="px-4 py-2 bg-red-600 text-white rounded-sm hover:bg-red-700 transition-colors font-medium">
+              {{ t('yes') }}
+            </button>
           </div>
-        </div>
-        <p class="text-sm text-gray-700 dark:text-gray-300 mb-6">
-          {{ t('student') }}: <span class="font-semibold">{{ studentToDelete?.name || studentToDelete?.nameEnglish
-          }}</span>
-        </p>
-        <div class="flex gap-3 justify-end">
-          <button @click="showDeleteDialog = false"
-            class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-sm hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors font-medium">
-            {{ t('no') }}
-          </button>
-          <button @click="confirmDelete"
-            class="px-4 py-2 bg-red-600 text-white rounded-sm hover:bg-red-700 transition-colors font-medium">
-            {{ t('yes') }}, {{ t('delete') }}
-          </button>
         </div>
       </div>
     </div>
+
+    <!-- Success Message Toast -->
+    <Transition name="toast">
+      <div v-if="showSuccessMessage"
+        class="fixed top-4 right-4 bg-green-500 text-white rounded-sm shadow-lg p-4 flex items-center gap-3 z-50 min-w-[300px]">
+        <div class="w-8 h-8 bg-green-400 rounded-full flex items-center justify-center flex-shrink-0">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        <div class="flex-1">
+          <p class="font-semibold text-white">{{ successMessageTitle }}</p>
+          <p class="text-sm text-white">{{ successMessageText }}</p>
+        </div>
+        <button @click="showSuccessMessage = false" class="text-white hover:text-green-100 transition-colors flex-shrink-0">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </Transition>
   </div>
 </template>
 
@@ -621,6 +702,8 @@ import { useI18n } from '../composables/useI18n'
 import { useToast } from '../composables/useToast'
 import { useLoading } from '../composables/useLoading'
 import { useErrorHandler } from '../composables/useErrorHandler'
+import { useFormValidation } from '../composables/useFormValidation'
+import { textContains } from '../utils/search'
 import studentsData from '../data/students.json'
 
 // Inject sidebar collapse state
@@ -675,6 +758,9 @@ const activeActionMenu = ref(null)
 // Drawer state
 const showDrawer = ref(false)
 const editingStudent = ref(null)
+const showSuccessMessage = ref(false)
+const successMessageTitle = ref('')
+const successMessageText = ref('')
 
 // File input ref
 const fileInput = ref(null)
@@ -698,9 +784,19 @@ const form = reactive({
   profileImage: ''
 })
 
-// Form validation errors
-const errors = reactive({
+// Form validation
+const {
+  errors,
+  validateNameField,
+  validateKhmerNameField,
+  validateEmailField,
+  validatePhoneField,
+  validateSelectField,
+  preventNonNameChars,
+  preventNonPhoneChars
+} = useFormValidation({
   nameEnglish: '',
+  nameKhmer: '',
   gender: '',
   dob: '',
   email: '',
@@ -712,6 +808,7 @@ const errors = reactive({
 
 // Confirmation dialogs state
 const showDeleteDialog = ref(false)
+const showUpdateConfirmDialog = ref(false)
 const studentToDelete = ref(null)
 
 // Options data
@@ -740,13 +837,12 @@ const filteredStudents = computed(() => {
   let filtered = students.value
 
   if (searchQuery.value) {
-    const query = searchQuery.value.toLowerCase()
     filtered = filtered.filter(s =>
-      (s.name || s.nameEnglish || '').toLowerCase().includes(query) ||
-      (s.nameKhmer || '').toLowerCase().includes(query) ||
-      (s.id || '').toLowerCase().includes(query) ||
-      (s.email || '').toLowerCase().includes(query) ||
-      (s.contact || s.phone || '').toLowerCase().includes(query)
+      textContains(s.name || s.nameEnglish || '', searchQuery.value) ||
+      textContains(s.nameKhmer || '', searchQuery.value) ||
+      textContains(s.id || '', searchQuery.value) ||
+      textContains(s.email || '', searchQuery.value) ||
+      textContains(s.contact || s.phone || '', searchQuery.value)
     )
   }
 
@@ -804,7 +900,7 @@ const topCourse = computed(() => {
     courseCount[s.course] = (courseCount[s.course] || 0) + 1
   })
   const sorted = Object.entries(courseCount).sort((a, b) => b[1] - a[1])
-  return { name: sorted[0]?.[0] || 'N/A', count: sorted[0]?.[1] || 0 }
+  return { name: sorted[0]?.[0] || t('notAvailable'), count: sorted[0]?.[1] || 0 }
 })
 
 // Clear date filter
@@ -941,61 +1037,66 @@ const formatDateOfBirth = () => {
 
 // Get student name
 const getStudentName = () => {
-  return form.nameEnglish.trim() || form.nameKhmer.trim() || 'Unknown'
+  return form.nameEnglish.trim() || form.nameKhmer.trim() || t('unknown')
 }
 
 // Form validation
 const validateForm = () => {
-  Object.keys(errors).forEach(key => errors[key] = '')
-  let hasErrors = false
+  let isValid = true
 
-  if (!form.nameEnglish.trim()) {
-    errors.nameEnglish = 'Full name (English) is required'
-    hasErrors = true
+  if (!validateNameField('nameEnglish', form.nameEnglish, true)) {
+    isValid = false
   }
 
-  if (!form.gender) {
-    errors.gender = 'Gender is required'
-    hasErrors = true
-  }
-
-  if (!form.dobDay || !form.dobMonth || !form.dobYear) {
-    errors.dob = 'Date of birth is required'
-    hasErrors = true
-  }
-
-  if (!form.email.trim()) {
-    errors.email = 'Email is required'
-    hasErrors = true
-  } else {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailRegex.test(form.email)) {
-      errors.email = 'Invalid email format'
-      hasErrors = true
+  if (form.nameKhmer) {
+    if (!validateKhmerNameField('nameKhmer', form.nameKhmer, false)) {
+      isValid = false
     }
   }
 
-  if (!form.phone.trim()) {
-    errors.phone = 'Phone is required'
-    hasErrors = true
+  if (!validateSelectField('gender', form.gender, true)) {
+    isValid = false
   }
 
-  if (!form.province) {
-    errors.province = 'Province is required'
-    hasErrors = true
+  // Validate Date of Birth
+  if (!form.dobDay || !form.dobMonth || !form.dobYear) {
+    errors.dob = t('dobRequired')
+    isValid = false
+  } else {
+    const day = parseInt(form.dobDay)
+    const month = parseInt(form.dobMonth)
+    const year = parseInt(form.dobYear)
+    const date = new Date(year, month - 1, day)
+
+    if (date.getDate() !== day || date.getMonth() !== month - 1 || date.getFullYear() !== year) {
+      errors.dob = t('invalidDate')
+      isValid = false
+    } else {
+      errors.dob = ''
+    }
   }
 
-  if (!form.course) {
-    errors.course = 'Course is required'
-    hasErrors = true
+  if (!validateEmailField('email', form.email, true)) {
+    isValid = false
   }
 
-  if (!form.session) {
-    errors.session = 'Session is required'
-    hasErrors = true
+  if (!validatePhoneField('phone', form.phone, true)) {
+    isValid = false
   }
 
-  return !hasErrors
+  if (!validateSelectField('province', form.province, true)) {
+    isValid = false
+  }
+
+  if (!validateSelectField('course', form.course, true)) {
+    isValid = false
+  }
+
+  if (!validateSelectField('session', form.session, true)) {
+    isValid = false
+  }
+
+  return isValid
 }
 
 // Handle image upload
@@ -1004,12 +1105,12 @@ const handleImageUpload = (event) => {
   if (!file) return
 
   if (!file.type.startsWith('image/')) {
-    error('Please select a valid image file')
+    error(t('pleaseSelectValidImage'))
     return
   }
 
   if (file.size > 20 * 1024 * 1024) {
-    error('Image size must be less than 20MB')
+    error(t('imageSizeMustBeLess'))
     return
   }
 
@@ -1018,7 +1119,7 @@ const handleImageUpload = (event) => {
     form.profileImage = e.target.result
   }
   reader.onerror = () => {
-    error('Failed to read image file')
+    error(t('failedToReadImage'))
   }
   reader.readAsDataURL(file)
 }
@@ -1034,14 +1135,22 @@ const removeProfileImage = () => {
 // Handle form submit
 const handleSubmit = () => {
   if (!validateForm()) {
-    error('Validation Error: Please fix the errors in the form')
+    error(`${t('validationError')}: ${t('pleaseFixErrors')}`)
     return
   }
 
   if (!editingStudent.value) {
-    error('No student selected for editing')
+    error(t('noStudentSelected'))
     return
   }
+
+  // Show confirmation dialog
+  showUpdateConfirmDialog.value = true
+}
+
+const confirmSubmit = () => {
+  // Close confirmation dialog
+  showUpdateConfirmDialog.value = false
 
   try {
     // Update existing student
@@ -1073,10 +1182,15 @@ const handleSubmit = () => {
 
       saveStudents()
       closeDrawer()
-      success(`Student updated: "${getStudentName()}"`)
+      showSuccessMessage.value = true
+      successMessageTitle.value = t('studentUpdatedMessage')
+      successMessageText.value = `"${getStudentName()}"`
+      setTimeout(() => {
+        showSuccessMessage.value = false
+      }, 3000)
     }
   } catch (err) {
-    handleError(err, { userMessage: 'Failed to save student. Please try again.' })
+    handleError(err, { userMessage: t('failedToSaveStudent') })
   }
 }
 
@@ -1100,7 +1214,12 @@ const confirmDelete = () => {
         saveStudents()
         showDeleteDialog.value = false
         studentToDelete.value = null
-        success(`Student deleted: "${studentName}"`)
+        showSuccessMessage.value = true
+        successMessageTitle.value = t('studentDeleted') || 'Student Deleted'
+        successMessageText.value = `"${studentName}" ${t('studentDeletedSuccess') || 'has been successfully deleted!'}`
+        setTimeout(() => {
+          showSuccessMessage.value = false
+        }, 3000)
       }
     }
   } catch (err) {

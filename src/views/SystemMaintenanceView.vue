@@ -37,7 +37,7 @@
       </div>
 
       <!-- Main Title -->
-      <h2 class="text-2xl md:text-4xl font-extrabold text-blue-600 dark:text-blue-400 mb-4">
+      <h2 class="text-2xl md:text-4xl font-extrabold text-blue-600 dark:text-blue-400 mb-4 capitalize">
         Brother Dyna {{ t('systemMaintenance') || 'System Maintenance' }}
       </h2>
 

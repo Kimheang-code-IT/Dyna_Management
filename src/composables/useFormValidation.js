@@ -1,268 +1,247 @@
-import { ref, computed } from 'vue'
-import { useToast } from './useToast'
+import { ref, reactive, computed } from 'vue'
+import {
+  validateName,
+  validateKhmerName,
+  validateEmail,
+  validatePhone,
+  validateNumber,
+  validateDate,
+  validateDateRange,
+  validateAddress,
+  validateText,
+  validateFile,
+  validateSelect,
+  preventNonNameChars,
+  preventNonPhoneChars,
+  preventNonNumeric
+} from '../utils/validation'
 
 /**
  * Composable for form validation
- * @param {Object} initialValues - Initial form values
- * @param {Object} validationRules - Validation rules object
- * @returns {Object} Validation state and methods
+ * Provides validation functions, error management, and keypress prevention
+ * 
+ * @param {object} initialErrors - Initial error state object
+ * @returns {object} Validation utilities and state
  */
-export function useFormValidation(initialValues = {}, validationRules = {}) {
-  const { error: showErrorToast } = useToast()
-  const formData = ref({ ...initialValues })
-  const errors = ref({})
-  const touched = ref({})
-
-  /**
-   * Validation rule functions
-   */
-  const validators = {
-    required: (value) => {
-      if (value === null || value === undefined || value === '') {
-        return 'This field is required'
-      }
-      if (Array.isArray(value) && value.length === 0) {
-        return 'This field is required'
-      }
-      return null
-    },
-    email: (value) => {
-      if (!value) return null
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-      return emailRegex.test(value) ? null : 'Please enter a valid email address'
-    },
-    phone: (value) => {
-      if (!value) return null
-      const phoneRegex = /^[\d\s\-\+\(\)]+$/
-      return phoneRegex.test(value) ? null : 'Please enter a valid phone number'
-    },
-    minLength: (min) => (value) => {
-      if (!value) return null
-      return value.length >= min ? null : `Must be at least ${min} characters`
-    },
-    maxLength: (max) => (value) => {
-      if (!value) return null
-      return value.length <= max ? null : `Must be no more than ${max} characters`
-    },
-    min: (min) => (value) => {
-      if (value === null || value === undefined || value === '') return null
-      const num = Number(value)
-      return !isNaN(num) && num >= min ? null : `Must be at least ${min}`
-    },
-    max: (max) => (value) => {
-      if (value === null || value === undefined || value === '') return null
-      const num = Number(value)
-      return !isNaN(num) && num <= max ? null : `Must be no more than ${max}`
-    },
-    pattern: (regex, message) => (value) => {
-      if (!value) return null
-      return regex.test(value) ? null : (message || 'Invalid format')
-    },
-    custom: (validatorFn) => (value, formData) => {
-      return validatorFn(value, formData)
-    }
-  }
-
-  /**
-   * Validate a single field
-   * @param {string} fieldName - Field name to validate
-   * @param {*} value - Field value
-   * @returns {string|null} Error message or null if valid
-   */
-  const validateField = (fieldName, value) => {
-    const rules = validationRules[fieldName]
-    if (!rules || !Array.isArray(rules)) {
-      return null
-    }
-
-    for (const rule of rules) {
-      let validator
-      let errorMessage = null
-
-      if (typeof rule === 'string') {
-        // Simple string rule (e.g., 'required', 'email')
-        validator = validators[rule]
-        if (!validator) continue
-        errorMessage = validator(value)
-      } else if (typeof rule === 'function') {
-        // Custom validator function
-        errorMessage = rule(value, formData.value)
-      } else if (typeof rule === 'object' && rule.validator) {
-        // Object with validator property
-        if (typeof rule.validator === 'string') {
-          validator = validators[rule.validator]
-          if (validator) {
-            if (typeof validator === 'function') {
-              errorMessage = validator(value)
-            } else {
-              errorMessage = validator(rule.params)(value)
-            }
-          }
-        } else if (typeof rule.validator === 'function') {
-          errorMessage = rule.validator(value, formData.value)
-        }
-        // Use custom message if provided
-        if (errorMessage && rule.message) {
-          errorMessage = rule.message
-        }
-      }
-
-      if (errorMessage) {
-        return errorMessage
-      }
-    }
-
-    return null
-  }
-
-  /**
-   * Validate all fields
-   * @returns {boolean} True if form is valid
-   */
-  const validate = () => {
-    const newErrors = {}
-    let isValid = true
-
-    for (const fieldName in validationRules) {
-      const error = validateField(fieldName, formData.value[fieldName])
-      if (error) {
-        newErrors[fieldName] = error
-        isValid = false
-      }
-    }
-
-    errors.value = newErrors
-    return isValid
-  }
-
-  /**
-   * Validate a specific field
-   * @param {string} fieldName - Field name to validate
-   */
-  const validateSingle = (fieldName) => {
-    const error = validateField(fieldName, formData.value[fieldName])
-    if (error) {
-      errors.value[fieldName] = error
-    } else {
-      delete errors.value[fieldName]
-    }
-  }
-
-  /**
-   * Mark field as touched
-   * @param {string} fieldName - Field name
-   */
-  const touchField = (fieldName) => {
-    touched.value[fieldName] = true
-    validateSingle(fieldName)
-  }
-
-  /**
-   * Mark all fields as touched
-   */
-  const touchAll = () => {
-    for (const fieldName in validationRules) {
-      touched.value[fieldName] = true
-    }
-    validate()
-  }
-
+export function useFormValidation(initialErrors = {}) {
+  // Error state
+  const errors = reactive({ ...initialErrors })
+  
   /**
    * Clear all errors
    */
   const clearErrors = () => {
-    errors.value = {}
-    touched.value = {}
+    Object.keys(errors).forEach(key => {
+      errors[key] = ''
+    })
   }
-
+  
   /**
-   * Reset form to initial values
+   * Clear a specific error
+   * @param {string} field - Field name to clear
    */
-  const reset = () => {
-    formData.value = { ...initialValues }
-    clearErrors()
+  const clearError = (field) => {
+    if (errors[field] !== undefined) {
+      errors[field] = ''
+    }
   }
-
+  
   /**
-   * Check if field has error
-   * @param {string} fieldName - Field name
-   * @returns {boolean} True if field has error
+   * Set an error for a specific field
+   * @param {string} field - Field name
+   * @param {string} message - Error message
    */
-  const hasError = (fieldName) => {
-    return !!errors.value[fieldName]
+  const setError = (field, message) => {
+    if (errors[field] !== undefined) {
+      errors[field] = message
+    }
   }
-
+  
   /**
-   * Check if field is touched
-   * @param {string} fieldName - Field name
-   * @returns {boolean} True if field is touched
+   * Validate name field
+   * @param {string} field - Field name in errors object
+   * @param {string} value - Value to validate
+   * @param {boolean} required - Whether field is required
    */
-  const isTouched = (fieldName) => {
-    return !!touched.value[fieldName]
+  const validateNameField = (field, value, required = true) => {
+    const error = validateName(value, required)
+    errors[field] = error
+    return error === ''
   }
-
+  
   /**
-   * Check if field should show error
-   * @param {string} fieldName - Field name
-   * @returns {boolean} True if error should be shown
+   * Validate Khmer name field
+   * @param {string} field - Field name in errors object
+   * @param {string} value - Value to validate
+   * @param {boolean} required - Whether field is required
    */
-  const shouldShowError = (fieldName) => {
-    return isTouched(fieldName) && hasError(fieldName)
+  const validateKhmerNameField = (field, value, required = false) => {
+    const error = validateKhmerName(value, required)
+    errors[field] = error
+    return error === ''
   }
-
+  
   /**
-   * Get error message for field
-   * @param {string} fieldName - Field name
-   * @returns {string|null} Error message or null
+   * Validate email field
+   * @param {string} field - Field name in errors object
+   * @param {string} value - Value to validate
+   * @param {boolean} required - Whether field is required
    */
-  const getError = (fieldName) => {
-    return errors.value[fieldName] || null
+  const validateEmailField = (field, value, required = true) => {
+    const error = validateEmail(value, required)
+    errors[field] = error
+    return error === ''
   }
-
+  
+  /**
+   * Validate phone field
+   * @param {string} field - Field name in errors object
+   * @param {string} value - Value to validate
+   * @param {boolean} required - Whether field is required
+   */
+  const validatePhoneField = (field, value, required = true) => {
+    const error = validatePhone(value, required)
+    errors[field] = error
+    return error === ''
+  }
+  
+  /**
+   * Validate number field
+   * @param {string} field - Field name in errors object
+   * @param {number|string} value - Value to validate
+   * @param {object} options - Validation options
+   */
+  const validateNumberField = (field, value, options = {}) => {
+    const error = validateNumber(value, options)
+    errors[field] = error
+    return error === ''
+  }
+  
+  /**
+   * Validate date field
+   * @param {string} field - Field name in errors object
+   * @param {string} value - Value to validate
+   * @param {object} options - Validation options
+   */
+  const validateDateField = (field, value, options = {}) => {
+    const error = validateDate(value, options)
+    errors[field] = error
+    return error === ''
+  }
+  
+  /**
+   * Validate date range
+   * @param {string} startField - Start date field name
+   * @param {string} endField - End date field name
+   * @param {string} startDate - Start date value
+   * @param {string} endDate - End date value
+   */
+  const validateDateRangeFields = (startField, endField, startDate, endDate) => {
+    const error = validateDateRange(startDate, endDate)
+    if (error) {
+      errors[endField] = error
+    } else {
+      clearError(endField)
+    }
+    return error === ''
+  }
+  
+  /**
+   * Validate address field
+   * @param {string} field - Field name in errors object
+   * @param {string} value - Value to validate
+   * @param {boolean} required - Whether field is required
+   */
+  const validateAddressField = (field, value, required = false) => {
+    const error = validateAddress(value, required)
+    errors[field] = error
+    return error === ''
+  }
+  
+  /**
+   * Validate text field
+   * @param {string} field - Field name in errors object
+   * @param {string} value - Value to validate
+   * @param {object} options - Validation options
+   */
+  const validateTextField = (field, value, options = {}) => {
+    const error = validateText(value, options)
+    errors[field] = error
+    return error === ''
+  }
+  
+  /**
+   * Validate file field
+   * @param {string} field - Field name in errors object
+   * @param {File} file - File to validate
+   * @param {object} options - Validation options
+   */
+  const validateFileField = (field, file, options = {}) => {
+    const error = validateFile(file, options)
+    errors[field] = error
+    return error === ''
+  }
+  
+  /**
+   * Validate select field
+   * @param {string} field - Field name in errors object
+   * @param {string} value - Value to validate
+   * @param {boolean} required - Whether field is required
+   */
+  const validateSelectField = (field, value, required = true) => {
+    const error = validateSelect(value, required)
+    errors[field] = error
+    return error === ''
+  }
+  
   /**
    * Check if form is valid
+   * @param {object} fields - Object with field names as keys and validation functions as values
+   * @returns {boolean} Whether form is valid
    */
-  const isValid = computed(() => {
-    return Object.keys(errors.value).length === 0
-  })
-
-  /**
-   * Validate and submit form
-   * @param {Function} onSubmit - Submit handler function
-   * @returns {Promise} Promise from submit handler
-   */
-  const handleSubmit = async (onSubmit) => {
-    touchAll()
-    
-    if (!validate()) {
-      showErrorToast('Please fix the errors in the form')
-      return Promise.reject(new Error('Form validation failed'))
-    }
-
-    try {
-      return await onSubmit(formData.value)
-    } catch (err) {
-      // Handle submission errors
-      throw err
-    }
+  const isFormValid = (fields = {}) => {
+    return Object.values(errors).every(error => error === '')
   }
-
+  
+  /**
+   * Validate all fields in a form
+   * @param {object} validators - Object with field names as keys and validation functions as values
+   * @returns {boolean} Whether all fields are valid
+   */
+  const validateAll = (validators) => {
+    let isValid = true
+    Object.entries(validators).forEach(([field, validator]) => {
+      if (typeof validator === 'function') {
+        const fieldValid = validator()
+        if (!fieldValid) {
+          isValid = false
+        }
+      }
+    })
+    return isValid
+  }
+  
   return {
-    formData,
     errors,
-    touched,
-    isValid,
-    validate,
-    validateSingle,
-    touchField,
-    touchAll,
     clearErrors,
-    reset,
-    hasError,
-    isTouched,
-    shouldShowError,
-    getError,
-    handleSubmit
+    clearError,
+    setError,
+    validateNameField,
+    validateKhmerNameField,
+    validateEmailField,
+    validatePhoneField,
+    validateNumberField,
+    validateDateField,
+    validateDateRangeFields,
+    validateAddressField,
+    validateTextField,
+    validateFileField,
+    validateSelectField,
+    isFormValid,
+    validateAll,
+    // Keypress prevention handlers
+    preventNonNameChars,
+    preventNonPhoneChars,
+    preventNonNumeric
   }
 }
-

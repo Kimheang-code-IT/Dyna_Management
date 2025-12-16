@@ -1,10 +1,10 @@
 <template>
-  <div :class="['mx-auto transition-all duration-300 w-full', isSidebarCollapsed ? 'max-w-full px-3' : 'max-w-7xl px-3 lg:px-0']">
+  <div :class="['mx-auto transition-all duration-300 w-full capitalize', isSidebarCollapsed ? 'max-w-full px-3' : 'max-w-7xl px-3 lg:px-0']">
     <div class="grid grid-cols-1 lg:grid-cols-4 gap-2 sm:gap-4">
       <!-- Left Section: Staff List -->
       <div class="lg:col-span-1 bg-white dark:bg-gray-800 rounded-sm shadow">
         <div class="p-4 border-b border-gray-200 dark:border-gray-700">
-          <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-4">{{ t('staff') }}</h2>
+          <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-4 capitalize">{{ t('staff') }}</h2>
           
           <!-- Search Bar -->
           <div class="relative">
@@ -50,7 +50,7 @@
               </div>
               <div class="flex-1 min-w-0">
                 <div class="text-sm font-medium text-gray-900 dark:text-white truncate">
-                  <div v-if="staff.employee.nameKhmer" class="akbalthom-khmer text-xs">{{ staff.employee.nameKhmer }}</div>
+                  <div v-if="staff.employee.nameKhmer" class="text-xs">{{ staff.employee.nameKhmer }}</div>
                   <div v-if="staff.employee.nameEnglish" class="text-xs">{{ staff.employee.nameEnglish }}</div>
                   <div v-if="!staff.employee.nameKhmer && !staff.employee.nameEnglish">{{ staff.employee.name }}</div>
                 </div>
@@ -67,7 +67,7 @@
         <div class="p-4 border-b border-gray-200 dark:border-gray-700">
           <div class="flex items-center justify-between">
             <div>
-              <h2 class="text-lg font-bold text-gray-900 dark:text-white">{{ t('weeklyBoard') }}</h2>
+              <h2 class="text-lg font-bold text-gray-900 dark:text-white capitalize">{{ t('weeklyBoard') }}</h2>
               <p v-if="selectedStaff" class="text-sm text-gray-500 dark:text-gray-400 mt-1">{{ (selectedStaff.employee.nameEnglish || selectedStaff.employee.nameKhmer || selectedStaff.employee.name) }}'s {{ t('shifts') }}</p>
             </div>
             <button
@@ -210,7 +210,7 @@
         <div class="bg-white dark:bg-gray-800 rounded-sm shadow-xl p-4 max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto" id="schedule-board-view">
           <div class="flex items-center justify-between mb-4">
             <div>
-              <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ t('shiftList') }} - {{ (selectedStaff.employee.nameEnglish || selectedStaff.employee.nameKhmer || selectedStaff.employee.name) }}</h3>
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-white capitalize">{{ t('shiftList') }} - {{ (selectedStaff.employee.nameEnglish || selectedStaff.employee.nameKhmer || selectedStaff.employee.name) }}</h3>
               <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">{{ t('weeklySchedule') || 'Weekly Schedule' }}</p>
             </div>
             <button
@@ -308,7 +308,7 @@
                     d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                 </svg>
               </div>
-              <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ t('addNote') }}</h3>
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-white capitalize">{{ t('addNote') }}</h3>
             </div>
             <button
               @click="showNoteDialog = false"
@@ -351,6 +351,65 @@
         </div>
       </div>
     </Transition>
+
+    <!-- Add Shift Confirmation Dialog -->
+    <div v-if="showShiftConfirmDialog"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      @click.self="showShiftConfirmDialog = false">
+      <div class="bg-white dark:bg-gray-800 rounded-sm shadow-xl p-6 max-w-md w-full mx-4">
+        <div class="flex-1">
+          <!-- Title with icon -->
+          <div class="flex items-center gap-2 mb-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600 dark:text-blue-400" fill="none"
+              viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white capitalize">{{ t('addShift') || 'Add Shift' }}</h3>
+          </div>
+
+          <!-- Description -->
+          <p class="text-sm text-gray-600 dark:text-gray-400 mb-3" v-if="pendingShift">
+            {{ t('areYouSureAddShift') || 'Are you sure you want to add this shift?' }}<br>
+            <span class="font-medium">{{ t('day') }}: {{ pendingShift.day }}</span><br>
+            <span class="font-medium">{{ t('time') || 'Time' }}: {{ formatTimeRange(pendingShift.startTime, pendingShift.endTime) }}</span>
+          </p>
+
+          <!-- Buttons -->
+          <div class="flex gap-3 justify-end">
+            <button @click="showShiftConfirmDialog = false; pendingShift = null; resetDrag()"
+              class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-sm hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors font-medium">
+              {{ t('no') }}
+            </button>
+            <button @click="confirmAddShift"
+              class="px-4 py-2 bg-blue-600 text-white rounded-sm hover:bg-blue-700 transition-colors font-medium">
+              {{ t('yes') }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error Message Toast -->
+    <Transition name="toast">
+      <div v-if="showErrorMessage"
+        class="fixed top-4 right-4 bg-red-500 text-white rounded-sm shadow-lg p-4 flex items-center gap-3 z-50 min-w-[300px]">
+        <div class="w-8 h-8 bg-red-400 rounded-full flex items-center justify-center flex-shrink-0">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </div>
+        <div class="flex-1">
+          <p class="font-semibold text-white">{{ errorMessageTitle }}</p>
+          <p class="text-sm text-white">{{ errorMessageText }}</p>
+        </div>
+        <button @click="showErrorMessage = false" class="text-white hover:text-red-100 transition-colors flex-shrink-0">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </Transition>
     
     <!-- Success Message Toast -->
     <Transition name="toast">
@@ -358,18 +417,18 @@
         v-if="showSuccessMessage"
         class="fixed top-4 right-4 bg-green-500 text-white rounded-sm shadow-lg p-4 flex items-center gap-3 z-50 min-w-[300px]"
       >
-        <div class="w-8 h-8 bg-white dark:bg-gray-700 bg-opacity-20 rounded-full flex items-center justify-center flex-shrink-0">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div class="w-8 h-8 bg-green-400 rounded-full flex items-center justify-center flex-shrink-0">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
           </svg>
         </div>
         <div class="flex-1">
-          <p class="font-semibold">{{ successMessageTitle }}</p>
-          <p class="text-sm text-green-50">{{ successMessageText }}</p>
+          <p class="font-semibold text-white">{{ successMessageTitle }}</p>
+          <p class="text-sm text-white">{{ successMessageText }}</p>
         </div>
         <button
           @click="showSuccessMessage = false"
-          class="text-white hover:text-green-100 transition-colors"
+          class="text-white hover:text-green-100 transition-colors flex-shrink-0"
         >
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -480,8 +539,17 @@ const showNoteDialog = ref(false)
 const currentShift = ref(null)
 const shiftNote = ref('')
 
-// Success message state
-// Toast state removed - now using global ToastContainer
+// Shift confirmation dialog state
+const showShiftConfirmDialog = ref(false)
+const pendingShift = ref(null)
+
+// Success/Error message state
+const showSuccessMessage = ref(false)
+const successMessageTitle = ref('')
+const successMessageText = ref('')
+const showErrorMessage = ref(false)
+const errorMessageTitle = ref('')
+const errorMessageText = ref('')
 
 // Time slots (6:00 AM to 11:00 PM)
 const timeSlots = computed(() => {
@@ -720,13 +788,18 @@ const handleMouseUp = (event, day) => {
   })
   
   if (overlaps) {
-    error(t('shiftOverlaps'))
+    showErrorMessage.value = true
+    errorMessageTitle.value = t('error') || 'Error'
+    errorMessageText.value = t('shiftOverlaps') || 'Shift overlaps with existing shift'
+    setTimeout(() => {
+      showErrorMessage.value = false
+    }, 3000)
     resetDrag()
     return
   }
   
-  // Add new shift
-  const newShift = {
+  // Store pending shift and show confirmation dialog
+  pendingShift.value = {
     id: `SHIFT${Date.now()}`,
     day: day,
     startTime: startTime,
@@ -734,26 +807,53 @@ const handleMouseUp = (event, day) => {
     note: ''
   }
   
-  selectedStaff.value.shifts.push(newShift)
+  showShiftConfirmDialog.value = true
+  
+  event.preventDefault()
+  event.stopPropagation()
+}
+
+// Confirm add shift
+const confirmAddShift = () => {
+  if (!pendingShift.value || !selectedStaff.value) {
+    showShiftConfirmDialog.value = false
+    pendingShift.value = null
+    resetDrag()
+    return
+  }
+  
+  // Add new shift
+  selectedStaff.value.shifts.push({ ...pendingShift.value })
   
   // Auto-merge adjacent shifts
-  autoMergeShiftsForDay(day)
+  autoMergeShiftsForDay(pendingShift.value.day)
   
   saveSchedules()
-  const employee = employees.value.find(emp => emp.id === selectedStaff.value.id)
+  
+  // Get employee name for history
+  const saved = localStorage.getItem('employees_data')
+  const employeesData = saved ? JSON.parse(saved) : []
+  const employee = employeesData.find(emp => emp.id === selectedStaff.value.employee.id)
   const employeeName = employee ? (employee.nameEnglish || employee.nameKhmer || employee.name) : 'Employee'
+  
   addHistory('add', {
     type: 'user',
     itemName: employeeName,
-    itemId: selectedStaff.value.id,
-    description: `Employee schedule shift added - ${employeeName}, Day: ${day}, Time: ${formatTimeRange(newShift.startTime, newShift.endTime)}`,
+    itemId: selectedStaff.value.employee.id,
+    description: `Employee schedule shift added - ${employeeName}, Day: ${pendingShift.value.day}, Time: ${formatTimeRange(pendingShift.value.startTime, pendingShift.value.endTime)}`,
     user: 'Admin'
   })
-  success(`${t('shiftAdded')}: ${t('shiftAddedSuccess')}`)
   
+  showSuccessMessage.value = true
+  successMessageTitle.value = t('shiftAdded') || 'Shift Added'
+  successMessageText.value = t('shiftAddedSuccess') || 'Shift has been added successfully!'
+  setTimeout(() => {
+    showSuccessMessage.value = false
+  }, 3000)
+  
+  showShiftConfirmDialog.value = false
+  pendingShift.value = null
   resetDrag()
-  event.preventDefault()
-  event.stopPropagation()
 }
 
 // Handle mouse leave (cancel drag)
@@ -964,7 +1064,12 @@ const mergeAdjacentShifts = (shift, day) => {
   
   mergeTwoShifts(shift, adjacentShift)
   saveSchedules()
-  success(`${t('shiftsMerged') || 'Shifts merged'}: ${formatTimeRange(shift.startTime, shift.endTime)}`)
+  showSuccessMessage.value = true
+  successMessageTitle.value = t('shiftsMerged') || 'Shifts Merged'
+  successMessageText.value = formatTimeRange(shift.startTime, shift.endTime)
+  setTimeout(() => {
+    showSuccessMessage.value = false
+  }, 3000)
 }
 
 // Remove shift
@@ -980,11 +1085,16 @@ const removeShift = (shift) => {
     addHistory('delete', {
       type: 'user',
       itemName: employeeName,
-      itemId: selectedStaff.value.id,
+      itemId: selectedStaff.value.employee.id,
       description: `Employee schedule shift removed - ${employeeName}, Time: ${formatTimeRange(shift.startTime, shift.endTime)}`,
       user: 'Admin'
     })
-    success(`${t('shiftRemoved')}: ${t('shiftRemovedSuccess')}`)
+    showSuccessMessage.value = true
+    successMessageTitle.value = t('shiftRemoved') || 'Shift Removed'
+    successMessageText.value = t('shiftRemovedSuccess') || 'Shift has been removed successfully!'
+    setTimeout(() => {
+      showSuccessMessage.value = false
+    }, 3000)
   }
 }
 
@@ -1004,7 +1114,12 @@ const saveNote = () => {
     shift.note = shiftNote.value
     saveSchedules()
     showNoteDialog.value = false
-    success(`${t('noteSaved')}: ${t('noteSavedSuccess')}`)
+    showSuccessMessage.value = true
+    successMessageTitle.value = t('noteSaved') || 'Note Saved'
+    successMessageText.value = t('noteSavedSuccess') || 'Note has been saved successfully!'
+    setTimeout(() => {
+      showSuccessMessage.value = false
+    }, 3000)
   }
 }
 
@@ -1067,18 +1182,4 @@ onUnmounted(() => {
   opacity: 0;
 }
 
-/* AKbalthom KhmerGothic Font */
-@font-face {
-  font-family: 'AKbalthom KhmerGothic';
-  src: url('../assets/fonts/AKbalthom%20KhmerGothic.ttf') format('truetype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-.akbalthom-khmer {
-  font-family: 'AKbalthom KhmerGothic', 'Khmer', 'Khmer OS', sans-serif;
-  font-weight: 400;
-  font-style: normal;
-}
 </style>

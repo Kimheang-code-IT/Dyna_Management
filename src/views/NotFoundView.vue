@@ -32,11 +32,11 @@
       </div>
 
       <!-- Error Code -->
-      <h1 class="text-9xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 dark:from-blue-400 dark:via-blue-500 dark:to-blue-600 mb-4 animate-pulse">
+      <h1 class="text-9xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 dark:from-blue-400 dark:via-blue-500 dark:to-blue-600 mb-4 animate-pulse capitalize">
         404
       </h1>
       <!-- Main Title -->
-      <h2 class="text-4xl md:text-5xl font-bold text-gray-800 dark:text-white mb-4">
+      <h2 class="text-4xl md:text-5xl font-bold text-gray-800 dark:text-white mb-4 capitalize">
  {{ t('pageNotFound') || 'Oops! Page Not Found' }}
       </h2>
 
