@@ -157,7 +157,7 @@
             <!-- Notifications List -->
             <div class="max-h-96 overflow-y-auto">
               <div v-for="notif in notifications" :key="notif.id"
-                @click="markNotificationRead(notif.id)"
+                @click="handleNotificationClick(notif)"
                 :class="[
                   'px-4 py-3 flex gap-3 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors cursor-pointer border-b border-gray-100 dark:border-gray-700/50',
                   notif.unread ? 'bg-blue-50/30 dark:bg-blue-900/10' : ''
@@ -165,10 +165,10 @@
                 <!-- Icon -->
                 <div class="flex-shrink-0 mt-0.5">
                   <div :class="[
-                    'w-10 h-10 rounded-full flex items-center justify-center',
+                    'w-12 h-12 rounded-full flex items-center justify-center shadow-sm',
                     getNotificationIconBg(notif.type)
                   ]">
-                    <component :is="getNotificationIcon(notif.type)" :class="getNotificationIconColor(notif.type)" class="w-5 h-5" />
+                    <component :is="getNotificationIcon(notif.type)" :class="[getNotificationIconColor(notif.type), 'w-6 h-6']" />
                   </div>
                 </div>
                 <!-- Content -->
@@ -313,7 +313,7 @@
 </template>
 
 <script setup>
-import { ref, inject, onMounted, onUnmounted, computed } from 'vue'
+import { ref, inject, onMounted, onUnmounted, computed, h } from 'vue'
 import { useRouter } from 'vue-router'
 import { addHistory } from '../utils/history'
 import { useDarkMode } from '../composables/useDarkMode'
@@ -358,12 +358,38 @@ const t = (key) => {
       logout: 'Log Out',
       admin: 'Admin',
       noResults: 'No results found',
+      notifications: 'Notifications',
+      markAllAsRead: 'Mark all as read',
+      noNotifications: 'No notifications',
+      newStudentRegistered: 'New student registered',
+      paymentReceived: 'Payment received',
+      inventoryLow: 'Inventory low',
+      backupComplete: 'Backup complete',
+      deadlineApproaching: 'Deadline approaching',
+      justNow: 'Just now',
+      m: 'm',
+      h: 'h',
+      d: 'd',
+      ago: 'ago'
     },
     km: {
       search: 'ស្វែងរកទាំងអស់...',
       logout: 'ចេញ',
       admin: 'អ្នកគ្រប់គ្រង',
       noResults: 'រកមិនឃើញលទ្ធផល',
+      notifications: 'ការជូនដំណឹង',
+      markAllAsRead: 'សម្គាល់ទាំងអស់ថាបានអាន',
+      noNotifications: 'មិនមានការជូនដំណឹង',
+      newStudentRegistered: 'សិស្សថ្មីបានចុះឈ្មោះ',
+      paymentReceived: 'បានទទួលការទូទាត់',
+      inventoryLow: 'ស្តុកទំនិញទាប',
+      backupComplete: 'បម្រុងទុកបានបញ្ចប់',
+      deadlineApproaching: 'ថ្ងៃកំណត់កំពុងខិតជិត',
+      justNow: 'មុននេះបន្តិច',
+      m: 'ន',
+      h: 'ម៉',
+      d: 'ថ',
+      ago: 'មុន'
     }
   }
 
@@ -469,6 +495,39 @@ const markAllNotificationsRead = () => {
   }
 }
 
+// Get notification route based on type
+const getNotificationRoute = (notification) => {
+  const routes = {
+    student: '/students',
+    payment: '/student-payment',
+    inventory: '/product',
+    deadline: '/student-deadline',
+    backup: '/backup'
+  }
+  return routes[notification.type] || '/'
+}
+
+// Handle notification click - navigate and mark as read
+const handleNotificationClick = (notification) => {
+  // Mark as read
+  if (notification.unread) {
+    notification.unread = false
+    // Save to localStorage
+    try {
+      localStorage.setItem('notifications', JSON.stringify(notifications.value))
+    } catch (e) {
+      console.error('Error saving notifications:', e)
+    }
+  }
+  
+  // Close notification dropdown
+  showNotificationDropdown.value = false
+  
+  // Navigate to relevant page
+  const route = getNotificationRoute(notification)
+  router.push(route)
+}
+
 const markNotificationRead = (id) => {
   const notification = notifications.value.find(n => n.id === id)
   if (notification) {
@@ -504,16 +563,107 @@ const formatRelativeTime = (timestamp) => {
   }
 }
 
+// Icon components using render functions
+const StudentIcon = (props) => h('svg', {
+  xmlns: 'http://www.w3.org/2000/svg',
+  fill: 'none',
+  viewBox: '0 0 24 24',
+  stroke: 'currentColor',
+  strokeWidth: '2.5',
+  class: props.class
+}, [
+  h('path', {
+    strokeLinecap: 'round',
+    strokeLinejoin: 'round',
+    d: 'M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25'
+  })
+])
+
+const PaymentIcon = (props) => h('svg', {
+  xmlns: 'http://www.w3.org/2000/svg',
+  fill: 'none',
+  viewBox: '0 0 24 24',
+  stroke: 'currentColor',
+  strokeWidth: '2.5',
+  class: props.class
+}, [
+  h('path', {
+    strokeLinecap: 'round',
+    strokeLinejoin: 'round',
+    d: 'M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5z'
+  })
+])
+
+const InventoryIcon = (props) => h('svg', {
+  xmlns: 'http://www.w3.org/2000/svg',
+  fill: 'none',
+  viewBox: '0 0 24 24',
+  stroke: 'currentColor',
+  strokeWidth: '2.5',
+  class: props.class
+}, [
+  h('path', {
+    strokeLinecap: 'round',
+    strokeLinejoin: 'round',
+    d: 'M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z'
+  })
+])
+
+const DeadlineIcon = (props) => h('svg', {
+  xmlns: 'http://www.w3.org/2000/svg',
+  fill: 'none',
+  viewBox: '0 0 24 24',
+  stroke: 'currentColor',
+  strokeWidth: '2.5',
+  class: props.class
+}, [
+  h('path', {
+    strokeLinecap: 'round',
+    strokeLinejoin: 'round',
+    d: 'M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z'
+  })
+])
+
+const BackupIcon = (props) => h('svg', {
+  xmlns: 'http://www.w3.org/2000/svg',
+  fill: 'none',
+  viewBox: '0 0 24 24',
+  stroke: 'currentColor',
+  strokeWidth: '2.5',
+  class: props.class
+}, [
+  h('path', {
+    strokeLinecap: 'round',
+    strokeLinejoin: 'round',
+    d: 'M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5'
+  })
+])
+
+const InfoIcon = (props) => h('svg', {
+  xmlns: 'http://www.w3.org/2000/svg',
+  fill: 'none',
+  viewBox: '0 0 24 24',
+  stroke: 'currentColor',
+  strokeWidth: '2.5',
+  class: props.class
+}, [
+  h('path', {
+    strokeLinecap: 'round',
+    strokeLinejoin: 'round',
+    d: 'M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z'
+  })
+])
+
 // Get notification icon component
 const getNotificationIcon = (type) => {
   const icons = {
-    student: 'StudentIcon',
-    payment: 'PaymentIcon',
-    inventory: 'InventoryIcon',
-    backup: 'BackupIcon',
-    deadline: 'DeadlineIcon'
+    student: StudentIcon,
+    payment: PaymentIcon,
+    inventory: InventoryIcon,
+    backup: BackupIcon,
+    deadline: DeadlineIcon
   }
-  return icons[type] || 'InfoIcon'
+  return icons[type] || InfoIcon
 }
 
 // Get notification icon background
@@ -581,6 +731,37 @@ const updateNotificationTitles = () => {
       title: titles[notif.type] || notif.title
     }
   })
+}
+
+// Handle add notification event
+const handleAddNotification = (event) => {
+  if (event && event.detail) {
+    const notification = event.detail
+    // Generate unique ID if not provided
+    const newNotification = {
+      id: notification.id || Date.now() + Math.random(),
+      type: notification.type || 'info',
+      title: notification.title || 'Notification',
+      subtitle: notification.subtitle || '',
+      timestamp: notification.timestamp || Date.now(),
+      unread: notification.unread !== undefined ? notification.unread : true
+    }
+    
+    // Add to beginning of array
+    notifications.value.unshift(newNotification)
+    
+    // Limit to 50 notifications
+    if (notifications.value.length > 50) {
+      notifications.value = notifications.value.slice(0, 50)
+    }
+    
+    // Save to localStorage
+    try {
+      localStorage.setItem('notifications', JSON.stringify(notifications.value))
+    } catch (e) {
+      console.error('Error saving notifications:', e)
+    }
+  }
 }
 
 onMounted(() => {
