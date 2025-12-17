@@ -70,6 +70,11 @@ const routes = [
     component: () => import('../views/HistoryView.vue')
   },
   {
+    path: '/backup',
+    name: 'Backup',
+    component: () => import('../views/BackupView.vue')
+  },
+  {
     path: '/invoice/:cartData?',
     name: 'Invoice',
     component: () => import('../views/InvoiceView.vue')

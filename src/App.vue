@@ -95,6 +95,7 @@ import ToastContainer from './components/ToastContainer.vue'
 import { getCurrentLanguage, setCurrentLanguage } from './utils/i18n'
 import { useDarkMode } from './composables/useDarkMode'
 import { isLoading, loadingMessage } from './composables/useLoading'
+import { useNotifications } from './composables/useNotifications'
 
 const route = useRoute()
 
@@ -162,10 +163,18 @@ const changeLanguage = (lang) => {
   window.dispatchEvent(new Event('languagechange'))
 }
 
+// Initialize notifications
+const { startMonitoring, stopMonitoring } = useNotifications()
+
 // Initialize on mount: dark mode and language
 onMounted(() => {
   checkMobile()
   window.addEventListener('resize', checkMobile)
+  
+  // Start notification monitoring (only when not on login page)
+  if (!isLoginPage.value) {
+    startMonitoring()
+  }
   
   nextTick(() => {
     if (typeof document !== 'undefined') {
@@ -185,9 +194,10 @@ onMounted(() => {
   })
 })
 
-  // Cleanup resize listener
-  onUnmounted(() => {
+// Cleanup resize listener and notifications
+onUnmounted(() => {
   window.removeEventListener('resize', checkMobile)
+  stopMonitoring()
 })
 
 // Provide sidebar state to child components

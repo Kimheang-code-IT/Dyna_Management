@@ -144,32 +144,52 @@
             </span>
           </button>
           <div v-if="showNotificationDropdown"
-            class="absolute right-0 mt-2 w-80 bg-white dark:bg-gray-800 rounded-sm shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50">
-            <div class="flex items-center justify-between px-4 pb-2 border-b border-gray-200 dark:border-gray-700">
+            class="absolute right-0 mt-2 w-80 bg-white dark:bg-gray-800 rounded-sm shadow-lg border border-gray-200 dark:border-gray-700 z-50">
+            <!-- Header -->
+            <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700">
               <p class="text-sm font-semibold text-gray-900 dark:text-white">{{ t('notifications') || 'Notifications' }}
               </p>
               <button v-if="unreadCount > 0" @click="markAllNotificationsRead"
-                class="text-xs text-blue-600 dark:text-blue-400 hover:underline">
+                class="text-xs text-blue-600 dark:text-blue-400 hover:underline font-medium">
                 {{ t('markAllAsRead') || 'Mark all as read' }}
               </button>
             </div>
-            <div class="max-h-80 overflow-y-auto">
+            <!-- Notifications List -->
+            <div class="max-h-96 overflow-y-auto">
               <div v-for="notif in notifications" :key="notif.id"
-                class="px-4 py-3 flex gap-3 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                <div class="mt-1">
-                  <span :class="[
-                    'w-2 h-2 rounded-full inline-block',
-                    notif.unread ? 'bg-blue-500' : 'bg-gray-400'
-                  ]"></span>
+                @click="markNotificationRead(notif.id)"
+                :class="[
+                  'px-4 py-3 flex gap-3 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors cursor-pointer border-b border-gray-100 dark:border-gray-700/50',
+                  notif.unread ? 'bg-blue-50/30 dark:bg-blue-900/10' : ''
+                ]">
+                <!-- Icon -->
+                <div class="flex-shrink-0 mt-0.5">
+                  <div :class="[
+                    'w-10 h-10 rounded-full flex items-center justify-center',
+                    getNotificationIconBg(notif.type)
+                  ]">
+                    <component :is="getNotificationIcon(notif.type)" :class="getNotificationIconColor(notif.type)" class="w-5 h-5" />
+                  </div>
                 </div>
+                <!-- Content -->
                 <div class="flex-1 min-w-0">
-                  <p class="text-sm font-medium text-gray-900 dark:text-white truncate">{{ notif.title }}</p>
-                  <p class="text-xs text-gray-600 dark:text-gray-400 truncate">{{ notif.subtitle }}</p>
-                  <p class="text-[11px] text-gray-500 dark:text-gray-500 mt-1">{{ notif.time }}</p>
+                  <div class="flex items-start justify-between gap-2">
+                    <div class="flex-1 min-w-0">
+                      <p class="text-sm font-medium text-gray-900 dark:text-white">{{ notif.title }}</p>
+                      <p class="text-xs text-gray-600 dark:text-gray-400 mt-0.5">{{ notif.subtitle }}</p>
+                    </div>
+                    <span v-if="notif.unread" class="w-2 h-2 rounded-full bg-blue-500 flex-shrink-0 mt-1"></span>
+                  </div>
+                  <p class="text-[11px] text-gray-500 dark:text-gray-400 mt-1.5">{{ formatRelativeTime(notif.timestamp) }}</p>
                 </div>
               </div>
-              <div v-if="notifications.length === 0" class="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">
-                {{ t('noResults') || 'No notifications' }}
+              <div v-if="notifications.length === 0" class="px-4 py-8 text-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400 dark:text-gray-500 mx-auto mb-2" fill="none"
+                  viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                </svg>
+                <p class="text-sm text-gray-500 dark:text-gray-400">{{ t('noNotifications') || 'No notifications' }}</p>
               </div>
             </div>
           </div>
@@ -263,6 +283,17 @@
               {{ getTranslation('history') }}
             </router-link>
 
+            <!-- Backup Menu Item -->
+            <router-link :to="'/backup'" @click="showProfileDropdown = false"
+              class="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              {{ getTranslation('backup') }}
+            </router-link>
+
             <div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
 
             <button @click="handleLogout"
@@ -348,22 +379,24 @@ const t = (key) => {
 }
 
 // Get translation for menu items
-const getTranslation = (key) => {
-  const lang = currentLanguage.value || 'en'
-  const translations = {
-    en: {
-      report: 'Report',
-      user: 'User',
-      history: 'History'
-    },
-    km: {
-      report: 'របាយការណ៍',
-      user: 'អ្នកប្រើ',
-      history: 'ប្រវត្តិ'
+  const getTranslation = (key) => {
+    const lang = currentLanguage.value || 'en'
+    const translations = {
+      en: {
+        report: 'Report',
+        user: 'User',
+        history: 'History',
+        backup: 'Backup'
+      },
+      km: {
+        report: 'របាយការណ៍',
+        user: 'អ្នកប្រើ',
+        history: 'ប្រវត្តិ',
+        backup: 'បម្រុងទុក'
+      }
     }
+    return translations[lang]?.[key] || key
   }
-  return translations[lang]?.[key] || key
-}
 
 // Search state
 const searchQuery = ref('')
@@ -378,9 +411,30 @@ const showNotificationDropdown = ref(false)
 // Language dropdown state
 const showLanguageDropdown = ref(false)
 const notifications = ref([
-  { id: 1, title: 'New student registered', subtitle: 'John Doe enrolled', time: '2m ago', unread: true },
-  { id: 2, title: 'Payment received', subtitle: 'Invoice ORD-20251210', time: '15m ago', unread: true },
-  { id: 3, title: 'Inventory low', subtitle: 'Product ABC stock is low', time: '1h ago', unread: false }
+  { 
+    id: 1, 
+    type: 'student',
+    title: t('newStudentRegistered') || 'New student registered', 
+    subtitle: 'John Doe enrolled', 
+    timestamp: Date.now() - 2 * 60 * 1000, // 2 minutes ago
+    unread: true 
+  },
+  { 
+    id: 2, 
+    type: 'payment',
+    title: t('paymentReceived') || 'Payment received', 
+    subtitle: 'Invoice ORD-20251210', 
+    timestamp: Date.now() - 15 * 60 * 1000, // 15 minutes ago
+    unread: true 
+  },
+  { 
+    id: 3, 
+    type: 'inventory',
+    title: t('inventoryLow') || 'Inventory low', 
+    subtitle: 'Product ABC stock is low', 
+    timestamp: Date.now() - 60 * 60 * 1000, // 1 hour ago
+    unread: false 
+  }
 ])
 
 const unreadCount = computed(() => notifications.value.filter(n => n.unread).length)
@@ -407,6 +461,83 @@ const toggleNotificationDropdown = () => {
 
 const markAllNotificationsRead = () => {
   notifications.value = notifications.value.map(n => ({ ...n, unread: false }))
+  // Save to localStorage
+  try {
+    localStorage.setItem('notifications', JSON.stringify(notifications.value))
+  } catch (e) {
+    console.error('Error saving notifications:', e)
+  }
+}
+
+const markNotificationRead = (id) => {
+  const notification = notifications.value.find(n => n.id === id)
+  if (notification) {
+    notification.unread = false
+    // Save to localStorage
+    try {
+      localStorage.setItem('notifications', JSON.stringify(notifications.value))
+    } catch (e) {
+      console.error('Error saving notifications:', e)
+    }
+  }
+}
+
+// Format relative time (e.g., "2m ago", "15m ago", "1h ago")
+const formatRelativeTime = (timestamp) => {
+  if (!timestamp) return ''
+  const now = Date.now()
+  const diff = now - timestamp
+  const minutes = Math.floor(diff / 60000)
+  const hours = Math.floor(diff / 3600000)
+  const days = Math.floor(diff / 86400000)
+
+  if (minutes < 1) {
+    return t('justNow') || 'Just now'
+  } else if (minutes < 60) {
+    return `${minutes}${t('m') || 'm'} ${t('ago') || 'ago'}`
+  } else if (hours < 24) {
+    return `${hours}${t('h') || 'h'} ${t('ago') || 'ago'}`
+  } else if (days < 7) {
+    return `${days}${t('d') || 'd'} ${t('ago') || 'ago'}`
+  } else {
+    return new Date(timestamp).toLocaleDateString()
+  }
+}
+
+// Get notification icon component
+const getNotificationIcon = (type) => {
+  const icons = {
+    student: 'StudentIcon',
+    payment: 'PaymentIcon',
+    inventory: 'InventoryIcon',
+    backup: 'BackupIcon',
+    deadline: 'DeadlineIcon'
+  }
+  return icons[type] || 'InfoIcon'
+}
+
+// Get notification icon background
+const getNotificationIconBg = (type) => {
+  const classes = {
+    student: 'bg-blue-100 dark:bg-blue-900/30',
+    payment: 'bg-green-100 dark:bg-green-900/30',
+    inventory: 'bg-yellow-100 dark:bg-yellow-900/30',
+    backup: 'bg-purple-100 dark:bg-purple-900/30',
+    deadline: 'bg-red-100 dark:bg-red-900/30'
+  }
+  return classes[type] || 'bg-gray-100 dark:bg-gray-700'
+}
+
+// Get notification icon color
+const getNotificationIconColor = (type) => {
+  const classes = {
+    student: 'text-blue-600 dark:text-blue-400',
+    payment: 'text-green-600 dark:text-green-400',
+    inventory: 'text-yellow-600 dark:text-yellow-400',
+    backup: 'text-purple-600 dark:text-purple-400',
+    deadline: 'text-red-600 dark:text-red-400'
+  }
+  return classes[type] || 'text-gray-600 dark:text-gray-400'
 }
 
 // Select language
@@ -435,17 +566,58 @@ const handleClickOutside = (event) => {
 // Force reactivity update when language changes
 const languageKey = ref(0)
 
+// Update notification titles based on current language
+const updateNotificationTitles = () => {
+  notifications.value = notifications.value.map(notif => {
+    const titles = {
+      student: t('newStudentRegistered') || 'New student registered',
+      payment: t('paymentReceived') || 'Payment received',
+      inventory: t('inventoryLow') || 'Inventory low',
+      backup: t('backupComplete') || 'Backup complete',
+      deadline: t('deadlineApproaching') || 'Deadline approaching'
+    }
+    return {
+      ...notif,
+      title: titles[notif.type] || notif.title
+    }
+  })
+}
+
 onMounted(() => {
   document.addEventListener('click', handleClickOutside)
+  document.addEventListener('click', handleSearchClickOutside)
+  
   // Listen for language change events
   window.addEventListener('languagechange', () => {
     languageKey.value++
+    updateNotificationTitles()
   })
+  
+  // Listen for new notifications
+  window.addEventListener('add-notification', handleAddNotification)
+  
+  // Load notifications from localStorage
+  try {
+    const saved = localStorage.getItem('notifications')
+    if (saved) {
+      const savedNotifications = JSON.parse(saved)
+      if (Array.isArray(savedNotifications) && savedNotifications.length > 0) {
+        notifications.value = savedNotifications
+      }
+    }
+  } catch (e) {
+    console.error('Error loading notifications:', e)
+  }
+  
+  // Update notification titles on mount
+  updateNotificationTitles()
 })
 
 onUnmounted(() => {
   document.removeEventListener('click', handleClickOutside)
+  document.removeEventListener('click', handleSearchClickOutside)
   window.removeEventListener('languagechange', () => { })
+  window.removeEventListener('add-notification', handleAddNotification)
 })
 
 // Fullscreen toggle method
@@ -817,13 +989,4 @@ const handleSearchClickOutside = (event) => {
   }
 }
 
-onMounted(() => {
-  document.addEventListener('click', handleClickOutside)
-  document.addEventListener('click', handleSearchClickOutside)
-})
-
-onUnmounted(() => {
-  document.removeEventListener('click', handleClickOutside)
-  document.removeEventListener('click', handleSearchClickOutside)
-})
 </script>
