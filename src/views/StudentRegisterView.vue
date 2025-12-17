@@ -34,10 +34,8 @@
                   {{ t('fullNameEnglish') }} <span class="text-red-500">*</span>
                 </label>
                 <input id="nameEnglish" v-model="form.nameEnglish" type="text" required
-                  @input="validateNameField('nameEnglish', form.nameEnglish, true)"
-                  @keypress="preventNonNameChars"
-                  :placeholder="t('fullNameEnglishPlaceholder')"
-                  :class="[
+                  @input="validateNameField('nameEnglish', form.nameEnglish, true)" @keypress="preventNonNameChars"
+                  :placeholder="t('fullNameEnglishPlaceholder')" :class="[
                     'w-full px-3 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 transition-colors h-[37px]',
                     errors.nameEnglish ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
                   ]" />
@@ -50,14 +48,14 @@
                 <label for="nameKhmer" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   {{ t('fullNameKhmer') }}
                 </label>
-                <input id="nameKhmer" v-model="form.nameKhmer" type="text" 
+                <input id="nameKhmer" v-model="form.nameKhmer" type="text"
                   @input="validateKhmerNameField('nameKhmer', form.nameKhmer, false)"
-                  :placeholder="t('fullNameKhmerPlaceholder')"
-                  :class="[
+                  :placeholder="t('fullNameKhmerPlaceholder')" :class="[
                     'w-full px-3 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 transition-colors h-[37px]',
                     errors.nameKhmer ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
                   ]" />
-                <p v-if="errors.nameKhmer" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.nameKhmer }}</p>
+                <p v-if="errors.nameKhmer" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.nameKhmer }}
+                </p>
               </div>
 
               <!-- Gender -->
@@ -67,8 +65,7 @@
                 </label>
                 <div class="relative">
                   <select id="gender" v-model="form.gender" required
-                    @change="validateSelectField('gender', form.gender, true)"
-                    :class="[
+                    @change="validateSelectField('gender', form.gender, true)" :class="[
                       'w-full px-3 py-2 pr-10 text-[14px] border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white appearance-none transition-colors',
                       errors.gender ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
                     ]">
@@ -177,12 +174,10 @@
             <!-- Email -->
             <div>
               <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                {{ t('email') }} <span class="text-red-500">*</span>
+                {{ t('email') }}
               </label>
-              <input id="email" v-model="form.email" type="email" required 
-                @input="validateEmailField('email', form.email, true)"
-                :placeholder="t('emailPlaceholder')"
-                :class="[
+              <input id="email" v-model="form.email" type="email"
+                @input="validateEmailField('email', form.email, false)" :placeholder="t('emailPlaceholder')" :class="[
                   'w-full px-3 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 transition-colors h-[37px]',
                   errors.email ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
                 ]" />
@@ -190,61 +185,58 @@
             </div>
             <div class="lg:col-span-2">
               <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
-              <!-- Phone -->
-              <div>
-                <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                  {{ t('phone') }} <span class="text-red-500">*</span>
-                </label>
-                <input id="phone" v-model="form.phone" type="tel" required 
-                  @input="validatePhoneField('phone', form.phone, true)"
-                  @keypress="preventNonPhoneChars"
-                  :placeholder="t('phonePlaceholder')"
-                  :class="[
-                    'w-full px-3 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 transition-colors h-[37px]',
-                    errors.phone ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
-                  ]" />
-                <p v-if="errors.phone" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.phone }}</p>
-              </div>
-
-              <!-- Province -->
-              <div>
-                <label for="province" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                  {{ t('province') }} <span class="text-red-500">*</span>
-                </label>
-                <div class="relative">
-                  <select id="province" v-model="form.province" required
-                    @change="validateSelectField('province', form.province, true)"
-                    :class="[
-                      'w-full px-3 py-2 pr-10 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white appearance-none transition-colors',
-                      errors.province ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
-                    ]">
-                    <option value="">{{ t('selectProvince') }}</option>
-                    <option v-for="prov in provinces" :key="prov" :value="prov">{{ prov }}</option>
-                  </select>
-                  <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                    <svg class="h-5 w-5 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor"
-                      viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </div>
+                <!-- Phone -->
+                <div>
+                  <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    {{ t('phone') }} <span class="text-red-500">*</span>
+                  </label>
+                  <input id="phone" v-model="form.phone" type="tel" required
+                    @input="validatePhoneField('phone', form.phone, true)" @keypress="preventNonPhoneChars"
+                    :placeholder="t('phonePlaceholder')" :class="[
+                      'w-full px-3 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 transition-colors h-[37px]',
+                      errors.phone ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                    ]" />
+                  <p v-if="errors.phone" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.phone }}</p>
                 </div>
-                <p v-if="errors.province" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.province }}</p>
+
+                <!-- Province -->
+                <div>
+                  <label for="province" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    {{ t('province') }} <span class="text-red-500">*</span>
+                  </label>
+                  <div class="relative">
+                    <select id="province" v-model="form.province" required
+                      @change="validateSelectField('province', form.province, true)" :class="[
+                        'w-full px-3 py-2 pr-10 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white appearance-none transition-colors',
+                        errors.province ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                      ]">
+                      <option value="">{{ t('selectProvince') }}</option>
+                      <option v-for="prov in provinces" :key="prov" :value="prov">{{ prov }}</option>
+                    </select>
+                    <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                      <svg class="h-5 w-5 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </div>
+                  </div>
+                  <p v-if="errors.province" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.province }}
+                  </p>
+                </div>
+                <div>
+                  <label for="Telegram" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    {{ t('Telegram') }}
+                  </label>
+                  <input id="Telegram" v-model="form.Telegram" type="tel"
+                    @input="validatePhoneField('Telegram', form.Telegram, false)" @keypress="preventNonPhoneChars"
+                    :placeholder="t('TelegramPlaceholder')" :class="[
+                      'w-full px-3 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 transition-colors h-[37px]',
+                      errors.Telegram ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                    ]" />
+                  <p v-if="errors.Telegram" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.Telegram }}
+                  </p>
+                </div>
               </div>
-              <div>
-                <label for="Telegram" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                  {{ t('Telegram') }} <span class="text-red-500">*</span>
-                </label>
-                <input id="Telegram" v-model="form.Telegram" type="tel" required 
-                  @input="validatePhoneField('Telegram', form.Telegram, true)"
-                  @keypress="preventNonPhoneChars"
-                  :placeholder="t('TelegramPlaceholder')"
-                  :class="[
-                    'w-full px-3 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 transition-colors h-[37px]',
-                    errors.Telegram ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
-                  ]" />
-                <p v-if="errors.Telegram" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.Telegram }}</p>
-              </div>
-            </div>
             </div>
             <!-- Course, Session, and Time Row -->
             <div class="lg:col-span-2">
@@ -255,12 +247,10 @@
                     {{ t('course') }} <span class="text-red-500">*</span>
                   </label>
                   <div class="relative">
-                    <select id="course" v-model="form.course" required
-                      @change="validateSelectField('course', form.course, true)"
-                      :class="[
-                        'w-full px-3 py-2 pr-10 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white appearance-none transition-colors',
-                        errors.course ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
-                      ]">
+                    <select id="course" v-model="form.course" required @change="handleCourseChange" :class="[
+                      'w-full px-3 py-2 pr-10 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white appearance-none transition-colors',
+                      errors.course ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                    ]">
                       <option value="">{{ t('selectCourse') }}</option>
                       <option v-for="course in courses" :key="course" :value="course">{{ course }}</option>
                     </select>
@@ -281,12 +271,14 @@
                   </label>
                   <div class="relative">
                     <select id="session" v-model="form.session" required
-                      @change="validateSelectField('session', form.session, true)"
-                      :class="[
+                      :disabled="!form.course || sessions.length === 0" @change="handleSessionChange" :class="[
                         'w-full px-3 py-2 pr-10 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white appearance-none transition-colors',
-                        errors.session ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                        errors.session ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500',
+                        (!form.course || sessions.length === 0) ? 'bg-gray-100 dark:bg-gray-700 cursor-not-allowed opacity-60' : ''
                       ]">
-                      <option value="">{{ t('selectSession') }}</option>
+                      <option value="">{{ !form.course ? (t('selectCourseFirst') || 'Please select a course first') :
+                        (sessions.length === 0 ? (t('noSessions') || 'No sessions available') : t('selectSession')) }}
+                      </option>
                       <option v-for="session in sessions" :key="session" :value="session">{{ session }}</option>
                     </select>
                     <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
@@ -306,12 +298,16 @@
                   </label>
                   <div class="relative">
                     <select id="time" v-model="form.time" required
-                      @change="validateSelectField('time', form.time, true)"
-                      :class="[
+                      :disabled="!form.course || !form.session || timeSlots.length === 0"
+                      @change="validateSelectField('time', form.time, true)" :class="[
                         'w-full px-3 py-2 pr-10 border rounded-sm focus:outline-none focus:ring-2 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white appearance-none transition-colors',
-                        errors.time ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+                        errors.time ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500',
+                        (!form.course || !form.session || timeSlots.length === 0) ? 'bg-gray-100 dark:bg-gray-700 cursor-not-allowed opacity-60' : ''
                       ]">
-                      <option value="">{{ t('selectTime') }}</option>
+                      <option value="">{{ !form.course ? (t('selectCourseFirst') || 'Please select a course first') :
+                        (!form.session ? (t('selectSessionFirst') || 'Please select a session first') :
+                          (timeSlots.length === 0 ? (t('noTimeSlots') || 'No time slots available') : t('selectTime'))) }}
+                      </option>
                       <option v-for="time in timeSlots" :key="time" :value="time">{{ time }}</option>
                     </select>
                     <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
@@ -348,15 +344,17 @@
         <div class="flex-1">
           <!-- Title with icon -->
           <div class="flex items-center gap-2 mb-3">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600 dark:text-blue-400" fill="none"
+              viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <h3 class="text-lg font-semibold text-gray-900 dark:text-white capitalize">{{ t('registerStudent') }}</h3>
           </div>
-          
+
           <!-- Description -->
           <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">{{ t('areYouSureRegister') }}</p>
-          
+
           <!-- Buttons -->
           <div class="flex gap-3 justify-end">
             <button @click="showConfirmDialog = false"
@@ -377,7 +375,8 @@
       <div v-if="showSuccessMessage"
         class="fixed top-4 right-4 bg-green-500 text-white rounded-sm shadow-lg p-4 flex items-center gap-3 z-50 min-w-[300px]">
         <div class="w-8 h-8 bg-green-400 rounded-full flex items-center justify-center flex-shrink-0">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
           </svg>
         </div>
@@ -385,7 +384,8 @@
           <p class="font-semibold text-white">{{ successMessageTitle }}</p>
           <p class="text-sm text-white">{{ successMessageText }}</p>
         </div>
-        <button @click="showSuccessMessage = false" class="text-white hover:text-green-100 transition-colors flex-shrink-0">
+        <button @click="showSuccessMessage = false"
+          class="text-white hover:text-green-100 transition-colors flex-shrink-0">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
           </svg>
@@ -426,6 +426,7 @@ import { useLoading } from '../composables/useLoading'
 import { useErrorHandler } from '../composables/useErrorHandler'
 import { useFormValidation } from '../composables/useFormValidation'
 import { addHistory } from '../utils/history'
+import coursesData from '../data/courses.json'
 
 // Inject sidebar collapse state
 const isSidebarCollapsed = inject('isSidebarCollapsed', ref(false))
@@ -445,6 +446,7 @@ const form = reactive({
   dobYear: '',
   email: '',
   phone: '',
+  Telegram: '',
   province: '',
   course: '',
   session: '',
@@ -492,11 +494,85 @@ const errorMessageText = ref('')
 // Options data
 const provinces = ['Phnom Penh', 'Siem Reap', 'Battambang', 'Kampong Cham', 'Kandal', 'Takeo', 'Prey Veng', 'Svay Rieng', 'Kampot', 'Kep', 'Koh Kong', 'Pursat', 'Kampong Speu', 'Kampong Thom', 'Kratie', 'Mondulkiri', 'Oddar Meanchey', 'Pailin', 'Preah Vihear', 'Ratanakiri', 'Stung Treng', 'Banteay Meanchey', 'Kampong Chhnang', 'Preah Sihanouk', 'Tbong Khmum']
 
-const courses = ['Web Development', 'Graphic Design', 'Mobile App', 'Digital Marketing', 'Data Science', 'UI/UX Design', 'Python Programming', 'Java Programming']
+// Load courses from the same data source as CourseManagementView
+// Extract unique course names from active courses only
+const courses = computed(() => {
+  const activeCourses = coursesData.filter(course => course.status === 'Active')
+  const uniqueCourseNames = [...new Set(activeCourses.map(course => course.courseName))]
+  return uniqueCourseNames.sort()
+})
 
-const sessions = ['Morning', 'Afternoon', 'Evening', 'Weekend']
+// Get available sessions based on selected course
+const sessions = computed(() => {
+  // If no course is selected, return empty array (user must select course first)
+  if (!form.course) {
+    return []
+  }
 
-const timeSlots = ['08:00 - 10:00', '10:00 - 12:00', '13:00 - 15:00', '15:00 - 17:00', '18:00 - 20:00', '20:00 - 22:00']
+  // Filter courses by selected course name and active status
+  const matchingCourses = coursesData.filter(course =>
+    course.courseName === form.course &&
+    course.status === 'Active'
+  )
+
+  // Extract unique sessions from matching courses
+  const availableSessions = [...new Set(matchingCourses.map(course => course.session))]
+
+  // If no matching courses found, return empty array
+  if (availableSessions.length === 0) {
+    return []
+  }
+
+  // Sort and return available sessions
+  return availableSessions.sort()
+})
+
+// Helper function to format hour with AM/PM
+const formatHourWithAMPM = (hour24) => {
+  if (hour24 === 0) return '12:00 AM'
+  if (hour24 < 12) return `${hour24}:00 AM`
+  if (hour24 === 12) return '12:00 PM'
+  return `${hour24 - 12}:00 PM`
+}
+
+// Generate hourly time slots from 7:00-8:00 to 20:00-21:00 with AM/PM (all possible slots)
+const allTimeSlots = computed(() => {
+  const slots = []
+  for (let hour = 7; hour <= 20; hour++) {
+    const startTime = formatHourWithAMPM(hour)
+    const endTime = formatHourWithAMPM(hour + 1)
+    slots.push(`${startTime} - ${endTime}`)
+  }
+  return slots
+})
+
+// Get available time slots based on selected course and session
+const timeSlots = computed(() => {
+  // If no course or session is selected, return empty array
+  if (!form.course || !form.session) {
+    return []
+  }
+
+  // Filter courses by selected course name and active status
+  let matchingCourses = coursesData.filter(course =>
+    course.courseName === form.course &&
+    course.status === 'Active'
+  )
+
+  // Filter by selected session
+  matchingCourses = matchingCourses.filter(course => course.session === form.session)
+
+  // Extract unique time slots from matching courses
+  const availableTimes = [...new Set(matchingCourses.map(course => course.time))]
+
+  // If no matching courses found, return empty array
+  if (availableTimes.length === 0) {
+    return []
+  }
+
+  // Sort the time slots
+  return availableTimes.sort()
+})
 
 // Generate days (1-31)
 const days = computed(() => {
@@ -561,8 +637,8 @@ const validateForm = () => {
     }
   }
 
-  // Validate Email
-  if (!validateEmailField('email', form.email, true)) {
+  // Validate Email (optional - only validate if provided)
+  if (form.email && !validateEmailField('email', form.email, false)) {
     isValid = false
   }
 
@@ -571,8 +647,8 @@ const validateForm = () => {
     isValid = false
   }
 
-  // Validate Telegram (phone format)
-  if (!validatePhoneField('Telegram', form.Telegram, true)) {
+  // Validate Telegram (optional - only validate if provided)
+  if (form.Telegram && !validatePhoneField('Telegram', form.Telegram, false)) {
     isValid = false
   }
 
@@ -606,6 +682,34 @@ const formatDateOfBirth = () => {
   const month = String(form.dobMonth).padStart(2, '0')
   const day = String(form.dobDay).padStart(2, '0')
   return `${year}-${month}-${day}`
+}
+
+// Handle course change - reset session and time if they're no longer valid
+const handleCourseChange = () => {
+  validateSelectField('course', form.course, true)
+
+  // Reset session if it's no longer available for the selected course
+  if (form.session && !sessions.value.includes(form.session)) {
+    form.session = ''
+    errors.session = ''
+  }
+
+  // Reset time if it's no longer valid for the selected course
+  if (form.time && !timeSlots.value.includes(form.time)) {
+    form.time = ''
+    errors.time = ''
+  }
+}
+
+// Handle session change - reset time if it's no longer valid
+const handleSessionChange = () => {
+  validateSelectField('session', form.session, true)
+
+  // Check if current time is still valid for the selected course and session
+  if (form.time && !timeSlots.value.includes(form.time)) {
+    form.time = ''
+    errors.time = ''
+  }
 }
 
 // Get student name (prefer English, fallback to Khmer)
@@ -645,8 +749,9 @@ const confirmRegistration = () => {
       session: form.session,
       time: form.time,
       dob: formatDateOfBirth(),
-      email: form.email,
+      email: form.email || '',
       contact: form.phone,
+      Telegram: form.Telegram || '',
       registered: new Date().toISOString().split('T')[0],
       profileImage: form.profileImage || ''
     }
@@ -729,6 +834,7 @@ const clearForm = () => {
   form.dobYear = ''
   form.email = ''
   form.phone = ''
+  form.Telegram = ''
   form.province = ''
   form.course = ''
   form.session = ''

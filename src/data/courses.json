@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "courseName": "Web Development",
+    "room": "Room 101",
+    "session": "Mon-Fri",
+    "time": "7:00 AM - 8:00 AM",
+    "teacher": "John Smith",
+    "totalStudent": 25,
+    "status": "Active",
+    "created": "2024-01-15"
+  }
+]
+

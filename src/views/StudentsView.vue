@@ -146,7 +146,7 @@
             </button>
             <div class="relative w-full sm:w-auto">
               <select v-model="selectedCourse"
-                class="appearance-none bg-white dark:bg-gray-800/100 text-xs border border-gray-300 dark:border-gray-600 rounded-sm px-3 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white h-[37px] w-full sm:w-auto">
+                class="appearance-none bg-white dark:bg-gray-800/100 text-xs border border-gray-300 dark:border-gray-600 rounded-sm px-3 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white h-[37px] max-w-[120px] ">
                 <option value="">{{ t('allCourses') }}</option>
                 <option v-for="course in courses" :key="course" :value="course">{{ course }}</option>
               </select>
@@ -160,7 +160,7 @@
 
             <div class="relative w-full sm:w-auto">
               <select v-model="selectedProvince"
-                class="appearance-none bg-white dark:bg-gray-800/100 text-xs border border-gray-300 dark:border-gray-600 rounded-sm px-3 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white h-[37px] w-full sm:w-auto">
+                class="appearance-none bg-white dark:bg-gray-800/100 text-xs border border-gray-300 dark:border-gray-600 rounded-sm px-3 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white h-[37px] max-w-[120px]">
                 <option value="">{{ t('allProvinces') }}</option>
                 <option v-for="province in provinces" :key="province" :value="province">{{ province }}</option>
               </select>
@@ -180,7 +180,7 @@
               <input v-model="filterDateFrom" type="date"
                 class="px-3 py-2 text-xs border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white h-[37px] w-[115px]" />
               <span class="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 self-center sm:self-auto">{{ t('to')
-                }}</span>
+              }}</span>
               <input v-model="filterDateTo" type="date"
                 class="px-3 py-2 text-xs border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white h-[37px] w-[115px]" />
               <button v-if="filterDateFrom || filterDateTo" @click="clearDateFilter"
@@ -448,7 +448,7 @@
                     errors.nameEnglish ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
                   ]" />
                 <p v-if="errors.nameEnglish" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.nameEnglish
-                  }}
+                }}
                 </p>
               </div>
 
@@ -615,7 +615,7 @@
                 d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <h3 class="text-lg font-semibold text-gray-900 dark:text-white capitalize">{{ t('update') }} {{ t('student')
-            }}</h3>
+              }}</h3>
           </div>
 
           <!-- Description -->
@@ -676,7 +676,8 @@
       <div v-if="showSuccessMessage"
         class="fixed top-4 right-4 bg-green-500 text-white rounded-sm shadow-lg p-4 flex items-center gap-3 z-50 min-w-[300px]">
         <div class="w-8 h-8 bg-green-400 rounded-full flex items-center justify-center flex-shrink-0">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
           </svg>
         </div>
@@ -684,7 +685,8 @@
           <p class="font-semibold text-white">{{ successMessageTitle }}</p>
           <p class="text-sm text-white">{{ successMessageText }}</p>
         </div>
-        <button @click="showSuccessMessage = false" class="text-white hover:text-green-100 transition-colors flex-shrink-0">
+        <button @click="showSuccessMessage = false"
+          class="text-white hover:text-green-100 transition-colors flex-shrink-0">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
           </svg>

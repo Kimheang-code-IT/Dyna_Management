@@ -64,10 +64,10 @@
                     class="w-4 h-4 rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-blue-500 focus:ring-2 bg-white dark:bg-gray-700 flex-shrink-0" />
                   <!-- Student Avatar -->
                   <div
-                    class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 bg-blue-100 dark:bg-blue-900 overflow-hidden">
+                    class="w-10 h-10 rounded-md border border-gray-300 flex items-center justify-center flex-shrink-0 bg-blue-100 dark:bg-blue-900 overflow-hidden">
                     <img v-if="student.profileImage" :src="student.profileImage"
                       :alt="student.nameEnglish || student.name || student.nameKhmer"
-                      class="w-full h-full rounded-full object-cover" />
+                      class="w-full h-full rounded-md object-cover" />
                     <span v-else class="text-blue-600 dark:text-blue-400 font-semibold text-xs">
                       {{ getInitials(student.nameKhmer || student.nameEnglish || student.name || '??') }}
                     </span>

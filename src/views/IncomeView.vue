@@ -132,7 +132,7 @@
             <!-- Date Range Picker -->
             <div class="flex items-center gap-2">
               <label class="text-xs font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap">{{ t('dateBetween')
-              }}:</label>
+                }}:</label>
               <input v-model="filterDateFrom" type="date"
                 class="px-3 py-2  text-xs border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white w-[115px] h-[37px]" />
               <span class="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">{{ t('to') }}</span>
@@ -396,7 +396,7 @@
                   errors.paymentPrice ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
                 ]" />
               <p v-if="errors.paymentPrice" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ errors.paymentPrice
-              }}</p>
+                }}</p>
             </div>
 
             <!-- Method -->
@@ -454,7 +454,7 @@
 
           <!-- Description -->
           <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">{{ t('areYouSure') }} {{ t('add') }} {{ t('income')
-          }}?</p>
+            }}?</p>
 
           <!-- Buttons -->
           <div class="flex gap-3 justify-end">
@@ -485,7 +485,7 @@
                 d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <h3 class="text-lg font-semibold text-gray-900 dark:text-white capitalize">{{ t('update') }} {{ t('income')
-            }}</h3>
+              }}</h3>
           </div>
 
           <!-- Description -->

@@ -132,7 +132,7 @@
       </div>
 
       <!-- Right Panel: Category List Table -->
-      <div class="lg:col-span-2 bg-white dark:bg-gray-800  rounded-sm shadow p-3">
+      <div class="lg:col-span-2 bg-white dark:bg-gray-800  rounded-sm shadow p-2 sm:p-3">
         <h2 class="text-xl font-semibold text-gray-800 dark:text-white mb-2 capitalize">{{ t('categories') }}</h2>
 
         <!-- Search Bar and Date Picker -->

@@ -8,6 +8,7 @@ import UserView from '../views/UserView.vue'
 import StudentsView from '../views/StudentsView.vue'
 import StudentRegisterView from '../views/StudentRegisterView.vue'
 import ClassManagementView from '../views/ClassManagementView.vue'
+import CourseManagementView from '../views/CourseManagementView.vue'
 import StudentDeadlineView from '../views/StudentDeadlineView.vue'
 import StudentPaymentView from '../views/StudentPaymentView.vue'
 import StudentBookView from '../views/StudentBookView.vue'
@@ -88,6 +89,11 @@ const routes = [
     path: '/class-management',
     name: 'ClassManagement',
     component: ClassManagementView
+  },
+  {
+    path: '/course-management',
+    name: 'CourseManagement',
+    component: CourseManagementView
   },
   {
     path: '/student-deadline',

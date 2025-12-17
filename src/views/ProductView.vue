@@ -40,8 +40,11 @@
             <p
               class="text-base sm:text-base md:text-xl lg:text-2xl xl:text-3xl font-bold leading-tight sm:leading-normal text-gray-800 dark:text-white">
               {{ totalStockUnits }}</p>
-            <p class="text-[10px] sm:text-xs text-red-600 dark:text-red-400 mt-1">{{ t('lowStockItems') }} {{
+            <p class="text-[10px] sm:text-xs text-yellow-600 dark:text-yellow-400 mt-1">{{ t('lowStockItems') }} {{
               lowStockCount }}</p>
+            <p v-if="outOfStockCount > 0" class="text-[10px] sm:text-xs text-red-600 dark:text-red-400 mt-0.5">Out of
+              Stock: {{
+                outOfStockCount }}</p>
           </div>
           <div
             class="w-10 h-10 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-green-100 dark:bg-green-900/30 rounded-full flex-shrink-0 flex items-center justify-center order-1 sm:order-2 mb-2 sm:mb-0">
@@ -117,7 +120,7 @@
     <div class="bg-white sticky top-24 dark:bg-gray-800 rounded-sm shadow p-2 sm:p-3">
       <div class="p-0 mb-2 sm:mb-3">
         <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 items-stretch sm:items-center justify-between">
-          <div class="relative flex-1 w-full sm:max-w-[400px]">
+          <div class="relative flex-1 w-full sm:max-w-[250px]">
             <div class="absolute inset-y-0 left-0 pl-2 sm:pl-3 flex items-center pointer-events-none">
               <svg class="h-4 w-4 sm:h-5 sm:w-5 text-gray-400 dark:text-gray-400" fill="none" stroke="currentColor"
                 viewBox="0 0 24 24">
@@ -142,6 +145,22 @@
                 class="appearance-none bg-white dark:bg-gray-800/100 text-xs border border-gray-300 dark:border-gray-600 rounded-sm px-3 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white h-[37px] w-full sm:w-auto">
                 <option value="">{{ t('categories') }}</option>
                 <option v-for="cat in categories" :key="cat" :value="cat">{{ cat }}</option>
+              </select>
+              <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                <svg class="h-5 w-5 text-gray-400  dark:text-gray-400" fill="none" stroke="currentColor"
+                  viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            </div>
+
+            <div class="relative w-full sm:w-auto">
+              <select v-model="selectedStatus"
+                class="appearance-none bg-white dark:bg-gray-800/100 text-xs border border-gray-300 dark:border-gray-600 rounded-sm px-3 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white h-[37px] w-full sm:w-auto">
+                <option value="">{{ t('status') }}</option>
+                <option value="in_stock">{{ t('inStock') }}</option>
+                <option value="low_stock">{{ t('lowStock') }}</option>
+                <option value="out_of_stock">Out of Stock</option>
               </select>
               <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                 <svg class="h-5 w-5 text-gray-400  dark:text-gray-400" fill="none" stroke="currentColor"
@@ -229,7 +248,8 @@
           </thead>
           <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
             <!-- No Results Found -->
-            <tr v-if="filteredProducts.length === 0 && (searchQuery || filterDateFrom || filterDateTo)">
+            <tr
+              v-if="filteredProducts.length === 0 && (searchQuery || selectedCategory || selectedStatus || filterDateFrom || filterDateTo)">
               <td colspan="12" class="px-4 py-12 text-center">
                 <div class="flex flex-col items-center justify-center gap-3">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400 dark:text-gray-500" fill="none"
@@ -293,8 +313,8 @@
               </td>
               <td class="px-3 py-3 whitespace-nowrap">
                 <span class="px-2 py-1 text-[10px] font-medium rounded-full"
-                  :class="product.status === 'Active' ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200' : 'bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200'">
-                  {{ product.status === 'Active' ? t('active') : product.status }}
+                  :class="getStockStatusClass(product.inStock || 0)">
+                  {{ getStockStatusLabel(product.inStock || 0) }}
                 </span>
               </td>
               <td class="px-4 py-3 whitespace-nowrap text-xs text-gray-700 dark:text-gray-300">
@@ -505,7 +525,8 @@
       <div v-if="showSuccessMessage"
         class="fixed top-4 right-4 bg-green-500 text-white rounded-sm shadow-lg p-4 flex items-center gap-3 z-50 min-w-[300px]">
         <div class="w-8 h-8 bg-green-400 rounded-full flex items-center justify-center flex-shrink-0">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
           </svg>
         </div>
@@ -513,7 +534,8 @@
           <p class="font-semibold text-white">{{ successMessageTitle }}</p>
           <p class="text-sm text-white">{{ successMessageText }}</p>
         </div>
-        <button @click="showSuccessMessage = false" class="text-white hover:text-green-100 transition-colors flex-shrink-0">
+        <button @click="showSuccessMessage = false"
+          class="text-white hover:text-green-100 transition-colors flex-shrink-0">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
           </svg>
@@ -526,7 +548,8 @@
       <div v-if="showErrorMessage"
         class="fixed top-4 right-4 bg-red-500 text-white rounded-sm shadow-lg p-4 flex items-center gap-3 z-50 min-w-[300px]">
         <div class="w-8 h-8 bg-red-400 rounded-full flex items-center justify-center flex-shrink-0">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
           </svg>
         </div>
@@ -771,6 +794,7 @@ const products = ref(productsData)
 
 const searchQuery = ref('')
 const selectedCategory = ref('')
+const selectedStatus = ref('')
 const filterDateFrom = ref('')
 const filterDateTo = ref('')
 
@@ -855,6 +879,20 @@ const filteredProducts = computed(() => {
     filtered = filtered.filter(p => p.category === selectedCategory.value)
   }
 
+  if (selectedStatus.value) {
+    filtered = filtered.filter(p => {
+      const inStock = p.inStock || 0
+      if (selectedStatus.value === 'in_stock') {
+        return inStock > 15
+      } else if (selectedStatus.value === 'low_stock') {
+        return inStock <= 15 && inStock > 0
+      } else if (selectedStatus.value === 'out_of_stock') {
+        return inStock <= 0
+      }
+      return true
+    })
+  }
+
   // Apply date range filter
   if (filterDateFrom.value || filterDateTo.value) {
     filtered = filtered.filter(product => {
@@ -888,11 +926,28 @@ const filteredProducts = computed(() => {
 const totalProducts = computed(() => products.value.length)
 
 const totalStockUnits = computed(() => {
-  return products.value.reduce((sum, p) => sum + p.totalStock, 0)
+  return products.value.reduce((sum, p) => sum + (p.inStock || 0), 0)
 })
 
 const lowStockCount = computed(() => {
-  return products.value.filter(p => p.stockStatus === 'Low').length
+  return products.value.filter(p => {
+    const inStock = p.inStock || 0
+    return inStock <= 15 && inStock > 0
+  }).length
+})
+
+const inStockCount = computed(() => {
+  return products.value.filter(p => {
+    const inStock = p.inStock || 0
+    return inStock > 15
+  }).length
+})
+
+const outOfStockCount = computed(() => {
+  return products.value.filter(p => {
+    const inStock = p.inStock || 0
+    return inStock <= 0
+  }).length
 })
 
 const totalCategories = computed(() => {
@@ -918,6 +973,28 @@ const getCategoryColorClass = (category) => {
     'Office': 'bg-pink-100 dark:bg-pink-900 text-pink-800 dark:text-pink-200'
   }
   return colors[category] || 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white'
+}
+
+// Get stock status label based on inStock value
+const getStockStatusLabel = (inStock) => {
+  if (inStock > 15) {
+    return t('inStock')
+  } else if (inStock <= 15 && inStock > 0) {
+    return t('lowStock')
+  } else {
+    return 'Out of Stock'
+  }
+}
+
+// Get stock status CSS class based on inStock value
+const getStockStatusClass = (inStock) => {
+  if (inStock > 15) {
+    return 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200'
+  } else if (inStock <= 15 && inStock > 0) {
+    return 'bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200'
+  } else {
+    return 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200'
+  }
 }
 
 // Clear date filter

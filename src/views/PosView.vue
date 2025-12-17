@@ -22,7 +22,7 @@
             </div>
 
             <!-- Search Bar -->
-            <div class="relative w-full sm:w-[300px]">
+            <div class="relative w-full sm:max-w-[600px]">
               <div class="absolute inset-y-0 left-0 pl-2 sm:pl-3 flex items-center pointer-events-none">
                 <svg class="h-4 w-4 sm:h-5 sm:w-5 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor"
                   viewBox="0 0 24 24">
@@ -30,7 +30,7 @@
                     d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </div>
-              <input v-model="searchQuery" type="text" :placeholder="t('searchProducts')"
+              <input v-model="searchQuery" type="text" :placeholder="t('search')"
                 class="w-full pl-10 pr-10 py-2 h-[37px] border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800/100 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400" />
               <button v-if="searchQuery" @click="searchQuery = ''"
                 class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
@@ -247,7 +247,8 @@
               <div class="space-y-4">
                 <!-- Product Name and SKU -->
                 <div>
-                  <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-1 capitalize">{{ selectedProduct.name }}</h3>
+                  <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-1 capitalize">{{ selectedProduct.name
+                  }}</h3>
                   <p class="text-sm text-gray-500 dark:text-gray-400">{{ t('sku') }}: {{ selectedProduct.sku }}</p>
                 </div>
 
@@ -344,32 +345,24 @@
           <div class="px-6 py-4 space-y-4">
             <!-- Tabs -->
             <div class="flex gap-2 flex-wrap">
-              <button
-                @click="activeCustomerTab = 'customer'"
-                :class="[
-                  'px-3 py-2 text-sm font-medium rounded-sm border transition-colors',
-                  activeCustomerTab === 'customer'
-                    ? 'bg-blue-100 dark:bg-blue-900/30 border-blue-400 dark:border-blue-600 text-blue-700 dark:text-blue-200'
-                    : 'bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200'
-                ]"
-              >
+              <button @click="activeCustomerTab = 'customer'" :class="[
+                'px-3 py-2 text-sm font-medium rounded-sm border transition-colors',
+                activeCustomerTab === 'customer'
+                  ? 'bg-blue-100 dark:bg-blue-900/30 border-blue-400 dark:border-blue-600 text-blue-700 dark:text-blue-200'
+                  : 'bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200'
+              ]">
                 {{ t('customer') }}
               </button>
-              <button
-                @click="activeCustomerTab = 'student'"
-                :class="[
-                  'px-3 py-2 text-sm font-medium rounded-sm border transition-colors',
-                  activeCustomerTab === 'student'
-                    ? 'bg-blue-100 dark:bg-blue-900/30 border-blue-400 dark:border-blue-600 text-blue-700 dark:text-blue-200'
-                    : 'bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200'
-                ]"
-              >
+              <button @click="activeCustomerTab = 'student'" :class="[
+                'px-3 py-2 text-sm font-medium rounded-sm border transition-colors',
+                activeCustomerTab === 'student'
+                  ? 'bg-blue-100 dark:bg-blue-900/30 border-blue-400 dark:border-blue-600 text-blue-700 dark:text-blue-200'
+                  : 'bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200'
+              ]">
                 {{ t('student') }}
               </button>
-              <button
-                @click="setWalkInCustomer"
-                class="px-3 py-2 text-sm font-medium rounded-sm border transition-colors bg-blue-600 text-white border-blue-600 hover:bg-blue-700"
-              >
+              <button @click="setWalkInCustomer"
+                class="px-3 py-2 text-sm font-medium rounded-sm border transition-colors bg-blue-600 text-white border-blue-600 hover:bg-blue-700">
                 {{ t('walkIn') }}
               </button>
             </div>
@@ -380,21 +373,15 @@
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   {{ t('search') }}
                 </label>
-                <input
-                  v-model="studentSearchQuery"
-                  type="text"
-                  :placeholder="t('searchByNamePhoneId')"
-                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 h-[37px]"
-                />
+                <input v-model="studentSearchQuery" type="text" :placeholder="t('searchByNamePhoneId')"
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 h-[37px]" />
               </div>
 
-              <div class="max-h-40 overflow-y-auto border border-gray-200 dark:border-gray-700 rounded-sm divide-y divide-gray-200 dark:divide-gray-700">
-                <div
-                  v-for="student in filteredStudentsList"
-                  :key="student.id"
+              <div
+                class="max-h-40 overflow-y-auto border border-gray-200 dark:border-gray-700 rounded-sm divide-y divide-gray-200 dark:divide-gray-700">
+                <div v-for="student in filteredStudentsList" :key="student.id"
                   class="p-2 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer"
-                  @click="selectStudent(student)"
-                >
+                  @click="selectStudent(student)">
                   <div>
                     <p class="text-sm font-medium text-gray-900 dark:text-white">
                       {{ student.nameEnglish || student.nameKhmer || student.name || student.id }}
@@ -403,7 +390,8 @@
                       {{ student.phone || student.contact || '-' }}
                     </p>
                   </div>
-                  <span class="text-[11px] px-2 py-1 rounded-sm bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-200">
+                  <span
+                    class="text-[11px] px-2 py-1 rounded-sm bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-200">
                     {{ t('select') }}
                   </span>
                 </div>
@@ -416,30 +404,29 @@
 
             <!-- Customer Tab -->
             <div v-else class="space-y-4">
-            <div>
-              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                {{ t('name') }} <span class="text-red-500">*</span>
-              </label>
-              <input v-model="customerInfo.name" type="text" :placeholder="t('enterName')"
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 h-[37px]" />
-            </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  {{ t('name') }} <span class="text-red-500">*</span>
+                </label>
+                <input v-model="customerInfo.name" type="text" :placeholder="t('enterName')"
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 h-[37px]" />
+              </div>
 
-            <div>
-              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                {{ t('phone') }} <span class="text-red-500">*</span>
-              </label>
-              <input v-model="customerInfo.phone" type="tel" :placeholder="t('enterPhone')"
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 h-[37px]" />
-            </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  {{ t('phone') }} <span class="text-red-500">*</span>
+                </label>
+                <input v-model="customerInfo.phone" type="tel" :placeholder="t('enterPhone')"
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 h-[37px]" />
+              </div>
 
-            <div>
-              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                {{ t('address') }}
-              </label>
-              <textarea v-model="customerInfo.address" rows="3"
-                :placeholder="t('enterAddress')"
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 resize-y"></textarea>
-            </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  {{ t('address') }}
+                </label>
+                <textarea v-model="customerInfo.address" rows="3" :placeholder="t('enterAddress')"
+                  class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 resize-y"></textarea>
+              </div>
             </div>
           </div>
 
@@ -501,7 +488,8 @@
       <div v-if="showSuccessMessage"
         class="fixed top-4 right-4 bg-green-500 text-white rounded-sm shadow-lg p-4 flex items-center gap-3 z-50 min-w-[300px]">
         <div class="w-8 h-8 bg-green-400 rounded-full flex items-center justify-center flex-shrink-0">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
           </svg>
         </div>
@@ -509,7 +497,8 @@
           <p class="font-semibold text-white">{{ successMessageTitle }}</p>
           <p class="text-sm text-white">{{ successMessageText }}</p>
         </div>
-        <button @click="showSuccessMessage = false" class="text-white hover:text-green-100 transition-colors flex-shrink-0">
+        <button @click="showSuccessMessage = false"
+          class="text-white hover:text-green-100 transition-colors flex-shrink-0">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
           </svg>
@@ -522,7 +511,8 @@
       <div v-if="showErrorMessage"
         class="fixed top-4 right-4 bg-red-500 text-white rounded-sm shadow-lg p-4 flex items-center gap-3 z-50 min-w-[300px]">
         <div class="w-8 h-8 bg-red-400 rounded-full flex items-center justify-center flex-shrink-0">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
           </svg>
         </div>
@@ -560,6 +550,7 @@ const { handleError } = useErrorHandler()
 
 const router = useRouter()
 import productsData from '../data/products.json'
+import categoriesData from '../data/categories.json'
 
 // Load products from JSON file and map to POS format
 const products = ref(productsData.map(p => ({
@@ -571,10 +562,10 @@ const products = ref(productsData.map(p => ({
   inStock: p.inStock
 })))
 
-// Get unique categories from products
+// Get all categories from categories.json (same as ProductView.vue)
 const categoryFilters = computed(() => {
-  const unique = new Set(products.value.map(p => p.category))
-  return [t('all'), ...Array.from(unique).sort()]
+  const allCategories = categoriesData.map(cat => cat.name).sort()
+  return [t('all'), ...allCategories]
 })
 
 const selectedCategory = ref(null)
@@ -848,10 +839,10 @@ const handleCheckout = () => {
 
   // Save checkout data for income generation
   localStorage.setItem('last_checkout_data', JSON.stringify(checkoutData))
-  
+
   // Dispatch event for income generation
   window.dispatchEvent(new CustomEvent('checkoutCompleted', { detail: checkoutData }))
-  
+
   // Dispatch event for transaction saved
   window.dispatchEvent(new CustomEvent('posTransactionSaved', { detail: transaction }))
 
